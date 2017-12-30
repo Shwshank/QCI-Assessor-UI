@@ -11,16 +11,17 @@ import { ProjectService } from '../../service/ProjectService';
 export class FormListingComponent implements OnInit {
 
   cardArray : any = [];
+  sub1: any;
 
   constructor(private projectService: ProjectService, private router: Router) {
-    this.projectService.emitFormCard.subscribe(res=>{
-        // console.log(res);
+    this.sub1 = this.projectService.emitFormArray.subscribe(res=>{
+        console.log(res);
         this.cardArray = res;
     });
   }
 
   ngOnInit() {
-    this.projectService.getFormCards();
+    this.projectService.getFormArray();
   }
 
   form(cid) {
@@ -31,6 +32,10 @@ export class FormListingComponent implements OnInit {
 
   ngAfterViewInit() {
     componentHandler.upgradeDom();
+  }
+
+  ngOnDestroy() {
+    this.sub1.unsubscribe();
   }
 
 }

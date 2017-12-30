@@ -8,8 +8,29 @@ export class ProjectService {
 
   constructor(private apiService: APIService) {}
 
+  cid() {
+    let d = new Date();
+    let cid = d.getTime() +""+ Math.floor(1000 + Math.random() * 8999);
+    return cid;
+  }
+
+  cdate() {
+    let d = new Date();
+    let cdate = d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear()+" "+d.getHours();
+    let min  = d.getMinutes();
+    let min2 = "";
+    if(min<10) {
+      min2 = "0"+min;
+    } else{
+      min2 = ""+min;
+    }
+    cdate += ":"+min2;
+    return cdate;
+  }
+
   emitFormElement = new EventEmitter<any>();
   emitFormCard = new EventEmitter<any>();
+  emitFormArray = new EventEmitter<any>();
 
   demoform: any = [
     {"type":"camera","required":true, "helptext":"Some help text goes here1","name":"cam1","rangeFrom":"","rangeTo":"","value":"","cid":"141"},
@@ -32,42 +53,42 @@ export class ProjectService {
   ];
 
   formArray = [
-    {
-      Details: { name: 'Form0', rule: 'None', project: 'Project 0', status: 'Offline', cid: '1220' },
-      Elements: [],
-      Rules: [
-        {name: 'Rule 1',elementCid:'2', elementName:'Text', elementType: "text", elementValue:"sam", tempCid: '12332', tempName: 'template1'},
-        {name: 'Rule 2',elementCid:'1', elementName:'Text0', elementType: "text", elementValue:"sammy", tempCid: '12323', tempName: 'template2'},
-      ],
-    },
-    {
-      Details: { name: 'Form1', rule: 'None', project: 'Project 1', status: 'Offline', cid: '1221' },
-      Elements: [
-        {type: "camera",required:true, helptext:"Some help text goes here1",name:"cam1", "value":"",cid:"141"},
-        {type: "video",required:true, helptext:"Some help text goes here2",name:"video1", "value":"",cid:"140"},
-        { type: "text", required: false, name: "Name" ,"cid":"1"},
-        { type: "email", required: false, hepltext: "", name: "Email ID" ,"cid":"2"},
-        { type: "number", required: false, hepltext: "", name: "Number Input" ,"cid":"3"},],
-      Rules: [
-        {name: 'Rule 1',elementCid:'1', elementName:'Text', elementType: "text", elementValue:"sam", tempCid: '12332', tempName: 'template1'}
-      ],
-    },
-    {
-      Details: { name: 'Form2', rule: 'None', project: 'Project 2', status: 'Online', cid: '2121' },
-      Elements: [{type: "text", required: false, hepltext: "text helping text", name: "text","cid":"1"},
-      {type: "password", required: false, hepltext: "help text for password", name: "Password","cid":"2"},
-      {type: "email", required: false, hepltext: "", name: "email","cid":"3"},
-      {type: "number", required: false, hepltext: "", name: "number", value: "","cid":"5"},
-      {type: "phone", required: false, hepltext: "", name: "phone", rangeFrom: "","cid":"6"},
-      {type: "textarea", required: false, hepltext: "", name: "textarea", rangeFrom: "","cid":"7"},
-      {type: "date", required: false, hepltext: "", name: "date", rangeFrom: "","cid":"8"},
-      {type: "time", required: false, hepltext: "", name: "time", rangeFrom: "","cid":"9"},
-      {type: "file", required: false, hepltext: "", name: "File input", rangeFrom: "","cid":"10"},
-      {type: "location", required: false, hepltext: "", name: "", rangeFrom: "","cid":"11"},
-      {type: "break", required: false, hepltext: "", name: "section break", rangeFrom: "","cid":"12"},
-    ],
-      Rules: [],
-    }
+    // {
+    //   Details: { name: 'Form0', rule: 'None', project: 'Project 0', status: 'Offline', cid: '1220' },
+    //   Elements: [],
+    //   Rules: [
+    //     {name: 'Rule 1',elementCid:'2', elementName:'Text', elementType: "text", elementValue:"sam", tempCid: '12332', tempName: 'template1'},
+    //     {name: 'Rule 2',elementCid:'1', elementName:'Text0', elementType: "text", elementValue:"sammy", tempCid: '12323', tempName: 'template2'},
+    //   ],
+    // },
+    // {
+    //   Details: { name: 'Form1', rule: 'None', project: 'Project 1', status: 'Offline', cid: '1221' },
+    //   Elements: [
+    //     {type: "camera",required:true, helptext:"Some help text goes here1",name:"cam1", "value":"",cid:"141"},
+    //     {type: "video",required:true, helptext:"Some help text goes here2",name:"video1", "value":"",cid:"140"},
+    //     { type: "text", required: false, name: "Name" ,"cid":"1"},
+    //     { type: "email", required: false, hepltext: "", name: "Email ID" ,"cid":"2"},
+    //     { type: "number", required: false, hepltext: "", name: "Number Input" ,"cid":"3"},],
+    //   Rules: [
+    //     {name: 'Rule 1',elementCid:'1', elementName:'Text', elementType: "text", elementValue:"sam", tempCid: '12332', tempName: 'template1'}
+    //   ],
+    // },
+    // {
+    //   Details: { name: 'Form2', rule: 'None', project: 'Project 2', status: 'Online', cid: '2121' },
+    //   Elements: [{type: "text", required: false, hepltext: "text helping text", name: "text","cid":"1"},
+    //   {type: "password", required: false, hepltext: "help text for password", name: "Password","cid":"2"},
+    //   {type: "email", required: false, hepltext: "", name: "email","cid":"3"},
+    //   {type: "number", required: false, hepltext: "", name: "number", value: "","cid":"5"},
+    //   {type: "phone", required: false, hepltext: "", name: "phone", rangeFrom: "","cid":"6"},
+    //   {type: "textarea", required: false, hepltext: "", name: "textarea", rangeFrom: "","cid":"7"},
+    //   {type: "date", required: false, hepltext: "", name: "date", rangeFrom: "","cid":"8"},
+    //   {type: "time", required: false, hepltext: "", name: "time", rangeFrom: "","cid":"9"},
+    //   {type: "file", required: false, hepltext: "", name: "File input", rangeFrom: "","cid":"10"},
+    //   {type: "location", required: false, hepltext: "", name: "", rangeFrom: "","cid":"11"},
+    //   {type: "break", required: false, hepltext: "", name: "section break", rangeFrom: "","cid":"12"},
+    // ],
+    //   Rules: [],
+    // }
   ];
 
   formCard= [
@@ -148,31 +169,55 @@ export class ProjectService {
           this.storeFormArrayTemp.Elements = this.storeFormArrayTemp.Elements.concat(tempArray.Elements);
           this.submittedForm = this.storeFormArrayTemp;
           console.log(this.submittedForm);
+          this.submitResponse(this.submittedForm);
           this.storeFormArrayTemp = [];
-
-
         }
       }
     } else {
       this.submittedForm = tempArray;
+      this.submitResponse(this.submittedForm);
       console.log(this.submittedForm)
     }
 
   }
 
-  syncAll() {
-    this.formCard = [];
+  syncAll() {}
+
+  getFormArray() {
     this.formArray = [];
-      this.apiService.SyncAll().subscribe((res)=>{
-        console.log(res);
-        this.formArray = res.formArray;
-        this.templateArray = res.tempArray;
-        for(let i = 0 ; i< this.formArray.length; i++) {
-          this.formCard.push(this.formArray[i].Details);
+    this.apiService.GetFormArray().subscribe((res)=>{
+      console.log(res);
+      if(res){
+
+        if(res.formArray.length) {
+          for(let i = 0; i< res.formArray.length; i++) {
+            this.formArray.push(res.formArray[i].form_json);
+          }
         }
-        console.log(this.formCard);
-        this.emitFormCard.emit(this.formCard);
-      });
+
+        if(res.tempArray.length) {
+          for(let i = 0; i< res.tempArray.length; i++) {
+            this.templateArray.push(res.tempArray[i].temp_json);
+          }
+        }
+
+        this.emitFormArray.emit(this.formArray);
+      } else {}
+    },err=> {
+      console.log(err);
+      // this.emitFormArray.emit(this.formArray);
+    });
+  }
+
+  submitResponse(formArray: any) {
+    this.apiService.SubmitResponse(formArray).subscribe(res=>{
+      console.log(res);
+      if(res){
+
+      } else {}
+    },err=> {
+      console.log(err);
+    });
   }
 
 }

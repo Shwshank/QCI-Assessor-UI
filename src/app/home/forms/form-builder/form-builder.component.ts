@@ -162,10 +162,10 @@ export class FormBuilderComponent implements OnInit {
               }
               if(flag == 1) {
                 console.log(data.name+' matched!');
-                console.log(data);
+                // console.log(data);
               } else {
                 console.log(data.name+' not matched!');
-                console.log(data);
+                // console.log(data);
                 this.deleteRuleFromJsonArray2(data);
               }
               //

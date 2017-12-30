@@ -13,11 +13,9 @@
     <span *ngIf='formError' class="mdl-chip" style="float : right; margin-top: -15px" >
         <span class="mdl-chip__text errorMsg"><b> # Invalid input/s detected!</b> </span>
     </span>
-
     <span style="float : right; margin-top: -15px"  class="mdl-chip margin-top-prop">
         <span class="mdl-chip__text requiredMsg"><b> * Required </b> </span>
     </span>
-
 
   </div>
 
@@ -85,9 +83,15 @@
         <app-input-video [json]=json  id={{i}}  (responseData)="responseData($event)"></app-input-video>
       </div>
 
+      <div *ngIf="json.type == 'location'" >
+       &nbsp; &nbsp; {{(i+1)}}. Location will be shown here <br>
+        <!-- <app-input-text [json]=json  id={{i}} (responseData)="responseData($event)"></app-input-text> -->
+      </div>
+
       <div *ngIf="json.type == 'break'" >
         <br>
-        <div class="mdl-cell mdl-cell--11-col sectionBreak "  > <b class="backgroundColorClass"> {{json.name}} </b></div>
+        <div class="mdl-cell mdl-cell--11-col sectionBreak "> <b class="backgroundColorClass"> {{json.name}} </b></div>
+
         <br>
       </div>
 
