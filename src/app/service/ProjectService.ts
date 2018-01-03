@@ -115,6 +115,12 @@ export class ProjectService {
   storeFormArrayTemp :any = [];
   submittedForm: any[];
 
+  checkImage(image: any) {
+    this.apiService.CheckImage(image).subscribe(res=>{
+      console.log(res);
+    });
+  }
+
   getFormCards() {
     this.emitFormCard.emit(this.formCard);
   }
@@ -159,28 +165,6 @@ export class ProjectService {
     this.storeFormArrayTemp = formArray;
   }
 
-  submitFormArray(tempArray: any) {
-    if(this.storeFormArrayTemp.Elements) {
-
-      for(let temp of this.storeFormArrayTemp.Rules) {
-
-        if(temp.tempCid == tempArray.Details.cid) {
-
-          this.storeFormArrayTemp.Elements = this.storeFormArrayTemp.Elements.concat(tempArray.Elements);
-          this.submittedForm = this.storeFormArrayTemp;
-          console.log(this.submittedForm);
-          this.submitResponse(this.submittedForm);
-          this.storeFormArrayTemp = [];
-        }
-      }
-    } else {
-      this.submittedForm = tempArray;
-      this.submitResponse(this.submittedForm);
-      console.log(this.submittedForm)
-    }
-
-  }
-
   syncAll() {}
 
   getFormArray() {
@@ -209,8 +193,59 @@ export class ProjectService {
     });
   }
 
+  submitFormArray(tempArray: any) {
+    if(this.storeFormArrayTemp.Elements) {
+
+      for(let temp of this.storeFormArrayTemp.Rules) {
+
+        if(temp.tempCid == tempArray.Details.cid) {
+
+          this.storeFormArrayTemp.Elements = this.storeFormArrayTemp.Elements.concat(tempArray.Elements);
+          this.submittedForm = this.storeFormArrayTemp;
+          console.log(this.submittedForm);
+          this.submitResponse(this.submittedForm);
+          this.storeFormArrayTemp = [];
+        }
+      }
+    } else {
+      this.submittedForm = tempArray;
+      this.submitResponse(this.submittedForm);
+      console.log(this.submittedForm)
+    }
+
+  }
+
   submitResponse(formArray: any) {
-    this.apiService.SubmitResponse(formArray).subscribe(res=>{
+    // {
+    //   ResCid:'1',
+    //   ResDetails:{ name: 'Form1', rule: 'None', project: 'Project Name Here 1', projectcdi:'p121', status:'Offline', cid:'a1221' },
+    //   ResElements:[
+    //     {type: "text", required: false, name: "Name", value:"sammy", cid:"a1", hepltext: "", alias:" Username "},
+    //     {type: "password", required: false, name: "SecretKey", value:"sammy_password", cid:"a2", hepltext: "", alias:" Password "}
+    //   ],
+    //   ResExtra:{}
+    // }
+
+    console.log(formArray);
+
+    let asrName: any;
+    let asrID: any;
+
+    asrName = localStorage.getItem('asrName');
+    asrID = localStorage.getItem('asrID');
+
+    asrName = "5vy5y5";
+    asrID = "15146350976019055";
+
+    let response : any = {};
+
+    response.ResCid = this.cid();
+    response.ResDetails = formArray.Details;
+    response.ResElements = formArray.Elements;
+    response.ResExtra = {asrName: asrName, asrID: asrID, resDate: this.cdate()};
+
+    console.log(response);
+    this.apiService.SubmitResponse(response).subscribe(res=>{
       console.log(res);
       if(res){
 

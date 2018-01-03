@@ -5,7 +5,8 @@ import { EventEmitter, Injectable } from '@angular/core';
 export class APIService {
 
   projectURL: string = 'http://192.168.15.187:8000';
-  // projectURL: string = 'http://qcitech.org:8081';
+  // projectURL: string = 'http://192.168.15.221:8000';
+  // projectURL: string = 'http://qcitech.org:8083';
 
   userID: any;
 
@@ -35,7 +36,7 @@ export class APIService {
     formArray = JSON.parse(formArray);
     formArray = JSON.stringify(formArray);
     let formData = new FormData();
-    formData.append('formArray',formArray);
+    formData.append('resArray',formArray);
     return this.http.post(this.projectURL+'/submitAssesorResponse', formData,{headers: headers}).map(res=>res.json());
   }
 
@@ -44,5 +45,12 @@ export class APIService {
   //   this.createAuthorizationHeader(headers);
   //   return this.http.get(this.projectURL+'/getAllProjects',{headers: headers}).map(res=>res.json());
   // }
+
+  CheckImage(image: any){
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+
+    return this.http.post(this.projectURL+'/check',image).map(res=>res.json());
+  }
 
 }

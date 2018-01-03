@@ -47,7 +47,7 @@ export class FormBuilderComponent implements OnInit {
   ngOnInit() {}
 
   responseData(data: any) {
-    // console.log(data);
+    console.log(data);
     componentHandler.upgradeDom();
 
     this.flag = 0;
@@ -79,11 +79,11 @@ export class FormBuilderComponent implements OnInit {
 
   checkForRules(data) {
     let flag  = 0;
-    // this.deleteRuleFromJsonArray(data.cid);
     if(this.completeArray.Rules) {
       if(this.completeArray.Rules.length > 0) {
         for(let r = 0; r< this.completeArray.Rules.length; r ++) {
 
+          // this.deleteRuleFromJsonArray(data.cid);
           if(data.cid ==  this.completeArray.Rules[r].elementCid) {
             let tempDataArray = [];
             let tempElementValueArray = [];
@@ -146,10 +146,10 @@ export class FormBuilderComponent implements OnInit {
 
               // ----> or condition starts here <-----
               //
-              for( let m of tempDataArray) {
-                for(let n of tempElementValueArray) {
+              for( let m = 0; m< tempDataArray.length; m++) {
+                for(let n = 0; n< tempElementValueArray.length; n++) {
 
-                  if(m === n) {
+                  if(tempDataArray[m] === tempElementValueArray[n]) {
                     flag = 1;
                     let tempArray  = this.projectService.getTemplateElement(this.completeArray.Rules[r].tempCid);
                     this.updateJsonArray(data.cid, tempArray);

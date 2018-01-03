@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgModel } from '@angular/forms';
+import { ProjectService } from '../../../../service/ProjectService';
 // import './allscript.js';
 
 @Component({
@@ -19,7 +20,7 @@ export class InputCameraComponent implements OnInit {
   url: any = "";
   geolocationPosition: any;
 
-  constructor() { }
+  constructor(private projectService: ProjectService) { }
 
   ngOnInit() {}
 
@@ -29,26 +30,24 @@ export class InputCameraComponent implements OnInit {
 
   getVal($event) {
 
-    // console.log('1');
     this.formData.delete('file');
     this.files = $event.target.files || $event.srcElement.files;
     let file = this.files[0];
     let fileName = file.name;
     this.name = file.name;
-    console.log(file);
     this.formData = new FormData();
-    this.formData.append('file', file);
+    this.json.fileName = this.name;
 
     // image url for preview
     let reader = new FileReader();
+    reader.readAsDataURL(file);
+    // reader.readAsBinaryString(file)
     reader.onload = (event:any) => {
       this.url = event.target.result;
+      this.json.value = reader.result;
     }
-    reader.readAsDataURL(file);
     // image url for preview
 
-    this.json.value = this.formData;
-    this.json.fileName = this.name;
     this.responseData.emit(this.json);
 
   }
