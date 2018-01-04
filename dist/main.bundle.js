@@ -2662,9 +2662,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var APIService = (function () {
     function APIService(http) {
         this.http = http;
-        // projectURL: string = 'http://192.168.15.187:8000';
-        // projectURL: string = 'http://192.168.15.221:8000';
-        this.projectURL = 'http://qcitech.org:8083';
+        this.projectURL = 'http://192.168.15.187:8000';
     }
     APIService.prototype.createAuthorizationHeader = function (headers) {
         this.userID = "15150728168562338";
