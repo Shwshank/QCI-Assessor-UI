@@ -12,5 +12,5 @@ git clone $GITHUB_LINK
 # rm -rf $REPONAME
 # docker rm $DOCKERNAME
 # docker rmi $IMAGENAME
-docker build -t $IMAGENAME /var/lib/jenkins/workspace/collect-assesor-frontend/.
+docker build -t $IMAGENAME /var/lib/jenkins/workspace/collect-frontend/.
 docker run -dt --name $DOCKERNAME $IMAGENAME
