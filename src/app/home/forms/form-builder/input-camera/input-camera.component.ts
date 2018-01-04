@@ -38,16 +38,12 @@ export class InputCameraComponent implements OnInit {
     this.formData = new FormData();
     this.json.fileName = this.name;
 
-    // image url for preview
     let reader = new FileReader();
     reader.readAsDataURL(file);
-    // reader.readAsBinaryString(file)
     reader.onload = (event:any) => {
       this.url = event.target.result;
       this.json.value = reader.result;
     }
-    // image url for preview
-
     this.responseData.emit(this.json);
 
   }

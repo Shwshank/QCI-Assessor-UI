@@ -65,13 +65,17 @@ export class FormBuilderComponent implements OnInit {
     if(this.flag == 1) {
         this.act_data[this.pos].value = data.value;
         this.checkError(data);
-        this.checkForRules(data);
+        if(data.type !="video" || data.type != "camera" || data.type != "file" || data.type != "location") {
+          this.checkForRules(data);
+        }
 
     }
     if(this.flag == 0) {
       this.act_data.push(data);
       this.checkError(data);
-      this.checkForRules(data);
+      if(data.type !="video" || data.type != "camera" || data.type != "file" || data.type != "location") {
+        this.checkForRules(data);
+      }
 
     }
 
@@ -260,15 +264,23 @@ export class FormBuilderComponent implements OnInit {
   }
 
   checkError(data) {
+    if(data.type == 'location' || data.type == 'break'){
+      data.value = "N.A";
+    }
 
     if(data.required && data.value == "") {
 
       for(let i = 0 ; i<= this.jsonArray.length; i++) {
 
-        if(this.jsonArray[i].cid === data.cid) {
+        if(this.jsonArray[i].cid === data.cid ) {
           this.jsonArray[i].errorMsg = "This feild can't be empty, please provide a valid input!";
-          this.formError = true;
-          // console.log(data.cid);
+
+          if(data.type !="video" || data.type != "camera" || data.type != "file" || data.type != "location") {
+            this.formError = true;
+          }
+
+          console.log(data.name);
+          console.log(data.cid);
           // console.log(this.formError);
           break;
         }
@@ -282,8 +294,10 @@ export class FormBuilderComponent implements OnInit {
 
               if(this.jsonArray[j].cid === data.cid) {
                 this.jsonArray[j].errorMsg = false;
-                this.formError = false;
-                // console.log(data.cid);
+                if(data.type !="video" || data.type != "camera" || data.type != "file" || data.type != "location") {
+                  this.formError = false;
+                  // console.log(data.name);
+                }
                 // console.log(this.formError);
                 break;
               }

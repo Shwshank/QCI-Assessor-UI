@@ -13,7 +13,8 @@ export class APIService {
   constructor( private http: Http, ) {}
 
   createAuthorizationHeader(headers: Headers) {
-    this.userID = "15146350976019055";
+    this.userID = "15150728168562338";
+
     headers.append('Authorization', this.userID);
   }
 
@@ -39,12 +40,6 @@ export class APIService {
     formData.append('resArray',formArray);
     return this.http.post(this.projectURL+'/submitAssesorResponse', formData,{headers: headers}).map(res=>res.json());
   }
-
-  // GetAllProjects(){
-  //   let headers = new Headers();
-  //   this.createAuthorizationHeader(headers);
-  //   return this.http.get(this.projectURL+'/getAllProjects',{headers: headers}).map(res=>res.json());
-  // }
 
   CheckImage(image: any){
     let headers = new Headers();

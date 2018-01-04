@@ -35,13 +35,24 @@ export class InputFileComponent implements OnInit {
     let fileName = file.name;
     this.name = file.name;
     this.formData = new FormData();
-    this.formData.append('file', file);
-    // console.log(this.formData);
-
-    this.json.value = this.formData;
+    let reader = new FileReader();
+    reader.onload = (event:any) => {
+      this.json.value = reader.result;
+    }
+    reader.readAsDataURL(file);
     this.json.fileName = this.name;
     this.responseData.emit(this.json);
-    // this.jsonData.emit({ 'id':this.id, 'name':this.name, 'value':this.formData, 'fileName':fileName});
+
+    // this.name = file.name;
+    // this.formData = new FormData();
+    // let reader = new FileReader();
+    // reader.onload = (event:any) => {
+    //   this.url = event.target.result;
+    //   this.json.value = reader.result;
+    // }
+    // reader.readAsDataURL(file);
+    // this.json.fileName = this.name;
+    // this.responseData.emit(this.json);
 
   }
 

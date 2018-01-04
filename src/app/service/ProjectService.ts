@@ -235,7 +235,7 @@ export class ProjectService {
     asrID = localStorage.getItem('asrID');
 
     asrName = "5vy5y5";
-    asrID = "15146350976019055";
+    asrID = "15150728168562338";
 
     let response : any = {};
 
@@ -245,14 +245,16 @@ export class ProjectService {
     response.ResExtra = {asrName: asrName, asrID: asrID, resDate: this.cdate()};
 
     console.log(response);
-    this.apiService.SubmitResponse(response).subscribe(res=>{
+    let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
       console.log(res);
+      sub1.unsubscribe();
       if(res){
 
       } else {}
     },err=> {
       console.log(err);
     });
+
   }
 
 }

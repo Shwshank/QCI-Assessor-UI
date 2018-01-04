@@ -22,6 +22,10 @@ export class InputRadioComponent implements OnInit {
 
   getVal(opt) {
     // console.log(opt);
+
+    this.json.value = "";
+    this.responseData.emit(this.json);
+
     this.json.value = opt;
     this.responseData.emit(this.json);
   }
