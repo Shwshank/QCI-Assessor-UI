@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Test APIService url') {
             steps {
-                sh('chmod +x -R DevOps/curltest.sh')
+                sh('chmod +x -R DevOps/curttest.sh')
                 sh('DevOps/curltest.sh')
                 echo 'Curl Tested'
             }
