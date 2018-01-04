@@ -12,5 +12,5 @@ mv /var/lib/jenkins/workspace/collect-assesor-frontend-pipeline/dist /var/lib/je
 # rm -rf $REPONAME
 # docker rm $DOCKERNAME
 # docker rmi $IMAGENAME
-docker build -t $IMAGENAME /var/lib/jenkins/workspace/collect-frontend/.
+docker build -t $IMAGENAME /var/lib/jenkins/workspace/collect-assesor-frontend/.
 docker run -dt --name $DOCKERNAME $IMAGENAME
