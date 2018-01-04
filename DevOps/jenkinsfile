@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo 'Curl testing...'
                 sh('chmod +x -R DevOps/curttest.sh')
-                sh('DevOps/curltest.sh')
+                sh('DevOps/curttest.sh')
                 echo 'Curl Tested'
             }
         }
