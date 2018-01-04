@@ -10,6 +10,7 @@ chgrp -R docker /var/lib/jenkins/workspace/collect-assesor-frontend-pipeline/dis
 mv /var/lib/jenkins/workspace/collect-assesor-frontend/dist/ /home/ubuntu/dist_backups/collect/dist_$TIMESTAMP
 mv /var/lib/jenkins/workspace/collect-assesor-frontend-pipeline/dist /var/lib/jenkins/workspace/collect-assesor-frontend/
 rm -rf $REPONAME
+docker stop $DOCKERNAME 
 docker rm $DOCKERNAME
 docker rmi $IMAGENAME
 docker build -t $IMAGENAME /var/lib/jenkins/workspace/collect-assesor-frontend/.
