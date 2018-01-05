@@ -31,6 +31,7 @@ export class ProjectService {
   emitFormElement = new EventEmitter<any>();
   emitFormCard = new EventEmitter<any>();
   emitFormArray = new EventEmitter<any>();
+  emitFormResponse = new EventEmitter<any>();
 
   demoform: any = [
     {"type":"camera","required":true, "helptext":"Some help text goes here1","name":"cam1","rangeFrom":"","rangeTo":"","value":"","cid":"141"},
@@ -247,12 +248,16 @@ export class ProjectService {
     console.log(response);
     let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
       console.log(res);
-      sub1.unsubscribe();
-      if(res){
-
-      } else {}
+      if(res.success){
+        this.emitFormResponse.emit({success:true, msg:"submitted"});
+        sub1.unsubscribe();
+      } else {
+        this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+      }
     },err=> {
       console.log(err);
+      this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+      sub1.unsubscribe();
     });
 
   }

@@ -13,7 +13,7 @@
     <span *ngIf='formError' class="mdl-chip" style="float : right; margin-top: -15px" >
         <span class="mdl-chip__text errorMsg"><b> # Invalid input/s detected!</b> </span>
     </span>
-    <span style="float : right; margin-top: -15px"  class="mdl-chip margin-top-prop">
+    <span *ngIf="displayRequired" style="float : right; margin-top: -15px"  class="mdl-chip margin-top-prop">
         <span class="mdl-chip__text requiredMsg"><b> * Required </b> </span>
     </span>
 
@@ -108,14 +108,41 @@
       </div>
     </div>
 
+    <div *ngIf="!formResponse" >
+      <!-- <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div> -->
+      <div class="load-bar">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+
+      <h4>  Just a moment ... </h4>
+
+    </div>
+
     <div *ngIf='jsonArray.length == 0' class="mdl-grid">
+
+
       <div class="mdl-cell mdl-cell--12-col finishMsg" >
+
+        <span *ngIf="send">
           <h3>Thanks! Form submitted... <b> <i class="material-icons">done_all</i> </b> </h3>
           <br>
           <br>
           <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" (click)="backToDashboard()">
             <b><i class="material-icons">arrow_back</i> dashboard</b>
           </button>
+        </span>
+
+        <span *ngIf="responseError">
+          <h3> Opps! something went wrong. Please try again </h3>
+          <br>
+          <br>
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" (click)="backToDashboard()">
+            <b><i class="material-icons">arrow_back</i> dashboard</b>
+          </button>
+        </span>
+
       </div>
     </div>
 

@@ -24,9 +24,24 @@ export class FormBuilderComponent implements OnInit {
   submitButton = 'Submit';
   templateCid: any;
   disableSubmitButton : any = true;
+  send : any;
+  responseError: any;
+  formResponse : any = false;
+  displayRequired : any = true;
 
   constructor(private projectService: ProjectService, private router: Router) {
+
+    this.projectService.emitFormResponse.subscribe((res)=>{
+      this.formResponse = true;
+      if(res.success) {
+        this.send = true;
+      } else {
+        this.responseError = true;
+      }
+    });
+
     this.projectService.emitFormElement.subscribe((res)=>{
+      this.formResponse = true;
       this.disableSubmitButton = false;
       this.rule = false;
       console.log(res);
@@ -320,31 +335,15 @@ export class FormBuilderComponent implements OnInit {
 
     if(!this.formError){
       componentHandler.upgradeDom();
-      this.disableSubmitButton = true;
-      setTimeout(()=>{
-        this.submitResponce();
-      }, 10);
-    }
-
-    //  if(this.rule) {
-    //   this.projectService.storeFormArray(this.completeArray);                                          // ---------- > 2nd Rule process
-    //   this.router.navigate(['/template'], { queryParams: { templateCid:  this.templateCid} });         // ---------- > 2nd Rule process
-    // }                                                                                                  // ---------- > 2nd Rule process
-    // if(!this.rule) {                                                                                   // ---------- > 2nd Rule Process
-    //   this.submitResponce();                                                                           // ---------- > 2nd Rule Process
-    // }                                                                                                  // ---------- > 2nd Rule Process
-
-  }
-
-  submitResponce() {
-    componentHandler.upgradeDom();
-    this.submitButton = "Just a moment";
-    setTimeout(()=>{
+      this.completeArray.Elements = this.jsonArray;
+      this.projectService.submitFormArray(this.completeArray);
+      this.displayRequired = false;
+      this.formResponse = false;
       this.jsonArray = [];
-      this.disableSubmitButton = false;
-    }, 2500);
-    this.completeArray.Elements = this.jsonArray;
-    this.projectService.submitFormArray(this.completeArray);
+      this.disableSubmitButton = true;
+      this.submitButton = "Just a moment";
+      componentHandler.upgradeDom();
+    }
   }
 
   ngAfterViewInit() {
