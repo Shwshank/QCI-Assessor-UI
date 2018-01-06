@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { routes } from './app.routes';
+import { AuthGuard } from './service/ZAuthGuard';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './home/dashboard/dashboard.component';
@@ -69,6 +70,7 @@ import { InputVideoComponent } from './home/forms/form-builder/input-video/input
     RouterModule.forRoot(routes, { useHash: true }),
   ],
   providers: [
+    AuthGuard,
     ProjectService,
     APIService,
   ],

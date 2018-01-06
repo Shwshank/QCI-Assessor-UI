@@ -6,16 +6,16 @@
 			</div>
 	  	<div class="mdl-card__supporting-text">
         <h5>Assessor module</h5>
-				<form action="#">
+				<div>
 					<div class="mdl-textfield mdl-js-textfield">
-						<input class="mdl-textfield__input" type="text" id="username" />
-						<label class="mdl-textfield__label" for="username">Username</label>
+						<input class="mdl-textfield__input" type="text" id="username" [(ngModel)]='phone'/>
+						<label class="mdl-textfield__label" for="username"  >Phone No.</label>
 					</div>
 					<div class="mdl-textfield mdl-js-textfield">
-						<input class="mdl-textfield__input" type="password" id="userpass" />
-						<label class="mdl-textfield__label" for="userpass">Password</label>
+						<input class="mdl-textfield__input" type="password" id="userpass" [(ngModel)]='password'/>
+						<label class="mdl-textfield__label" for="userpass"  >Password</label>
 					</div>
-				</form>
+				</div>
 			</div>
 			<div class="mdl-card__actions mdl-card--border">
 				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect  mdl-button--colored " (click)='login()'>Log in </button>

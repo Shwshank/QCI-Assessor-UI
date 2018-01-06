@@ -16,10 +16,10 @@
   <div class="mdl-layout__drawer mdl-shadow--4dp">
     <span class="mdl-layout-title">QCI - Collect</span>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/dash']"> <b> <i class="material-icons">store</i> Home </b> </a>
-      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/dash']"> <b> <i class="material-icons">perm_identity</i> Profile </b> </a>
-      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/dash']" (click)='sync()'> <b> <i class="material-icons">sync</i> Sync </b> </a>
-      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/login']"> <i class="material-icons">lock</i> <b> Logout </b> </a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/']"> <b> <i class="material-icons">store</i> Home </b> </a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/']"> <b> <i class="material-icons">perm_identity</i> Profile </b> </a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/']" (click)='sync()'> <b> <i class="material-icons">sync</i> Sync </b> </a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" (click)="logout()"> <i class="material-icons">lock</i> <b> Logout </b> </a>
     </nav>
   </div>
   <main class="mdl-layout__content commonProp " >

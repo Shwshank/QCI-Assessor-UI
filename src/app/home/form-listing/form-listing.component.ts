@@ -26,7 +26,7 @@ export class FormListingComponent implements OnInit {
 
   form(cid) {
     setTimeout(()=>{
-      this.router.navigate(['/dash/form'], { queryParams: {id: cid}})
+      this.router.navigate(['/form'], { queryParams: {id: cid}})
     }, 100);
   }
 

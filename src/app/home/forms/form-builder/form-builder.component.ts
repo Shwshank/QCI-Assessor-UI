@@ -352,7 +352,7 @@ export class FormBuilderComponent implements OnInit {
 
   backToDashboard() {
     setTimeout(()=>{
-      this.router.navigate(['/dash']);
+      this.router.navigate(['/']);
     }, 300);
   }
 

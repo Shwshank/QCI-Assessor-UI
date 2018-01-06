@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   constructor(private router: Router ) {
-    this.router.navigate(['/dash']);
+    this.router.navigate(['/']);
   }
 
   ngOnInit() {

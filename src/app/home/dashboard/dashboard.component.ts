@@ -25,4 +25,7 @@ export class DashboardComponent implements OnInit {
     this.projectService.syncAll();
   }
 
+  logout(){
+    this.projectService.logout();
+  }
 }

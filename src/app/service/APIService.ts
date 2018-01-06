@@ -5,18 +5,22 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Injectable()
 export class APIService {
 
-  projectURL: string = 'http://192.168.15.187:8000';
+  // projectURL: string = 'http://192.168.15.187:8000';
   // projectURL: string = 'http://192.168.15.221:8000';
-  // projectURL: string = 'http://qcitech.org:8083';
+  projectURL: string = 'http://qcitech.org:8083';
 
   userID: any;
 
   constructor( private http: Http, ) {}
 
   createAuthorizationHeader(headers: Headers) {
-    this.userID = "15150728168562338";
-
+    this.userID = localStorage.getItem('token');
+    console.log(this.userID);
     headers.append('Authorization', this.userID);
+  }
+
+  Login(data) {
+    return this.http.post(this.projectURL+'/assesorLogin', data).map(res=>res.json());
   }
 
   SyncAll() {
