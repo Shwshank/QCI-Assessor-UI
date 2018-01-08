@@ -2,13 +2,15 @@ import { EventEmitter, Injectable, } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { APIService } from './APIService';
+import { AngularIndexedDB } from 'angular2-indexeddb';
 
 @Injectable()
 export class ProjectService {
-
+  size: any;
   constructor(private apiService: APIService, private router: Router) {}
 
   cid() {
+
     let d = new Date();
     let cid = d.getTime() +""+ Math.floor(1000 + Math.random() * 8999);
     return cid;
@@ -33,6 +35,8 @@ export class ProjectService {
   emitFormArray = new EventEmitter<any>();
   emitFormResponse = new EventEmitter<any>();
   emitUserLogin = new EventEmitter<any>();
+
+  db = new AngularIndexedDB('responseDB', 1);
 
   formArray = [];
 
@@ -65,7 +69,6 @@ export class ProjectService {
     localStorage.removeItem('token');
     this.router.navigate(['./login']);
   }
-
 
   checkImage(image: any) {
     this.apiService.CheckImage(image).subscribe(res=>{
@@ -110,7 +113,37 @@ export class ProjectService {
     this.storeFormArrayTemp = formArray;
   }
 
-  syncAll() {}
+  syncAll() {
+    this.db.getAll('asrResponse').then((response) => {
+        console.log(response);
+        if(response.length) {
+            for(let i=0; i<response.length; i++) {
+              console.log(response[i]);
+
+              let sub1 = this.apiService.SubmitResponse(response[i].response).subscribe(res=>{
+                console.log(res);
+                if(res.success){
+                  this.emitFormResponse.emit({success:true, msg:"submitted"});
+                  this.db.delete('asrResponse', response[i].id).then(() => {
+                    console.log('response deleted at position ', +i, response[i].id);
+                  }, (error) => {
+                      console.log(error);
+                  });
+                  sub1.unsubscribe();
+                } else {
+                  this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+                }
+              },err=> {
+                console.log(err);
+                this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+                sub1.unsubscribe();
+              });
+            }
+        }
+    }, (error) => {
+        console.log(error);
+    });
+  }
 
   getFormArray() {
     this.formArray = [];
@@ -161,16 +194,6 @@ export class ProjectService {
   }
 
   submitResponse(formArray: any) {
-    // {
-    //   ResCid:'1',
-    //   ResDetails:{ name: 'Form1', rule: 'None', project: 'Project Name Here 1', projectcdi:'p121', status:'Offline', cid:'a1221' },
-    //   ResElements:[
-    //     {type: "text", required: false, name: "Name", value:"sammy", cid:"a1", hepltext: "", alias:" Username "},
-    //     {type: "password", required: false, name: "SecretKey", value:"sammy_password", cid:"a2", hepltext: "", alias:" Password "}
-    //   ],
-    //   ResExtra:{}
-    // }
-
     console.log(formArray);
 
     let asrName: any;
@@ -190,6 +213,9 @@ export class ProjectService {
     response.ResExtra = {asrName: asrName, asrID: asrID, resDate: this.cdate()};
 
     console.log(response);
+
+    // this.addResponseToIndexDB(response);         // save data in IndexedDB
+
     let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
       console.log(res);
       if(res.success){
@@ -203,7 +229,26 @@ export class ProjectService {
       this.emitFormResponse.emit({success:false, msg:"not-submitted"});
       sub1.unsubscribe();
     });
+  }
 
+  initializeIndexDB() {
+    this.db.openDatabase(1, (evt) => {
+      let objectStore = evt.currentTarget.result.createObjectStore(
+          'asrResponse', { keyPath: "id", autoIncrement: true });
+      objectStore.createIndex("response", "response", { unique: false });
+  });
+  }
+
+  addResponseToIndexDB(response) {
+    this.db.add('asrResponse', { response: response }).then(() => {
+        console.log("Response added in Indexed DB!");
+
+        console.log(Object.keys(response).length);
+
+        this.emitFormResponse.emit({success:true, msg:"Response stored in Indexed DB submitted"});
+    }, (error) => {
+        console.log(error);
+    });
   }
 
 }

@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
   constructor(private route: Router, private projectService: ProjectService) { }
 
   ngOnInit() {
-    // this.projectService.getFormArray();
+    this.projectService.initializeIndexDB();
   }
   ngAfterViewInit() {
     componentHandler.upgradeDom();
