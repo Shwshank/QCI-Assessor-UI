@@ -214,40 +214,81 @@ export class ProjectService {
 
     console.log(response);
 
-    // this.addResponseToIndexDB(response);         // save data in IndexedDB
+    this.addResponseToIndexDB(response);                                      // save data in IndexedDB
 
-    let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
-      console.log(res);
-      if(res.success){
-        this.emitFormResponse.emit({success:true, msg:"submitted"});
-        sub1.unsubscribe();
-      } else {
-        this.emitFormResponse.emit({success:false, msg:"not-submitted"});
-      }
-    },err=> {
-      console.log(err);
-      this.emitFormResponse.emit({success:false, msg:"not-submitted"});
-      sub1.unsubscribe();
-    });
+    // let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
+    //   console.log(res);
+    //   if(res.success){
+    //     this.emitFormResponse.emit({success:true, msg:"submitted"});
+    //     sub1.unsubscribe();
+    //   } else {
+    //     this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+    //   }
+    // },err=> {
+    //   console.log(err);
+    //   this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+    //   sub1.unsubscribe();
+    // });
   }
 
   initializeIndexDB() {
     this.db.openDatabase(1, (evt) => {
       let objectStore = evt.currentTarget.result.createObjectStore(
           'asrResponse', { keyPath: "id", autoIncrement: true });
-      objectStore.createIndex("response", "response", { unique: false });
-  });
+        objectStore.createIndex("response", "response", { unique: false });
+    });
   }
 
   addResponseToIndexDB(response) {
+
+    // get size of response
+    let tempStorage = JSON.stringify(response).length;
+    tempStorage += (1024 * 1024 * 200);
+    console.log(tempStorage);
+
+    console.log(response);
+    // request for space as per size of response
+    (<any>navigator).webkitPersistentStorage.requestQuota (
+        tempStorage, function(grantedBytes) {
+          console.log(response);
+          console.log(grantedBytes);
+          (<any>window).webkitRequestFileSystem((<any>window).PERSISTENT, grantedBytes, res=>{
+
+            // initialize IndexDB
+            let db = new AngularIndexedDB('responseDB', 1);
+
+            // open IndexDB
+            db.openDatabase(1, (evt) => {
+                let objectStore = evt.currentTarget.result.createObjectStore(
+                    'asrResponse', { keyPath: "id", autoIncrement: true });
+                objectStore.createIndex("response", "response", { unique: false });
+
+            }).then(()=>{
+
+              // add response in Indexed
+              db.add('asrResponse', { response: response }).then(() => {
+                alert('Form stored in offline storage');
+                window.location.reload();
+                }, (error) => {
+                  alert('Some error occurs while storing the form. Please try again');
+                  window.location.reload();
+              });
+            });
+          }, err =>{
+            alert("Insufficient storage! Please try again after having free space." );
+          });
+        }, function(e) { console.log('Error', e); }
+    );
+  }
+
+  saveIntoIndexed(response) {
+    // add response in IndexedDB
     this.db.add('asrResponse', { response: response }).then(() => {
-        console.log("Response added in Indexed DB!");
+      console.log("Response added in Indexed DB!");
 
-        console.log(Object.keys(response).length);
-
-        this.emitFormResponse.emit({success:true, msg:"Response stored in Indexed DB submitted"});
+      this.emitFormResponse.emit({success:true, msg:"Response stored in Indexed DB submitted"});
     }, (error) => {
-        console.log(error);
+      console.log(error);
     });
   }
 

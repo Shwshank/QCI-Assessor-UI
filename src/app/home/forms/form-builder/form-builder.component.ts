@@ -33,6 +33,7 @@ export class FormBuilderComponent implements OnInit {
 
     this.projectService.emitFormResponse.subscribe((res)=>{
       this.formResponse = true;
+      this.displayRequired = false;
       if(res.success) {
         this.send = true;
       } else {
@@ -337,7 +338,7 @@ export class FormBuilderComponent implements OnInit {
       componentHandler.upgradeDom();
       this.completeArray.Elements = this.jsonArray;
       this.projectService.submitFormArray(this.completeArray);
-      this.displayRequired = false;
+
       this.formResponse = false;
       this.jsonArray = [];
       this.disableSubmitButton = true;
@@ -352,7 +353,7 @@ export class FormBuilderComponent implements OnInit {
 
   backToDashboard() {
     setTimeout(()=>{
-      this.router.navigate(['/']);
+      this.router.navigate(['/dash']);
     }, 300);
   }
 
