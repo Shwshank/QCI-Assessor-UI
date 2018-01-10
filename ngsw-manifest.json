@@ -1,0 +1,42 @@
+{
+  "external":{
+    "urls":[
+
+      {"url":"https://fonts.googleapis.com/icon?family=Material+Icons"}
+
+    ]
+  },
+  "dynamic":{
+    "group":[
+      {
+          "name": "APIs",
+          "urls":{
+            "http://qcitech.org": {
+                "match": "prefix"
+            }
+          },
+          "cache":{
+            "optimizeFor": "freshness",
+            "maxAgeMs":60000
+          }
+        }
+      ]
+  },
+  "routing": {
+    "index": "/index.html",
+    "routes" :{
+      "/": {
+        "prefix": false
+      },
+      "/formListing": {
+        "prefix": true
+      },
+      "/form": {
+        "prefix": true
+      },
+      "/login": {
+        "prefix": true
+      }
+    }
+  }
+}

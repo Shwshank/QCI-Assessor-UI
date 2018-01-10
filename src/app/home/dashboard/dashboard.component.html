@@ -18,7 +18,16 @@
     <nav class="mdl-navigation">
       <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/']"> <b> <i class="material-icons">store</i> Home </b> </a>
       <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/']"> <b> <i class="material-icons">perm_identity</i> Profile </b> </a>
-      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/']" (click)='sync()'> <b> <i class="material-icons">sync</i> Sync </b> </a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/']" (click)='sync()' style="padding:16px;" >
+
+        <b> <i class="material-icons">sync</i> {{syncStatus}} &nbsp; <span *ngIf="num > 0" style="background-color:#5f5f5f; " > &nbsp; {{num}} &nbsp;  </span> </b>
+        <div *ngIf="sending"  class="load-bar">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+
+      </a>
       <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" (click)="logout()"> <i class="material-icons">lock</i> <b> Logout </b> </a>
     </nav>
   </div>

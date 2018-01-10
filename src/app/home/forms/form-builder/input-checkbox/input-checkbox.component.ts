@@ -40,6 +40,9 @@ export class InputCheckboxComponent implements OnInit {
   }
 
   getVal(flag, opt) {
+    this.json.value = '';
+    this.responseData.emit(this.json);
+
     let temp = 0;
     let pos = 0;
     if(flag) {

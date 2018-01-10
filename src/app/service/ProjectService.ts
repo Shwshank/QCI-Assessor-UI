@@ -10,7 +10,6 @@ export class ProjectService {
   constructor(private apiService: APIService, private router: Router) {}
 
   cid() {
-
     let d = new Date();
     let cid = d.getTime() +""+ Math.floor(1000 + Math.random() * 8999);
     return cid;
@@ -34,7 +33,10 @@ export class ProjectService {
   emitFormCard = new EventEmitter<any>();
   emitFormArray = new EventEmitter<any>();
   emitFormResponse = new EventEmitter<any>();
+  emitSyncResponse = new EventEmitter<any>();
   emitUserLogin = new EventEmitter<any>();
+  emitOfflineResponse = new EventEmitter<any>();
+  emitIndexedDBInitializedRes = new EventEmitter<any>();
 
   db = new AngularIndexedDB('responseDB', 1);
 
@@ -115,27 +117,29 @@ export class ProjectService {
 
   syncAll() {
     this.db.getAll('asrResponse').then((response) => {
-        console.log(response);
+        // console.log(response);
         if(response.length) {
             for(let i=0; i<response.length; i++) {
-              console.log(response[i]);
+              // console.log(response[i]);
 
               let sub1 = this.apiService.SubmitResponse(response[i].response).subscribe(res=>{
-                console.log(res);
+                // console.log(res);
                 if(res.success){
-                  this.emitFormResponse.emit({success:true, msg:"submitted"});
+                  this.emitSyncResponse.emit({success:true, msg:"synced!"});
                   this.db.delete('asrResponse', response[i].id).then(() => {
-                    console.log('response deleted at position ', +i, response[i].id);
+                    // console.log('response deleted at position ', +i, response[i].id);
                   }, (error) => {
                       console.log(error);
+                      alert("Some error detected! Please try again");
+                      window.location.reload();
                   });
                   sub1.unsubscribe();
                 } else {
-                  this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+                  this.emitSyncResponse.emit({success:false, msg:"not-synced!"});
                 }
               },err=> {
                 console.log(err);
-                this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+                this.emitSyncResponse.emit({success:false, msg:"not-synced!"});
                 sub1.unsubscribe();
               });
             }
@@ -214,28 +218,53 @@ export class ProjectService {
 
     console.log(response);
 
-    this.addResponseToIndexDB(response);                                      // save data in IndexedDB
+    if(navigator.onLine) {
+      this.syncOnline(response);                      // Sysnc Online
+    } else {
+      this.addResponseToIndexDB(response);            // save data in IndexedDB
+    }
+  }
 
-    // let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
-    //   console.log(res);
-    //   if(res.success){
-    //     this.emitFormResponse.emit({success:true, msg:"submitted"});
-    //     sub1.unsubscribe();
-    //   } else {
-    //     this.emitFormResponse.emit({success:false, msg:"not-submitted"});
-    //   }
-    // },err=> {
-    //   console.log(err);
-    //   this.emitFormResponse.emit({success:false, msg:"not-submitted"});
-    //   sub1.unsubscribe();
-    // });
+  syncOnline(response) {
+    let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
+      console.log(res);
+      if(res.success){
+        this.emitFormResponse.emit({success:true, msg:"submitted"});
+        sub1.unsubscribe();
+      } else {
+        this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+      }
+    },err=> {
+      console.log(err);
+      this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+      sub1.unsubscribe();
+    });
   }
 
   initializeIndexDB() {
+
     this.db.openDatabase(1, (evt) => {
-      let objectStore = evt.currentTarget.result.createObjectStore(
-          'asrResponse', { keyPath: "id", autoIncrement: true });
+        let objectStore = evt.currentTarget.result.createObjectStore(
+            'asrResponse', { keyPath: "id", autoIncrement: true });
         objectStore.createIndex("response", "response", { unique: false });
+    });
+
+    let temp = 0;
+    // initialize IndexDB
+    let db = new AngularIndexedDB('responseDB', 1);
+    // open IndexDB
+    db.openDatabase(1, (evt) => {
+        let objectStore = evt.currentTarget.result.createObjectStore(
+            'asrResponse', { keyPath: "id", autoIncrement: true });
+        objectStore.createIndex("response", "response", { unique: false });
+    }).then(()=>{
+
+      db.getAll('asrResponse').then((response) => {
+          temp = response.length;
+          this.emitOfflineResponse.emit(temp);
+      }, (error) => {
+          console.log(error);
+      });
     });
   }
 
@@ -291,5 +320,6 @@ export class ProjectService {
       console.log(error);
     });
   }
+
 
 }
