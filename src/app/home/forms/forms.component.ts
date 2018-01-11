@@ -12,6 +12,7 @@ export class FormsComponent implements OnInit {
 
   fcid : any;
   templateCid: any;
+  flaggedResponseid: any;
 
   constructor(private projectService: ProjectService, private route: Router, private activatedRoute: ActivatedRoute) {
     this.projectService.emitFormElement.subscribe((res)=>{
@@ -24,12 +25,16 @@ export class FormsComponent implements OnInit {
     let sub = this.activatedRoute.queryParams.subscribe(params=>{
         this.fcid = params.id;
         this.templateCid = params.templateCid;
+        this.flaggedResponseid = params.flagResId;
 
         if(this.fcid != undefined) {
           this.projectService.getFormByCid(this.fcid);
         }
         if(this.templateCid != undefined) {
           this.projectService.getTemplateByCid(this.templateCid);
+        }
+        if(this.flaggedResponseid != undefined) {
+          this.projectService.getFlaggedResponseid(this.flaggedResponseid);
         }
     });
   }

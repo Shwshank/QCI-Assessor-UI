@@ -8,11 +8,11 @@
   <div class="mdl-grid">
 
     <div *ngFor='let card of cardArray' class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-phone infoBox ">
-      <div class="demo-card-square mdl-card mdl-shadow--2dp  mdl-js-button mdl-js-ripple-effect" (click)='form(card.Details.cid)'>
-        <div class="mdl-card__title mdl-card--expand">
+      <div class="demo-card-square mdl-card mdl-shadow--2dp  mdl-js-button mdl-js-ripple-effect" >
+        <div class="mdl-card__title mdl-card--expand" (click)='form(card.Details.cid)'>
           <h2 class="mdl-card__title-text">{{card.Details.project}}</h2>
         </div>
-        <div class="mdl-card__supporting-text">
+        <div class="mdl-card__supporting-text" (click)='form(card.Details.cid)'>
           {{card.Details.name}}
         </div>
         <div class="mdl-card__actions mdl-card--border">
@@ -27,17 +27,13 @@
               <span class="mdl-chip__text">Offline</span>
           </span>
 
-          <span class="mdl-chip mdl-chip--contact">
+          <!-- <span class="mdl-chip mdl-chip--contact" (click)="flaggedForm()" >
               <span class="mdl-chip__contact mdl-color--primary mdl-color-text--white">0</span>
-              <span class="mdl-chip__text">Draft</span>
-          </span>
+              <span class="mdl-chip__text">Flagged</span>
+          </span> -->
 
         </div>
       </div>
     </div>
-
   </div>
-
-
-
 </div>

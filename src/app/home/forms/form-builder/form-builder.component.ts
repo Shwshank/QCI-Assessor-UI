@@ -48,9 +48,15 @@ export class FormBuilderComponent implements OnInit {
       console.log(res);
       this.completeArray = res;
       this.jsonArray = res.Elements;
-      for(let cr of this.jsonArray) {
-        this.checkForRules(cr);
+
+      // SKIP IS FORM IS FLAGGED
+      if(!res.Details.rid) {
+        console.log("res");
+        for(let cr of this.jsonArray) {
+          this.checkForRules(cr);
+        }
       }
+
       this.formDetails = res.Details;
       this.rules = res.Rules;
       this.display = true;

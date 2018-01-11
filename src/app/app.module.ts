@@ -34,6 +34,7 @@ import { InputTimeComponent } from './home/forms/form-builder/input-time/input-t
 import { TemplatesComponent } from './home/templates/templates.component';
 import { InputCameraComponent } from './home/forms/form-builder/input-camera/input-camera.component';
 import { InputVideoComponent } from './home/forms/form-builder/input-video/input-video.component';
+import { FlaggedFormListingComponent } from './home/flagged-form-listing/flagged-form-listing.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { InputVideoComponent } from './home/forms/form-builder/input-video/input
     InputTimeComponent,
     TemplatesComponent,
     InputCameraComponent,
-    InputVideoComponent
+    InputVideoComponent,
+    FlaggedFormListingComponent
   ],
   imports: [
     HttpModule,

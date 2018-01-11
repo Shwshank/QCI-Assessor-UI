@@ -37,10 +37,13 @@ export class ProjectService {
   emitUserLogin = new EventEmitter<any>();
   emitOfflineResponse = new EventEmitter<any>();
   emitIndexedDBInitializedRes = new EventEmitter<any>();
+  emitFlaggedFormArray = new EventEmitter<any>();
 
   db = new AngularIndexedDB('responseDB', 1);
 
   formArray = [];
+
+  flaggedFormArray = [];
 
   formCard= [];
 
@@ -86,6 +89,16 @@ export class ProjectService {
 
     for(let i of this.formArray) {
       if(i.Details.cid == cid) {
+        this.emitFormElement.emit(i);
+        break;
+      }
+    }
+  }
+
+  getFlaggedResponseid(rid) {
+
+    for(let i of this.flaggedFormArray) {
+      if(i.Details.rid == rid) {
         this.emitFormElement.emit(i);
         break;
       }
@@ -168,6 +181,25 @@ export class ProjectService {
         }
 
         this.emitFormArray.emit(this.formArray);
+      } else {}
+    },err=> {
+      console.log(err);
+      // this.emitFormArray.emit(this.formArray);
+    });
+  }
+
+  getFlaggedResponses() {
+    this.flaggedFormArray = [];
+    this.apiService.GetFlaggedResponses().subscribe((res)=>{
+      console.log(res);
+      if(res){
+
+        if(res.formArray.length) {
+          for(let i = 0; i< res.formArray.length; i++) {
+            this.flaggedFormArray.push(res.formArray[i].form_json);
+          }
+        }
+        this.emitFlaggedFormArray.emit(this.flaggedFormArray);
       } else {}
     },err=> {
       console.log(err);

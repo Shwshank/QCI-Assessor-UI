@@ -33,6 +33,10 @@ export class FormListingComponent implements OnInit {
     componentHandler.upgradeDom();
   }
 
+  flaggedForm() {
+    alert("yo");
+  }
+
   ngOnDestroy() {
     this.sub1.unsubscribe();
   }

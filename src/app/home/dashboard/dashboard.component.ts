@@ -14,14 +14,22 @@ export class DashboardComponent implements OnInit {
   sending : any = false;
   syncStatus: any = "Sync";
   num : any = 0;
+  flag: any = 0;
+  sub1: any;
+  sub2: any;
+  sub3: any;
 
   constructor(private route: Router, private projectService: ProjectService) {
 
-    this.projectService.emitOfflineResponse.subscribe(res=>{
+    this.sub1 = this.projectService.emitOfflineResponse.subscribe(res=>{
       this.num = res;
     });
 
-    this.projectService.emitSyncResponse.subscribe(res=>{
+    this.sub2 = this.projectService.emitFlaggedFormArray.subscribe(res=>{
+      this.flag = res.length;
+    });
+
+    this.sub3 = this.projectService.emitSyncResponse.subscribe(res=>{
       if(res.success) {
         this.num--;
         if(this.num == 0) {
@@ -35,10 +43,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.projectService.initializeIndexDB();
-  }
-
-  ngAfterViewInit() {
-    componentHandler.upgradeDom();
+    this.projectService.getFlaggedResponses();
   }
 
   sync() {
@@ -57,4 +62,15 @@ export class DashboardComponent implements OnInit {
   logout(){
     this.projectService.logout();
   }
+
+  ngAfterViewInit() {
+    componentHandler.upgradeDom();
+  }
+
+  ngOnDestroy() {
+    this.sub1.unsubscribe();
+    this.sub2.unsubscribe();
+    this.sub3.unsubscribe();
+  }
+
 }

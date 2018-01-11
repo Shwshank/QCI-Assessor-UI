@@ -15,7 +15,9 @@ export class InputTextComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.value = this.json.value;
+  }
 
   funID(id) {
     return (parseInt(id)+1);

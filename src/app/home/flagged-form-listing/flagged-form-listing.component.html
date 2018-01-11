@@ -1,0 +1,34 @@
+<!-- Three Line List with secondary info and action -->
+<style>
+.demo-list-three {
+  width: 90%
+}
+</style>
+
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet mdl-cell--12-col-phone infoGraph">Graph1</div>
+  <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet mdl-cell--12-col-phone infoGraph">Graph2</div>
+</div>
+
+<ul class="demo-list-three mdl-list" style="margin: auto">
+
+<span  *ngFor="let form  of flaggedArray" >
+  <hr>
+
+  <li class="mdl-list__item mdl-list__item--three-line" (click)="flaggedForm(form.Details.rid)" >
+    <span class="mdl-list__item-primary-content">
+      <i class="material-icons mdl-list__item-avatar">description</i>
+      <span>{{form.Details.project}}</span>
+      <span class="mdl-list__item-text-body">
+        {{form.Details.name}}
+      </span>
+    </span>
+    <span class="mdl-list__item-secondary-content">
+      <span class="mdl-list__item-secondary-action" ><i class="material-icons">create</i></span>
+    </span>
+  </li>
+
+</span>
+<hr>
+
+</ul>
