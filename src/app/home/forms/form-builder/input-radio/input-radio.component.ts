@@ -10,10 +10,15 @@ export class InputRadioComponent implements OnInit {
   @Input() json:any;
   @Input() id: any;
   @Output() responseData = new EventEmitter<any>();
+  disabled : any = false;
 
   constructor() { }
 
   ngOnInit() {
+
+    if(localStorage.getItem('rules') && !this.json.flagged){
+        this.disabled = true;
+    }
   }
 
   funID(id) {

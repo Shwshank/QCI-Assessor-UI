@@ -14,20 +14,18 @@
 
 <span  *ngFor="let form  of flaggedArray" >
   <hr>
-
   <li class="mdl-list__item mdl-list__item--three-line" (click)="flaggedForm(form.Details.rid)" >
     <span class="mdl-list__item-primary-content">
       <i class="material-icons mdl-list__item-avatar">description</i>
       <span>{{form.Details.project}}</span>
       <span class="mdl-list__item-text-body">
-        {{form.Details.name}}
+        {{form.Details.name}} &nbsp;<br> Flagged: {{form.Details.flagged_on}}
       </span>
     </span>
     <span class="mdl-list__item-secondary-content">
-      <span class="mdl-list__item-secondary-action" ><i class="material-icons">create</i></span>
+      <span class="mdl-list__item-secondary-action"><i class="material-icons">create</i></span>
     </span>
   </li>
-
 </span>
 <hr>
 

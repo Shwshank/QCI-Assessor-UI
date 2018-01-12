@@ -19,10 +19,17 @@ export class InputCameraComponent implements OnInit {
   name: any;
   url: any = "";
   geolocationPosition: any;
+  disabled: any = false;
+  position: any;
 
   constructor(private projectService: ProjectService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    if(localStorage.getItem('rules') && !this.json.flagged){
+      this.disabled = true;
+    }
+  }
 
   funID(id) {
     return (parseInt(id)+1);
@@ -44,6 +51,21 @@ export class InputCameraComponent implements OnInit {
       this.url = event.target.result;
       this.json.value = reader.result;
     }
+
+    this.position = {coords : {
+      accuracy: 100,
+      altitude: null,
+      altitudeAccuracy: null,
+      heading: null,
+      latitude: 28.620370899999998,
+      longitude: 77.2462516,
+      speed: null
+    },timestamp: 1515754375594}
+
+    // this.json.location = navigator.geolocation.getCurrentPosition(showPosition);
+
+    this.json.location = this.position;
+
     this.responseData.emit(this.json);
 
   }

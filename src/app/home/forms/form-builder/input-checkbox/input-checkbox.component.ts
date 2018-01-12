@@ -11,6 +11,7 @@ export class InputCheckboxComponent implements OnInit {
   @Input() id:any;
   @Output() responseData = new EventEmitter<any>();
   resultArray: any = [];
+  disabled : any = false;
 
   constructor() { }
 
@@ -33,6 +34,10 @@ export class InputCheckboxComponent implements OnInit {
   ngOnInit() {
     this.json.value = this.json.values;
     this.resultArray= this.json.values;
+    
+    if(localStorage.getItem('rules') && !this.json.flagged){
+      this.disabled = true;
+    }
   }
 
   funID(id) {

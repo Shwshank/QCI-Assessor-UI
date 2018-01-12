@@ -16,10 +16,15 @@ export class InputFileComponent implements OnInit {
   files: any;
   selectedValue: any;
   name: any;
+  disabled : any = false;
 
   constructor() { }
 
   ngOnInit() {
+    
+    if(localStorage.getItem('rules') && !this.json.flagged){
+      this.disabled = true;
+    }
   }
 
   funID(id) {

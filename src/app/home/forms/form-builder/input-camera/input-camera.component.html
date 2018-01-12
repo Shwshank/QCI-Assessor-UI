@@ -45,7 +45,7 @@
 
         <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
           <i class="material-icons">photo_camera</i>
-          <input id="file_input_file101"  type="file" class="none" accept="image/*" capture="camera"  (change)="getVal($event);"/>
+          <input id="file_input_file101"  type="file" class="none" accept="image/*" capture="camera"  (change)="getVal($event);" [disabled]='disabled'/>
           <!-- <input (change)="send($event);" type="file" accept="image/*" capture="camera" /> -->
 
         </label>
@@ -75,6 +75,11 @@
   <span *ngIf='json.errorMsg' class="mdl-chip  margin-top-prop">
       <span class="mdl-chip__text errorMsg"><b> # {{json.errorMsg}} </b> </span>
   </span>
+
+  <span *ngIf='json.flagged' class="mdl-chip  margin-top-prop">
+      <span class="mdl-chip__text flagged"><b>  <i class="material-icons">assistant_photo</i> {{json.flagMsg}} </b> </span>
+  </span>
+
   <label class="mdl-tooltip mdl-tooltip--large" for="Tsample{{funID(id)}}">{{json.helptext}}</label>
 
 </div>

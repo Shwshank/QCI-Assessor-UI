@@ -11,6 +11,7 @@ export class InputSliderComponent implements OnInit {
   @Input() json:any;
   @Input() id: any;
   @Output() responseData = new EventEmitter<any>();
+  disabled : any = false;
 
   val:any;
   @ViewChild('val') output;
@@ -19,6 +20,9 @@ export class InputSliderComponent implements OnInit {
 
   ngOnInit() {
     this.val = this.json.value;
+    if(localStorage.getItem('rules') && !this.json.flagged){
+      this.disabled = true;
+    }
   }
 
   funID(id) {

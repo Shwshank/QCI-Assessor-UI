@@ -18,10 +18,15 @@ export class InputVideoComponent implements OnInit {
   name: any;
   url: any = "";
   geolocationPosition: any;
+  disabled : any = false;
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if(localStorage.getItem('rules') && !this.json.flagged){
+      this.disabled = true;
+    }
+  }
 
   funID(id) {
     return (parseInt(id)+1);

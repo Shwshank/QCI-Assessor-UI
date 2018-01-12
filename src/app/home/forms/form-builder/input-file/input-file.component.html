@@ -37,7 +37,7 @@
   <div class="file_input">
     <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
       <i class="material-icons">attach_file</i>
-      <input id="file_input_file" class="none" type="file" (change)="getVal($event);" [accept]=json.fileTypes/>
+      <input id="file_input_file" class="none" type="file" (change)="getVal($event);" [accept]=json.fileTypes  [disabled]='disabled' />
 
     </label>
     {{name}}
@@ -56,6 +56,11 @@
   <span *ngIf='json.errorMsg' class="mdl-chip  margin-top-prop">
       <span class="mdl-chip__text errorMsg"><b> # {{json.errorMsg}} </b> </span>
   </span>
+
+  <span *ngIf='json.flagged' class="mdl-chip  margin-top-prop">
+      <span class="mdl-chip__text flagged"><b>  <i class="material-icons">assistant_photo</i> {{json.flagMsg}} </b> </span>
+  </span>
+
   <label class="mdl-tooltip mdl-tooltip--large" for="Tsample{{funID(id)}}">{{json.helptext}}</label>
 
 </div>

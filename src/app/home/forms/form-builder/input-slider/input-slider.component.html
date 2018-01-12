@@ -15,9 +15,9 @@
 
       {{json.rangeFrom}} to {{json.rangeTo}}
       <input id = "slider2" class = "mdl-slider mdl-js-slider" type = "range"
-              min = {{json.rangeFrom}} max = {{json.rangeTo}} id="a" (change)='getVal()'>
+              min = {{json.rangeFrom}} max = {{json.rangeTo}} id="a" (change)='getVal()'  [disabled]='disabled' >
 
-              
+
 
       &nbsp; &nbsp; value =  <output #val name="x" for="a " > {{json.value}} </output>
 
@@ -25,5 +25,9 @@
     <span *ngIf='json.errorMsg' class="mdl-chip  margin-top-prop">
         <span class="mdl-chip__text errorMsg"><b>  # {{json.errorMsg}} </b> </span>
     </span>
+    <span *ngIf='json.flagged' class="mdl-chip  margin-top-prop">
+        <span class="mdl-chip__text flagged"><b>  <i class="material-icons">assistant_photo</i> {{json.flagMsg}} </b> </span>
+    </span>
+
   </div>
 </div>

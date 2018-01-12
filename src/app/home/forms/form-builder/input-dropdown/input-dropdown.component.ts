@@ -12,11 +12,16 @@ export class InputDropdownComponent implements OnInit {
   @Output() responseData = new EventEmitter<any>();
 
   selectedValue: any;
+  disabled : any = false;
 
   constructor() { }
 
   ngOnInit() {
     this.selectedValue = this.json.value;
+    
+    if(localStorage.getItem('rules') && !this.json.flagged){
+      this.disabled = true;
+    }
   }
 
   funID(id) {

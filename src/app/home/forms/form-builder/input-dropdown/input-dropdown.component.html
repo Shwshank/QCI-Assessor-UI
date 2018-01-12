@@ -6,7 +6,7 @@
 
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <label class="mdl-textfield__label" ></label>
-      <select [(ngModel)]="selectedValue" class="mdl-textfield__input" id="octane" name="octane" (change)='getVal()'>
+      <select [(ngModel)]="selectedValue" class="mdl-textfield__input" id="octane" name="octane" (change)='getVal()'  [disabled]='disabled' >
 
         <option *ngFor='let opt of json.option; let i=i' [ngValue]=opt  [selected]="opt == json.value">{{opt}}</option>
       </select>
@@ -14,9 +14,14 @@
 
     </div>
     <span  *ngIf="json.helptext"  class="mdl-badge" data-badge="i" id="Tsample{{funID(id)}}"  ></span>
+
     <span *ngIf='json.errorMsg' class="mdl-chip  margin-top-prop">
         <span class="mdl-chip__text errorMsg"><b>  # {{json.errorMsg}} </b> </span>
     </span>
+    <span *ngIf='json.flagged' class="mdl-chip  margin-top-prop">
+        <span class="mdl-chip__text flagged"><b>  <i class="material-icons">assistant_photo</i> {{json.flagMsg}} </b> </span>
+    </span>
+
     <label class="mdl-tooltip mdl-tooltip--large" for="Tsample{{funID(id)}}">{{json.helptext}}</label>
 
   </div>

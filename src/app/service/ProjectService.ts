@@ -50,6 +50,7 @@ export class ProjectService {
   templateArray = [];
 
   storeFormArrayTemp :any = [];
+  
   submittedForm: any[];
 
   login(data: any) {
@@ -96,10 +97,18 @@ export class ProjectService {
   }
 
   getFlaggedResponseid(rid) {
-
     for(let i of this.flaggedFormArray) {
       if(i.Details.rid == rid) {
         this.emitFormElement.emit(i);
+        break;
+      }
+    }
+  }
+
+  popFromFlaggedArray(rid) {
+    for(let i= 0; i< this.flaggedFormArray.length; i++) {
+      if(this.flaggedFormArray[i].Details.rid == rid) {
+        this.flaggedFormArray.splice(i,1);
         break;
       }
     }
@@ -352,6 +361,5 @@ export class ProjectService {
       console.log(error);
     });
   }
-
 
 }

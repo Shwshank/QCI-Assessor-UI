@@ -10,6 +10,7 @@ export class InputTextComponent implements OnInit {
   @Input() json: any;
   @Input() id: number;
   @Output() responseData = new EventEmitter<any>();
+  disabled : any = false;
 
   value: any;
 
@@ -17,6 +18,9 @@ export class InputTextComponent implements OnInit {
 
   ngOnInit() {
     this.value = this.json.value;
+    if(localStorage.getItem('rules') && !this.json.flagged){
+      this.disabled = true;
+    }
   }
 
   funID(id) {

@@ -1,12 +1,14 @@
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--12-col">
-    {{funID(id)}} . {{json.name}} <span *ngIf='json.required' class="requiredMsg"> <b> * </b> </span>
+    {{funID(id)}} .       Location: {{lat}}, {{lng}} <br>
+                          Accuracy: {{accuracy}} meters
+           <span *ngIf='json.required' class="requiredMsg"> <b> * </b> </span>
+    <br><br>
 
-    <br>
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="email" id="sample13" (change)="getVal()" [(ngModel)]='value'  [disabled]='disabled' >
-      <label class="mdl-textfield__label" ></label>
-    </div>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" (click)="refreshLocation()"  [disabled]='disabled' >
+      <b>Refresh Location</b>
+    </button>
+
 
     <span *ngIf="json.helptext" class="mdl-badge" data-badge="i" id="Tsample{{funID(id)}}"  ></span>
 

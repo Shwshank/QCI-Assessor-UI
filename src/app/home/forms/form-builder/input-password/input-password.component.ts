@@ -10,12 +10,17 @@ export class InputPasswordComponent implements OnInit {
   @Input() json: any;
   @Input() id: any;
   @Output() responseData = new EventEmitter<any>();
+  disabled : any = false;
 
   value: any;
 
   constructor() { }
 
   ngOnInit() {
+    this.value = this.json.value;
+    if(localStorage.getItem('rules') && !this.json.flagged){
+      this.disabled = true;
+    }
   }
 
   funID(id) {

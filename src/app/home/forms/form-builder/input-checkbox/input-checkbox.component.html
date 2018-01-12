@@ -10,7 +10,7 @@
 
 
       <label class = "mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-         <input #flag type = "checkbox"  class = "mdl-checkbox__input" name="checkbox" value={{opt}} (change)='getVal(flag.checked,opt)' [checked]='checkVal(opt)' >
+         <input #flag type = "checkbox"  class = "mdl-checkbox__input" name="checkbox" value={{opt}} (change)='getVal(flag.checked,opt)' [checked]='checkVal(opt)' [disabled]='disabled' >
          <span class = "mdl-checkbox__label"> {{opt}}</span>
       </label>
 
@@ -18,6 +18,10 @@
 
     <span *ngIf='json.errorMsg' class="mdl-chip  margin-top-prop">
         <span class="mdl-chip__text errorMsg"><b>  # {{json.errorMsg}} </b> </span>
+    </span>
+
+    <span *ngIf='json.flagged' class="mdl-chip  margin-top-prop">
+        <span class="mdl-chip__text flagged"><b>  <i class="material-icons">assistant_photo</i> {{json.flagMsg}} </b> </span>
     </span>
 
   </div>

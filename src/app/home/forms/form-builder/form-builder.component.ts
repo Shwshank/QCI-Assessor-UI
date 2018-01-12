@@ -27,15 +27,26 @@ export class FormBuilderComponent implements OnInit {
   send : any;
   responseError: any;
   formResponse : any = false;
-  displayRequired : any = true;
+  displayRequired : any = 0;
+  flags : any = 0;
+  position: any;
 
   constructor(private projectService: ProjectService, private router: Router) {
 
     this.projectService.emitFormResponse.subscribe((res)=>{
-      this.formResponse = true;
-      this.displayRequired = false;
+
       if(res.success) {
         this.send = true;
+
+        this.formResponse = true;
+        this.displayRequired = 0;
+        this.flags = 0;
+        // POP form form flagged form array
+        if(this.completeArray.Details.rid) {
+          localStorage.removeItem('rules');
+          this.projectService.popFromFlaggedArray(this.completeArray.Details.rid);
+        }
+
       } else {
         this.responseError = true;
       }
@@ -49,11 +60,18 @@ export class FormBuilderComponent implements OnInit {
       this.completeArray = res;
       this.jsonArray = res.Elements;
 
-      // SKIP IS FORM IS FLAGGED
-      if(!res.Details.rid) {
-        console.log("res");
+      // SKIP FORM IS FLAGGED
+      if(res.Details.rid) {
+        localStorage.setItem('rules','true');
+        for(let cr of this.jsonArray) {
+          this.checkForFlag(cr);
+          this.checkForRequired(cr);
+        }
+      } else {
+        localStorage.removeItem('rules');
         for(let cr of this.jsonArray) {
           this.checkForRules(cr);
+          this.checkForRequired(cr);
         }
       }
 
@@ -61,9 +79,11 @@ export class FormBuilderComponent implements OnInit {
       this.rules = res.Rules;
       this.display = true;
     });
+
     if(!this.rule) {
         this.submitButton = "Submit";
     }
+
   }
 
   ngOnInit() {}
@@ -232,8 +252,6 @@ export class FormBuilderComponent implements OnInit {
     this.jsonArray = Array.from(new Set(this.jsonArray));
 
     componentHandler.upgradeDom();
-
-
   }
 
   deleteRuleFromJsonArray2(data) {
@@ -285,6 +303,18 @@ export class FormBuilderComponent implements OnInit {
     componentHandler.upgradeDom();
   }
 
+  checkForFlag(data) {
+    if(data.flagged) {
+      this.flags++;
+    }
+  }
+
+  checkForRequired(data) {
+    if(data.required) {
+      this.displayRequired++;
+    }
+  }
+
   checkError(data) {
     if(data.type == 'location' || data.type == 'break'){
       data.value = "N.A";
@@ -310,21 +340,21 @@ export class FormBuilderComponent implements OnInit {
     } else {
 
       for(let i = 0; i<= this.jsonArray.length; i++) {
-          if(data.required && data.value != "") {
+        if(data.required && data.value != "") {
 
-            for(let j= 0; j<= this.jsonArray.length; j++) {
+          for(let j= 0; j<= this.jsonArray.length; j++) {
 
-              if(this.jsonArray[j].cid === data.cid) {
-                this.jsonArray[j].errorMsg = false;
-                if(data.type !="video" || data.type != "camera" || data.type != "file" || data.type != "location") {
-                  this.formError = false;
-                  // console.log(data.name);
-                }
-                // console.log(this.formError);
-                break;
+            if(this.jsonArray[j].cid === data.cid) {
+              this.jsonArray[j].errorMsg = false;
+              if(data.type !="video" || data.type != "camera" || data.type != "file" || data.type != "location") {
+                this.formError = false;
+                // console.log(data.name);
               }
+              // console.log(this.formError);
+              break;
             }
           }
+        }
       }
     }
   }
@@ -355,6 +385,22 @@ export class FormBuilderComponent implements OnInit {
 
   ngAfterViewInit() {
     componentHandler.upgradeDom();
+  }
+
+  getCurrentLocation() {
+
+    this.position = {coords : {
+          accuracy: 100,
+          altitude: null,
+          altitudeAccuracy: null,
+          heading: null,
+          latitude: 28.620370899999998,
+          longitude: 77.2462516,
+          speed: null
+        },timestamp: 1515754375594};
+
+    // position = navigator.geolocation.getCurrentPosition(showPosition);
+    return ("Lat : "+this.position.coords.latitude +", Lng : "+this.position.coords.longitude);
   }
 
   backToDashboard() {
