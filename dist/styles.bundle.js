@@ -35,7 +35,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\nbody {\n  color: #545454; }\n\n.errorMsg {\n  color: red;\n  font-size: .9rem; }\n\n.requiredMsg {\n  color: #2196f3;\n  font-size: .9rem; }\n\n.margin-top-prop {\n  margin-top: -15px !important; }\n\n.marginAuto {\n  margin: auto !important;\n  padding: auto !important; }\n\n.mdl-textfield {\n  width: 90% !important; }\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\nbody {\n  color: #545454; }\n\n.errorMsg {\n  color: red;\n  font-size: .9rem; }\n\n.requiredMsg {\n  color: #2196f3;\n  font-size: .9rem; }\n\n.margin-top-prop {\n  margin-top: -15px !important; }\n\n.marginAuto {\n  margin: auto !important;\n  padding: auto !important; }\n\n.mdl-textfield {\n  width: 90% !important; }\n\n.flagged {\n  color: #5f5f5f;\n  font-size: 16px; }\n", ""]);
 
 // exports
 
