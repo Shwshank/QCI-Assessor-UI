@@ -1,0 +1,21 @@
+@import "~styles.scss";
+
+.graph1{
+  height:100%;
+  width: 100%;
+  background-image: url("/assets/yellow.jpg");
+  background-position:center;
+  text-align: center;
+  color: $primary-color;
+  font-weight: bold;
+}
+.graph1text{
+  padding-top: 1.3rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+.graph1text2{
+  padding-top: .5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}

@@ -13,7 +13,6 @@ import { DashboardComponent } from './home/dashboard/dashboard.component';
 import { FormsComponent } from './home/forms/forms.component';
 import { LoginComponent } from './login/login.component';
 import { FormListingComponent } from './home/form-listing/form-listing.component';
-import { GraphComponent } from './home/graph/graph.component';
 import { ProjectService } from './service/ProjectService';
 import { APIService } from './service/APIService';
 import { FormBuilderComponent } from './home/forms/form-builder/form-builder.component';
@@ -36,6 +35,8 @@ import { InputCameraComponent } from './home/forms/form-builder/input-camera/inp
 import { InputVideoComponent } from './home/forms/form-builder/input-video/input-video.component';
 import { FlaggedFormListingComponent } from './home/flagged-form-listing/flagged-form-listing.component';
 import { InputLocationComponent } from './home/forms/form-builder/input-location/input-location.component';
+import { Graph1Component } from './home/form-listing/graph1/graph1.component';
+import { Graph2Component } from './home/form-listing/graph2/graph2.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,6 @@ import { InputLocationComponent } from './home/forms/form-builder/input-location
     FormsComponent,
     LoginComponent,
     FormListingComponent,
-    GraphComponent,
     FormBuilderComponent,
     InputTextComponent,
     InputPasswordComponent,
@@ -65,7 +65,9 @@ import { InputLocationComponent } from './home/forms/form-builder/input-location
     InputCameraComponent,
     InputVideoComponent,
     FlaggedFormListingComponent,
-    InputLocationComponent
+    InputLocationComponent,
+    Graph1Component,
+    Graph2Component
   ],
   imports: [
     HttpModule,

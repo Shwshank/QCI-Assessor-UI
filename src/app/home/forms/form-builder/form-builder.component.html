@@ -1,21 +1,21 @@
-<div class="demo-card-square mdl-card ">
+<div class="demo-card-square mdl-card " style="margin-top:-1.3rem">
 
   <div *ngIf="disableSubmitButton" style="width:100%">
     <div id="p" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="width:100%"></div>
   </div>
 
-  <div   class="mdl-card__title ">
+  <!-- <div   class="mdl-card__title ">
     <h2 class="mdl-card__title-text">{{formDetails.project}}</h2>
-  </div>
-  <div class="mdl-card__supporting-text">
-    <b>{{formDetails.name}}</b> &nbsp;  &nbsp;  &nbsp;
+  </div> -->
+  <div class="mdl-card__supporting-text background-secondary">
+    <b>{{formDetails.project}} <br> {{formDetails.name}}</b> &nbsp;  &nbsp;  &nbsp;
 
     <span *ngIf='formError' class="mdl-chip" style="float : right; margin-top: -15px" >
-        <span class="mdl-chip__text errorMsg"><b> # Invalid input/s detected!</b> </span>
+        <span class="mdl-chip__text errorMsg"><b> # </b> </span>
     </span>
 
     <span *ngIf="displayRequired>0" style="float : right; margin-top: -15px"  class="mdl-chip margin-top-prop">
-        <span class="mdl-chip__text requiredMsg"><b> * Required </b> </span>
+        <span class="mdl-chip__text requiredMsg"> <b>*  <span style="font-size:0.8rem"> Required </span> </b> </span>
     </span>
 
     <span *ngIf="flags>0" style="float : right; margin-top: -15px"  class="mdl-chip margin-top-prop">
