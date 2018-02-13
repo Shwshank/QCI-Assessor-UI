@@ -1,23 +1,28 @@
 @import "~styles.scss";
 
 .graph2div{
-  height: 98%;
-  width: 98%;
+  height: 100%;
+  width: 100%;
+  background-image: url("/assets/graph22.jpg");
+  background-position:bottom;
   background-color: $primary-color;
-  color:$accent-color;
+  color:#fff;
   position: relative;
-  border: 4px solid $accent-color;
-  perspective: 500px;
   margin: auto;
-  padding-left: 5px
+  text-align: center;
 }
-
-.graph2div1{
-  // position: absolute;
-  float: left;
-  height: 80%;
-  width: 9rem;
-  border: 2px solid #fff;
-  margin-top: 10px;
-  transform: rotate3d(0, 1, 0, 40deg);
+.graph1text{
+  padding-top: 1.3rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-shadow: 4px 4px 2px gray;
+}
+.graph1text2{
+  // padding-top: .1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 4px
+}
+.graph2icon{
+  font-size: 2.5rem;
 }

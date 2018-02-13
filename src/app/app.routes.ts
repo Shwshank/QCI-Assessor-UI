@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { TemplatesComponent } from './home/templates/templates.component';
 import { DashboardComponent } from './home/dashboard/dashboard.component';
 import { FlaggedFormListingComponent } from './home/flagged-form-listing/flagged-form-listing.component';
+import { HelpComponent } from './home/help/help.component';
 
 export const routes: Routes = [
 
@@ -16,6 +17,7 @@ export const routes: Routes = [
     { path: 'formListing', component: FormListingComponent, canActivate: [AuthGuard]},
     { path: 'flaggedFormListing', component: FlaggedFormListingComponent, canActivate: [AuthGuard]},
     { path: 'form', component: FormsComponent, canActivate: [AuthGuard]},
+    { path: 'help', component: HelpComponent, canActivate: [AuthGuard]},
     { path: 'template', component: TemplatesComponent, canActivate: [AuthGuard]},
   ]},
   { path: 'login', component: LoginComponent},

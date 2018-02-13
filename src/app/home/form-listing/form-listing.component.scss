@@ -6,7 +6,7 @@
   margin: auto;
   margin-bottom: 20px;
   padding: auto;
-  
+
 }
 
 .infoGraph{
@@ -23,4 +23,15 @@
   /*background-color: #46B6AC*/
   /*background:
     url('../assets/demos/dog.png') bottom right 15% no-repeat #46B6AC;*/
+}
+.backgroundImage{
+  // background-image: url("https://img00.deviantart.net/64cd/i/2012/247/f/e/pink_to_yellow_by_ohsnapjenny-d5dj7zr.jpg");
+  // background-position:left;
+
+  background-image: url("/assets/pink3.jpg");
+  background-position:left;
+
+}
+.custom-header{
+  color: #272727;
 }

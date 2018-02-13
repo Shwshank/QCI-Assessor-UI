@@ -37,6 +37,7 @@ import { FlaggedFormListingComponent } from './home/flagged-form-listing/flagged
 import { InputLocationComponent } from './home/forms/form-builder/input-location/input-location.component';
 import { Graph1Component } from './home/form-listing/graph1/graph1.component';
 import { Graph2Component } from './home/form-listing/graph2/graph2.component';
+import { HelpComponent } from './home/help/help.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { Graph2Component } from './home/form-listing/graph2/graph2.component';
     FlaggedFormListingComponent,
     InputLocationComponent,
     Graph1Component,
-    Graph2Component
+    Graph2Component,
+    HelpComponent
   ],
   imports: [
     HttpModule,

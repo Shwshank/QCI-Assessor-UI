@@ -6,7 +6,7 @@ import { ProjectService } from '../../service/ProjectService';
 @Component({
   selector: 'app-form-listing',
   templateUrl: './form-listing.component.html',
-  styleUrls: ['./form-listing.component.css']
+  styleUrls: ['./form-listing.component.scss']
 })
 export class FormListingComponent implements OnInit {
 
