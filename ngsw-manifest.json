@@ -9,7 +9,7 @@
   "dynamic":{
     "group":[
       {
-          "name": "APIs",
+          "name": "offline",
           "urls":{
             "https://qcitech.org": {
                 "match": "prefix"
@@ -17,7 +17,8 @@
           },
           "cache":{
             "optimizeFor": "freshness",
-            "maxAgeMs":60000
+            "maxAgeMs":60000,
+            "strategy": "lru"
           }
         }
       ]
