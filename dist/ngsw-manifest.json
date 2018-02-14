@@ -11,14 +11,13 @@
       {
         "name": "offline",
         "urls": {
-          "https://qcitech.org": {
+          "https://collect.qcitech.org": {
             "match": "prefix"
           }
         },
         "cache": {
           "optimizeFor": "freshness",
-          "maxAgeMs": 60000,
-          "strategy": "lru"
+          "maxAgeMs": 60000
         }
       }
     ]
@@ -54,16 +53,16 @@
       "/assets/c1.png": "ba313479933d65f47167572822e90a17475e67ee",
       "/assets/help.jpg": "97b00f919b7088c346237436d6691aea1efb12d6",
       "/assets/graph22.jpg": "7351bd7f10b4b4a4f55b8699a6cfa217bc771114",
-      "/assets/pink2.jpg": "653ddd0d1ce6007b7962338506bd7b1407fbafbc",
       "/assets/pink1.svg": "5bfd67ec2e35ed0e2f818934b53b64d45be42641",
+      "/assets/pink2.jpg": "653ddd0d1ce6007b7962338506bd7b1407fbafbc",
       "/assets/yellow.jpg": "937bd2b3b17c1f545297bc8a444c95df74326639",
+      "/assets/pink3.jpg": "6f5c1bfce161cb4b4c9df8c40681336f3689ab3f",
       "/assets/yellow2.svg": "92c3712b92d005e67b9f3e6ee404d033c159fc72",
       "/assets/yellow3.png": "4fb425f729aa3734e4770e56c07f0773ec2b77d1",
-      "/assets/pink3.jpg": "6f5c1bfce161cb4b4c9df8c40681336f3689ab3f",
-      "/assets/material.css": "045ca9e06ad7dfd66096deb9f66290f6c5997041",
       "/assets/material.js": "1ab50540032210391656928cd1564530353096cd",
+      "/assets/material.css": "045ca9e06ad7dfd66096deb9f66290f6c5997041",
       "/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
-      "/manifest.json": "31d38a8b7717d3ce0207e2e2df00a1967cd3ddd6",
+      "/manifest.json": "f1cbe529cfa3c9a6b46bf0c1b783b54f9158972c",
       "/manifest.webmanifest": "579e1998b8a9721ef4f3ed0a0d81dfc5cda88116",
       "/index.html": "f2daf54a9a56ac1c57b20d49911a1145f45c9f43"
     },

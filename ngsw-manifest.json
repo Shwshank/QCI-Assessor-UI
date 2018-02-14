@@ -11,14 +11,13 @@
       {
           "name": "offline",
           "urls":{
-            "https://qcitech.org": {
+            "https://collect.qcitech.org": {
                 "match": "prefix"
             }
           },
           "cache":{
             "optimizeFor": "freshness",
-            "maxAgeMs":60000,
-            "strategy": "lru"
+            "maxAgeMs":60000
           }
         }
       ]
