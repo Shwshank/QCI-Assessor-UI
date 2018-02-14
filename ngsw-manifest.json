@@ -6,22 +6,6 @@
 
     ]
   },
-  "dynamic":{
-    "group":[
-      {
-          "name": "offline",
-          "urls":{
-            "https://collect.qcitech.org": {
-                "match": "prefix"
-            }
-          },
-          "cache":{
-            "optimizeFor": "freshness",
-            "maxAgeMs":60000
-          }
-        }
-      ]
-  },
   "routing": {
     "index": "/index.html",
     "routes" :{
