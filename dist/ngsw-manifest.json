@@ -46,15 +46,15 @@
       "/assets/pink2.jpg": "653ddd0d1ce6007b7962338506bd7b1407fbafbc",
       "/assets/pink1.svg": "5bfd67ec2e35ed0e2f818934b53b64d45be42641",
       "/assets/yellow.jpg": "937bd2b3b17c1f545297bc8a444c95df74326639",
+      "/assets/yellow2.svg": "92c3712b92d005e67b9f3e6ee404d033c159fc72",
       "/assets/yellow3.png": "4fb425f729aa3734e4770e56c07f0773ec2b77d1",
       "/assets/pink3.jpg": "6f5c1bfce161cb4b4c9df8c40681336f3689ab3f",
-      "/assets/yellow2.svg": "92c3712b92d005e67b9f3e6ee404d033c159fc72",
       "/assets/material.css": "045ca9e06ad7dfd66096deb9f66290f6c5997041",
       "/assets/material.js": "1ab50540032210391656928cd1564530353096cd",
       "/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
-      "/manifest.json": "fa169840e3e6ac487969102ec723b1910fb8193f",
+      "/manifest.json": "ca7c254f7bbd0e8fd33e01fb3c3f5e47e4ac4f0c",
       "/manifest.webmanifest": "579e1998b8a9721ef4f3ed0a0d81dfc5cda88116",
-      "/index.html": "7e33bbab10087f6584129bc36d5098d1a6cced61"
+      "/index.html": "414d2a1b71b42e318619336b48d88a1013baf9b4"
     },
     "_generatedFromWebpack": true
   }
