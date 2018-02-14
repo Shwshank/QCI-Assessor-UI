@@ -11,7 +11,7 @@
       {
           "name": "APIs",
           "urls":{
-            "http://qcitech.org": {
+            "https://qcitech.org": {
                 "match": "prefix"
             }
           },
@@ -35,6 +35,9 @@
         "prefix": true
       },
       "/login": {
+        "prefix": true
+      },
+      "/help": {
         "prefix": true
       }
     }
