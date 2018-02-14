@@ -12,16 +12,19 @@
       "/": {
         "prefix": false
       },
-      "/formListing": {
+      "/#/": {
         "prefix": true
       },
-      "/form": {
+      "/#/formListing": {
         "prefix": true
       },
-      "/login": {
+      "/#/form": {
         "prefix": true
       },
-      "/help": {
+      "/#/login": {
+        "prefix": true
+      },
+      "/#/help": {
         "prefix": true
       }
     }
