@@ -1,7 +1,13 @@
 {
   "short_name": "Collect",
   "name": "QCI Collect Assesor",
-  "icons": [{
+  "icons": [
+    {
+      "src": "/assets/c1.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
     "src": "/assets/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png"
