@@ -3,12 +3,12 @@
   "name": "QCI Collect Assesor",
   "icons": [
     {
-      "src": "/assets/c1.png",
-      "sizes": "96x96",
+      "src": "/assets/icons/icon-32x32.png",
+      "sizes": "32x32",
       "type": "image/png"
     },
     {
-    "src": "/assets/icons/icon-128x128.png",
+      "src": "/assets/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png"
     }, {
@@ -30,9 +30,9 @@
     }
   ],
 
-  "start_url": ".",
+  "start_url": "/#/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0275d8",
-  "theme_color": "#2196f3"
+  "background_color": "pink",
+  "theme_color": "pink"
 }
