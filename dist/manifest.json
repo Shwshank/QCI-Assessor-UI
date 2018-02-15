@@ -1,6 +1,16 @@
 {
   "short_name": "Collect",
   "name": "QCI Collect Assesor",
+
+  "start_url": "/",
+  "scope": ".",
+
+  "background_color": "#e91e62",
+  "theme_color": "#e91e62",
+
+  "display": "standalone",
+  "orientation": "portrait",
+
   "icons": [
     {
       "src": "/assets/icons/icon-32x32.png",
@@ -28,12 +38,5 @@
       "sizes": "256x256",
       "type": "image/png"
     }
-  ],
-
-  "start_url": "/index.html",
-  "scope": ".",
-  "display": "fullscreen",
-  "orientation": "portrait",
-  "background_color": "pink",
-  "theme_color": "pink"
+  ]
 }
