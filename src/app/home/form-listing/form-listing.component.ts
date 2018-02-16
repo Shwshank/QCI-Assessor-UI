@@ -24,9 +24,8 @@ export class FormListingComponent implements OnInit {
   }
 
   form(cid) {
-    setTimeout(()=>{
+    console.log("here1");
       this.router.navigate(['/form'], { queryParams: {id: cid}})
-    }, 100);
   }
 
   ngAfterViewInit() {

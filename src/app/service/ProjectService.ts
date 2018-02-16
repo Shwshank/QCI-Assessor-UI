@@ -184,6 +184,7 @@ export class ProjectService {
 
           if(res.form_token != localStorage.getItem('form_token')) {
             // token dosen't match
+            localStorage.setItem('form_token',res.form_token);
 
             this.saveOfflineFormAndTemplate(res.formArray, res.tempArray);
             this.getOfflineFormAndTemplate();

@@ -22,6 +22,7 @@ export class FormsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("here2");
     let sub = this.activatedRoute.queryParams.subscribe(params=>{
         this.fcid = params.id;
         this.templateCid = params.templateCid;
