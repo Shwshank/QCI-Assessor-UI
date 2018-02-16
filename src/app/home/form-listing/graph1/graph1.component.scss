@@ -3,10 +3,24 @@
 .graph1{
   height:100%;
   width: 100%;
-  background-image: url("/assets/yellow.jpg");
-  background-position:center;
+
+  // background-image: url("/assets/bg7.jpg");
+  // background-position:top;
+
+
+  // background-image: url("/assets/bg3.jpg");
+  // background-position:bottom;
+
+  background-image: url("/assets/bg6.jpg");
+  background-position:top;
+
+  // background-image: url("/assets/yellow.jpg");
+  // background-position:center;
+
   text-align: center;
   color: $primary-color;
+  // color: $accent-color;
+
   font-weight: bold;
   position:relative;
   opacity: 0.9;

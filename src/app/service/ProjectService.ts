@@ -50,7 +50,7 @@ export class ProjectService {
   templateArray = [];
 
   storeFormArrayTemp :any = [];
-  
+
   submittedForm: any[];
 
   login(data: any) {
@@ -58,6 +58,7 @@ export class ProjectService {
       console.log(res);
       if(res.success){
         localStorage.setItem('token',res.token);
+        localStorage.setItem('form_token',res.form_token);
         this.emitUserLogin.emit({success: true, msg: res.message});
       } else {}
     }, err=>{
@@ -173,28 +174,57 @@ export class ProjectService {
 
   getFormArray() {
     this.formArray = [];
-    this.apiService.GetFormArray().subscribe((res)=>{
-      console.log(res);
-      if(res){
 
-        if(res.formArray.length) {
-          for(let i = 0; i< res.formArray.length; i++) {
-            this.formArray.push(res.formArray[i].form_json);
+    if(navigator.onLine) {
+      let form_token = localStorage.getItem('form_token');
+
+      this.apiService.GetFormArray(form_token).subscribe((res)=>{
+        console.log(res);
+        if(res){
+
+          if(res.form_token != localStorage.getItem('form_token')) {
+            // token dosen't match
+
+            this.saveOfflineFormAndTemplate(res.formArray, res.tempArray);
+            this.getOfflineFormAndTemplate();
+
+          } else {
+            // token matches
+
+            this.getOfflineFormAndTemplate()
+
           }
-        }
 
-        if(res.tempArray.length) {
-          for(let i = 0; i< res.tempArray.length; i++) {
-            this.templateArray.push(res.tempArray[i].temp_json);
-          }
-        }
+        } else {}
+      },err=> {
+        console.log(err);
+      });
+    } else {
+      this.getOfflineFormAndTemplate();
+    }
+  }
 
-        this.emitFormArray.emit(this.formArray);
-      } else {}
-    },err=> {
-      console.log(err);
-      // this.emitFormArray.emit(this.formArray);
-    });
+  saveOfflineFormAndTemplate(formArray, tempArray){
+    localStorage.setItem('formArray', JSON.stringify(formArray));
+    localStorage.setItem('tempArray', JSON.stringify(tempArray));
+  }
+
+  getOfflineFormAndTemplate() {
+    let formArray = JSON.parse(localStorage.getItem('formArray'));
+    let tempArray = JSON.parse(localStorage.getItem('tempArray'));
+
+    if(formArray.length) {
+      for(let i = 0; i< formArray.length; i++) {
+        this.formArray.push(formArray[i].form_json);
+      }
+    }
+
+    if(tempArray.length) {
+      for(let i = 0; i< tempArray.length; i++) {
+        this.templateArray.push(tempArray[i].temp_json);
+      }
+    }
+    this.emitFormArray.emit(this.formArray);
   }
 
   getFlaggedResponses() {

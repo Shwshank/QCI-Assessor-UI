@@ -5,9 +5,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Injectable()
 export class APIService {
 
-  // projectURL: string = 'http://192.168.15.187:8000'
+  projectURL: string = 'http://192.168.15.187:8000'
   // projectURL: string = 'http://192.168.15.221:8000';
-  projectURL: string = 'https://qcitech.org:8083';
+  // projectURL: string = 'https://qcitech.org:8083';
 
   userID: any;
 
@@ -27,11 +27,14 @@ export class APIService {
     return this.http.get(this.projectURL+'/gettestforms').map(res=>res.json());
   }
 
-  GetFormArray() {
+  GetFormArray(form_token) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
 
-    return this.http.get(this.projectURL+'/getAssesorForms',{headers: headers}).map(res=>res.json());
+    let formData = new FormData();
+    formData.append('form_token',form_token);
+
+    return this.http.post(this.projectURL+'/getAssesorForms', formData, {headers: headers}).map(res=>res.json());
   }
 
   GetFlaggedResponses() {
