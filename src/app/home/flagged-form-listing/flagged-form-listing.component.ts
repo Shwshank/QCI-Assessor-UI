@@ -20,6 +20,10 @@ export class FlaggedFormListingComponent implements OnInit {
       console.log(res);
       this.flag = res.length;
       this.flaggedArray = res;
+
+      if(this.flag>0 && this.flag<10){
+        this.flag = '0'+ this.flag;
+      }
     });
   }
 

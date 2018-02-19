@@ -12,11 +12,14 @@ export class FormListingComponent implements OnInit {
 
   cardArray : any = [];
   sub1: any;
+  sub2: any;
+  numOffline: any;
 
   constructor(private projectService: ProjectService, private router: Router) {
     this.sub1 = this.projectService.emitFormArray.subscribe(res=>{
         this.cardArray = res;
     });
+
   }
 
   ngOnInit() {

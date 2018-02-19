@@ -67,7 +67,9 @@ export class ProjectService {
   }
 
   checkLogin() {
+    console.log('4');
     if(localStorage.getItem('token')) {
+      console.log('5');
       this.router.navigate(['./']);
     }
   }

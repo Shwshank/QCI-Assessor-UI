@@ -42,8 +42,8 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.projectService.initializeIndexDB();
-    this.projectService.getFlaggedResponses();
+    // this.projectService.initializeIndexDB();
+    // this.projectService.getFlaggedResponses();
   }
 
   sync() {
