@@ -316,7 +316,7 @@ export class FormBuilderComponent implements OnInit {
   }
 
   checkError(data) {
-    if(data.type == 'location' || data.type == 'break'){
+    if(data.type == 'break'){
       data.value = "N.A";
     }
 
