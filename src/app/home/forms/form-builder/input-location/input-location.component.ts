@@ -22,10 +22,10 @@ export class InputLocationComponent implements OnInit {
   ngOnInit() {
     navigator.geolocation.getCurrentPosition(res=>{
       console.log(res);
-      this.value = res.coords;
-      // this.lat = this.value.coords.latitude;
-      // this.lng = this.value.coords.longitude;
-      // this.accuracy = this.value.coords.accuracy;
+      this.value = res;
+      this.lat = this.value.coords.latitude;
+      this.lng = this.value.coords.longitude;
+      this.accuracy = this.value.coords.accuracy;
 
     }, err=>{
       console.log(err);
@@ -47,10 +47,10 @@ export class InputLocationComponent implements OnInit {
   refreshLocation() {
     navigator.geolocation.getCurrentPosition(res=>{
       console.log(res);
-      this.value = res.coords;
-      // this.lat = this.value.coords.latitude;
-      // this.lng = this.value.coords.longitude;
-      // this.accuracy = this.value.coords.accuracy;
+      this.value = res;
+      this.lat = this.value.coords.latitude;
+      this.lng = this.value.coords.longitude;
+      this.accuracy = this.value.coords.accuracy;
 
     }, err=>{
       console.log(err);
@@ -59,7 +59,7 @@ export class InputLocationComponent implements OnInit {
       timeout: 5000,
       maximumAge: 0
     });
-    this.json.value = this.value;
+    this.json.value = this.value.coords;
     this.responseData.emit(this.json);
   }
 
