@@ -32,10 +32,10 @@
   "static": {
     "urls": {
       "/polyfills.b94eda2ce1886645431f.bundle.js": "74ac55d73b9cacb581610965b027747e33aad489",
-      "/main.0f0bd7f9c840f8c22c9b.bundle.js": "4209b62e838cb9752554e130d8b436a27022435b",
+      "/main.9bb5b059d6c09df39a51.bundle.js": "90dfa24e8db88e2ef4eba6207a84842309c31bcb",
       "/sw-register.6819cd2c5fa25470ecf2.bundle.js": "50d549edfbd188ed199d8d0b079afa593202e3ea",
       "/vendor.5a98f8c26ff09e6b1206.bundle.js": "5a7f869b4c2c536e5a441df3e97e9f4e83eb5b11",
-      "/inline.f68b08269aa25fbf7b04.bundle.js": "0c1c3e6359d58f513c5f1e90a6736d0732650f69",
+      "/inline.e89b51ed64d848ac5c49.bundle.js": "64ca6635f39efe6df8b61d86f5b36bec0d2854e6",
       "/styles.0cfca932f94a0ba31cd4.bundle.css": "4b201ca084752e8b647ed9c34f13b187d3cae4ab",
       "/assets/bg6.jpg": "9d43696d1aeceead7c1e4916f9dba30ba1e5109f",
       "/assets/c1.png": "ba313479933d65f47167572822e90a17475e67ee",
@@ -53,7 +53,7 @@
       "/assets/pink3.jpg": "6f5c1bfce161cb4b4c9df8c40681336f3689ab3f",
       "/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
       "/manifest.json": "95b8abb20dc74bebecb6096fda85532f1abfbdf2",
-      "/index.html": "2aac8e5a6be1230d5ea0a6e09cbdc6cf9809204a"
+      "/index.html": "2efd63adbe46249a7041f49c84c7eb59a47f503b"
     },
     "_generatedFromWebpack": true
   }

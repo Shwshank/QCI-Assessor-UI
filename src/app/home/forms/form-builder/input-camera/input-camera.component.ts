@@ -71,8 +71,8 @@ export class InputCameraComponent implements OnInit {
     let accuracy;
     let location;
     navigator.geolocation.getCurrentPosition(res=>{
-      console.log(res);
-      return (res);
+      console.log(res.coords);
+      return (res.coords);
     }, err=>{
       console.log(err);
     }, {
