@@ -39,7 +39,7 @@ export class InputLocationComponent implements OnInit {
       this.disabled = true;
     }
 
-    this.json.value = this.value;
+    this.json.value = "{lat: "+this.lat+", lng: "+this.lng+", acc : "+this.accuracy+"}";
     this.responseData.emit(this.json);
 
   }
@@ -59,7 +59,7 @@ export class InputLocationComponent implements OnInit {
       timeout: 5000,
       maximumAge: 0
     });
-    this.json.value = this.value.coords;
+    this.json.value = "{lat: "+this.lat+", lng: "+this.lng+", acc : "+this.accuracy+"}";
     this.responseData.emit(this.json);
   }
 

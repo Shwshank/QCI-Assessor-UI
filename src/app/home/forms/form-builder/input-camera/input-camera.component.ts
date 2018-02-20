@@ -72,6 +72,10 @@ export class InputCameraComponent implements OnInit {
     navigator.geolocation.getCurrentPosition(res=>{
       console.log(res);
       value = res;
+      lat = value.coords.latitude;
+      lng = value.coords.longitude;
+      accuracy = value.coords.accuracy;
+
     }, err=>{
       console.log(err);
     }, {
@@ -79,7 +83,8 @@ export class InputCameraComponent implements OnInit {
       timeout: 5000,
       maximumAge: 0
     });
-    return (value.coords);
+    let location = "{lat: "+lat+", lng: "+lng+", acc : "+accuracy+"}";
+    return(location);
   }
 
 }
