@@ -21,7 +21,7 @@ export class InputFileComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    
+
     if(localStorage.getItem('rules') && !this.json.flagged){
       this.disabled = true;
     }
@@ -43,10 +43,10 @@ export class InputFileComponent implements OnInit {
     let reader = new FileReader();
     reader.onload = (event:any) => {
       this.json.value = reader.result;
+      reader.readAsDataURL(file);
+      this.json.fileName = this.name;
+      this.responseData.emit(this.json);
     }
-    reader.readAsDataURL(file);
-    this.json.fileName = this.name;
-    this.responseData.emit(this.json);
 
     // this.name = file.name;
     // this.formData = new FormData();

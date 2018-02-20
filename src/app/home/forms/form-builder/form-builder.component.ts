@@ -326,14 +326,9 @@ export class FormBuilderComponent implements OnInit {
 
         if(this.jsonArray[i].cid === data.cid ) {
           this.jsonArray[i].errorMsg = "This feild can't be empty, please provide a valid input!";
-
-          if(data.type !="video" || data.type != "camera" || data.type != "file" || data.type != "location") {
-            this.formError = true;
-          }
-
+          this.formError = true;
           console.log(data.name);
-          console.log(data.cid);
-          // console.log(this.formError);
+
           break;
         }
       }

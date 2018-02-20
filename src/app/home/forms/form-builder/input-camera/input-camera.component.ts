@@ -22,10 +22,9 @@ export class InputCameraComponent implements OnInit {
   disabled: any = false;
   position: any;
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService) {}
 
   ngOnInit() {
-
     if(localStorage.getItem('rules') && !this.json.flagged){
       this.disabled = true;
     }
@@ -50,23 +49,9 @@ export class InputCameraComponent implements OnInit {
     reader.onload = (event:any) => {
       this.url = event.target.result;
       this.json.value = reader.result;
+      this.json.location = this.getLocation();
+      this.responseData.emit(this.json);
     }
-
-    this.position = {coords : {
-      accuracy: 100,
-      altitude: null,
-      altitudeAccuracy: null,
-      heading: null,
-      latitude: 28.620370899999998,
-      longitude: 77.2462516,
-      speed: null
-    },timestamp: 1515754375594}
-
-    // this.json.location = navigator.geolocation.getCurrentPosition(showPosition);
-
-    this.json.location = this.position;
-
-    this.responseData.emit(this.json);
 
   }
 
@@ -75,7 +60,32 @@ export class InputCameraComponent implements OnInit {
     this.url = "";
     this.name = "";
     this.json.value = "";
+    this.json.fileName = "";
     this.responseData.emit(this.json);
+  }
+
+  getLocation(){
+    let value;
+    let lat;
+    let lng;
+    let accuracy;
+    let location;
+    navigator.geolocation.getCurrentPosition(res=>{
+      console.log(res);
+      value = res;
+      lat = value.coords.latitude;
+      lng = value.coords.longitude;
+      accuracy = value.coords.accuracy;
+
+    }, err=>{
+      console.log(err);
+    }, {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    });
+    location = JSON.stringify(value);
+    return (location);
   }
 
 }

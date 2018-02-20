@@ -46,10 +46,10 @@ export class InputVideoComponent implements OnInit {
     reader.onload = (event:any) => {
       this.url = event.target.result;
       this.json.value = reader.result;
+      reader.readAsDataURL(file);
+      this.json.fileName = this.name;
+      this.responseData.emit(this.json);
     }
-    reader.readAsDataURL(file);
-    this.json.fileName = this.name;
-    this.responseData.emit(this.json);
 
   }
 

@@ -28,7 +28,8 @@ export class ProjectService {
     cdate += ":"+min2;
     return cdate;
   }
-
+  vibrateDuration0: any = 100;
+  vibrateDuration1: any = 200;
   emitFormElement = new EventEmitter<any>();
   emitFormCard = new EventEmitter<any>();
   emitFormArray = new EventEmitter<any>();
@@ -38,6 +39,7 @@ export class ProjectService {
   emitOfflineResponse = new EventEmitter<any>();
   emitIndexedDBInitializedRes = new EventEmitter<any>();
   emitFlaggedFormArray = new EventEmitter<any>();
+  emitForm_sync = new EventEmitter<any>();
 
   db = new AngularIndexedDB('responseDB', 1);
 
@@ -57,6 +59,7 @@ export class ProjectService {
     this.apiService.Login(data).subscribe(res=>{
       console.log(res);
       if(res.success){
+        // navigator.vibrate(this.vibrateDuration1);
         localStorage.setItem('token',res.token);
         localStorage.setItem('form_token',res.form_token);
         this.emitUserLogin.emit({success: true, msg: res.message});
@@ -76,6 +79,7 @@ export class ProjectService {
 
   logout() {
     localStorage.removeItem('token');
+    navigator.vibrate(this.vibrateDuration1);
     this.router.navigate(['./login']);
   }
 
@@ -152,6 +156,7 @@ export class ProjectService {
                 if(res.success){
                   this.emitSyncResponse.emit({success:true, msg:"synced!"});
                   this.db.delete('asrResponse', response[i].id).then(() => {
+                    navigator.vibrate(this.vibrateDuration0);
                     // console.log('response deleted at position ', +i, response[i].id);
                   }, (error) => {
                       console.log(error);
@@ -184,8 +189,11 @@ export class ProjectService {
         console.log(res);
         if(res){
 
+          this.emitForm_sync.emit(res.form_sync);
+
           if(res.form_token != localStorage.getItem('form_token')) {
             // token dosen't match
+            navigator.vibrate(this.vibrateDuration1);
             localStorage.setItem('form_token',res.form_token);
 
             this.saveOfflineFormAndTemplate(res.formArray, res.tempArray);
@@ -201,6 +209,7 @@ export class ProjectService {
         } else {}
       },err=> {
         console.log(err);
+        this.getOfflineFormAndTemplate();
       });
     } else {
       this.getOfflineFormAndTemplate();
@@ -303,6 +312,7 @@ export class ProjectService {
     let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
       console.log(res);
       if(res.success){
+        navigator.vibrate(this.vibrateDuration0);
         this.emitFormResponse.emit({success:true, msg:"submitted"});
         sub1.unsubscribe();
       } else {
@@ -370,6 +380,7 @@ export class ProjectService {
 
               // add response in Indexed
               db.add('asrResponse', { response: response }).then(() => {
+                navigator.vibrate(this.vibrateDuration0);
                 alert('Form stored in offline storage');
                 window.location.reload();
                 }, (error) => {
