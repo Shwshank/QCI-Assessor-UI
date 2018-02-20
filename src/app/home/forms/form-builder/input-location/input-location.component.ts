@@ -22,7 +22,7 @@ export class InputLocationComponent implements OnInit {
   ngOnInit() {
     navigator.geolocation.getCurrentPosition(res=>{
       console.log(res);
-      this.value = res;
+      this.value = res.coords;
       this.lat = this.value.coords.latitude;
       this.lng = this.value.coords.longitude;
       this.accuracy = this.value.coords.accuracy;
@@ -47,7 +47,7 @@ export class InputLocationComponent implements OnInit {
   refreshLocation() {
     navigator.geolocation.getCurrentPosition(res=>{
       console.log(res);
-      this.value = res;
+      this.value = res.coords;
       this.lat = this.value.coords.latitude;
       this.lng = this.value.coords.longitude;
       this.accuracy = this.value.coords.accuracy;
