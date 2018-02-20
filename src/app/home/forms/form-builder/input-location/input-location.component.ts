@@ -23,9 +23,9 @@ export class InputLocationComponent implements OnInit {
     navigator.geolocation.getCurrentPosition(res=>{
       console.log(res);
       this.value = res.coords;
-      this.lat = this.value.coords.latitude;
-      this.lng = this.value.coords.longitude;
-      this.accuracy = this.value.coords.accuracy;
+      // this.lat = this.value.coords.latitude;
+      // this.lng = this.value.coords.longitude;
+      // this.accuracy = this.value.coords.accuracy;
 
     }, err=>{
       console.log(err);
@@ -48,9 +48,9 @@ export class InputLocationComponent implements OnInit {
     navigator.geolocation.getCurrentPosition(res=>{
       console.log(res);
       this.value = res.coords;
-      this.lat = this.value.coords.latitude;
-      this.lng = this.value.coords.longitude;
-      this.accuracy = this.value.coords.accuracy;
+      // this.lat = this.value.coords.latitude;
+      // this.lng = this.value.coords.longitude;
+      // this.accuracy = this.value.coords.accuracy;
 
     }, err=>{
       console.log(err);
