@@ -20,28 +20,7 @@ export class InputLocationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    navigator.geolocation.getCurrentPosition(res=>{
-      console.log(res);
-      this.value = res;
-      this.lat = this.value.coords.latitude;
-      this.lng = this.value.coords.longitude;
-      this.accuracy = this.value.coords.accuracy;
-
-    }, err=>{
-      console.log(err);
-    }, {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    });
-
-    if(localStorage.getItem('rules') && !this.json.flagged){
-      this.disabled = true;
-    }
-
-    this.json.value = "{lat: "+this.lat+", lng: "+this.lng+", acc : "+this.accuracy+"}";
-    this.responseData.emit(this.json);
-
+      this.refreshLocation();
   }
 
   refreshLocation() {
@@ -51,6 +30,8 @@ export class InputLocationComponent implements OnInit {
       this.lat = this.value.coords.latitude;
       this.lng = this.value.coords.longitude;
       this.accuracy = this.value.coords.accuracy;
+      this.json.value = "{lat: "+this.lat+", lng: "+this.lng+", acc : "+this.accuracy+"}";
+      this.responseData.emit(this.json);
 
     }, err=>{
       console.log(err);
@@ -59,8 +40,6 @@ export class InputLocationComponent implements OnInit {
       timeout: 5000,
       maximumAge: 0
     });
-    this.json.value = "{lat: "+this.lat+", lng: "+this.lng+", acc : "+this.accuracy+"}";
-    this.responseData.emit(this.json);
   }
 
   funID(id) {

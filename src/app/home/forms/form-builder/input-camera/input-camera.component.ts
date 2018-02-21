@@ -69,12 +69,16 @@ export class InputCameraComponent implements OnInit {
     let lat;
     let lng;
     let accuracy;
+
     navigator.geolocation.getCurrentPosition(res=>{
       console.log(res);
       value = res;
       lat = value.coords.latitude;
       lng = value.coords.longitude;
       accuracy = value.coords.accuracy;
+
+      this.json.location = "{lat: "+lat+", lng: "+lng+", acc : "+accuracy+"}";
+      console.log(this.json.location);
 
     }, err=>{
       console.log(err);
@@ -83,8 +87,6 @@ export class InputCameraComponent implements OnInit {
       timeout: 5000,
       maximumAge: 0
     });
-    let location = "{lat: "+lat+", lng: "+lng+", acc : "+accuracy+"}";
-    return(location);
   }
 
 }
