@@ -1,6 +1,6 @@
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--12-col">
-    {{funID(id)}} .       Location: {{lat}}, {{lng}} <br>
+    {{funID(id)}} . {{json.name}}     : {{lat}}, {{lng}} <br>
                           Accuracy: {{accuracy}} meters
            <span *ngIf='json.required' class="requiredMsg"> <b> * </b> </span>
     <br><br>
