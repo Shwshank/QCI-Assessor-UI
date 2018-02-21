@@ -77,7 +77,7 @@ export class InputCameraComponent implements OnInit {
       lng = value.coords.longitude;
       accuracy = value.coords.accuracy;
 
-      this.json.location = "{lat: "+lat+", lng: "+lng+", acc : "+accuracy+"}";
+      this.json.location = {lat: lat, lng: lng, acc : accuracy};
       console.log(this.json.location);
 
     }, err=>{

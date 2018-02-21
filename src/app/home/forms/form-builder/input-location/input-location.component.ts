@@ -30,7 +30,7 @@ export class InputLocationComponent implements OnInit {
       this.lat = this.value.coords.latitude;
       this.lng = this.value.coords.longitude;
       this.accuracy = this.value.coords.accuracy;
-      this.json.value = "{lat: "+this.lat+", lng: "+this.lng+", acc : "+this.accuracy+"}";
+      this.json.value = {lat: this.lat, lng: this.lng, acc : this.accuracy};
       this.responseData.emit(this.json);
 
     }, err=>{
