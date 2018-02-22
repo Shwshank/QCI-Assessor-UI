@@ -59,7 +59,7 @@ export class ProjectService {
     this.apiService.Login(data).subscribe(res=>{
       console.log(res);
       if(res.success){
-        // navigator.vibrate(this.vibrateDuration1);
+
         localStorage.setItem('token',res.token);
         localStorage.setItem('form_token',res.form_token);
         this.emitUserLogin.emit({success: true, msg: res.message});
@@ -189,11 +189,25 @@ export class ProjectService {
         console.log(res);
         if(res){
 
+          // if(! ('Notification' in window) ){
+          //     console.log('Web Notification not supported');
+          // } else {
+          //   console.log('Web Notification is supported');
+          // }
+
           this.emitForm_sync.emit(res.form_sync);
 
           if(res.form_token != localStorage.getItem('form_token')) {
             // token dosen't match
+
+            Notification.requestPermission(function(permission){
+                let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
+                // setTimeout(function(){
+                //     notification.close();
+                // },3000);
+            });
             navigator.vibrate(this.vibrateDuration1);
+
             localStorage.setItem('form_token',res.form_token);
 
             this.saveOfflineFormAndTemplate(res.formArray, res.tempArray);
@@ -321,6 +335,7 @@ export class ProjectService {
     },err=> {
       console.log(err);
       this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+      this.addResponseToIndexDB(response);
       sub1.unsubscribe();
     });
   }
