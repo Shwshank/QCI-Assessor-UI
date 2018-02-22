@@ -32,10 +32,10 @@
   "static": {
     "urls": {
       "/polyfills.b94eda2ce1886645431f.bundle.js": "74ac55d73b9cacb581610965b027747e33aad489",
-      "/main.cd22bbc550f5693cb83d.bundle.js": "2efa51d1c503f2cfa85c2e181b4b629ddafaf5c0",
+      "/main.6ad1e6b8f6c948cdaeb1.bundle.js": "b729271aff41bee6ba2d4cc2698b13302c538281",
       "/sw-register.6819cd2c5fa25470ecf2.bundle.js": "50d549edfbd188ed199d8d0b079afa593202e3ea",
       "/vendor.5a98f8c26ff09e6b1206.bundle.js": "5a7f869b4c2c536e5a441df3e97e9f4e83eb5b11",
-      "/inline.20f85cfcb27490db9726.bundle.js": "0a0fb9c38abbf34a7eae337c361458582523d52d",
+      "/inline.8213fcb45d578c71549f.bundle.js": "3563f9dab55748412fc406b3401d7acfac351f99",
       "/styles.0cfca932f94a0ba31cd4.bundle.css": "4b201ca084752e8b647ed9c34f13b187d3cae4ab",
       "/assets/c1.png": "ba313479933d65f47167572822e90a17475e67ee",
       "/assets/graph22.jpg": "7351bd7f10b4b4a4f55b8699a6cfa217bc771114",
@@ -49,11 +49,11 @@
       "/assets/material.css": "045ca9e06ad7dfd66096deb9f66290f6c5997041",
       "/assets/material.js": "1ab50540032210391656928cd1564530353096cd",
       "/assets/bg6.jpg": "9d43696d1aeceead7c1e4916f9dba30ba1e5109f",
-      "/assets/pink2.jpg": "653ddd0d1ce6007b7962338506bd7b1407fbafbc",
       "/assets/pink3.jpg": "6f5c1bfce161cb4b4c9df8c40681336f3689ab3f",
+      "/assets/pink2.jpg": "653ddd0d1ce6007b7962338506bd7b1407fbafbc",
       "/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
       "/manifest.json": "95b8abb20dc74bebecb6096fda85532f1abfbdf2",
-      "/index.html": "04f90670f8c20dd32b419e6476452fea888a9893"
+      "/index.html": "6f96d50d4ffc66c611e77cd4c0148e681b14f564"
     },
     "_generatedFromWebpack": true
   }

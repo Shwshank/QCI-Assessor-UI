@@ -71,19 +71,19 @@ export class ProjectService {
   checkLogin() {
 
     if(localStorage.getItem('token')) {
+      // normal notification example
+      // Notification.requestPermission(function(permission){
+      //     let notification = new Notification("Title",{body:'Form updated!',icon:'./assets/icons/icon-256x256', dir:'auto'});
+      //     setTimeout(function(){
+      //         notification.close();
+      //     },6000);
+      // });
 
-      Notification.requestPermission(function(permission){
-          let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
-          setTimeout(function(){
-              notification.close();
-          },6000);
-      });
-
-      navigator.serviceWorker.register('sw.js');
+      navigator.serviceWorker.register('worker-basic.min.js');
       Notification.requestPermission(function(result) {
         if (result === 'granted') {
           navigator.serviceWorker.ready.then(function(registration) {
-            registration.showNotification('Notification with ServiceWorker');
+            registration.showNotification("Title",{body:'Form updated!',icon:'./assets/icons/icon-256x256', dir:'auto'});
           });
         }
       });
@@ -245,11 +245,22 @@ export class ProjectService {
       console.log('Web Notification is supported');
     }
     Notification.requestPermission(function(permission){
-        let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
-        setTimeout(function(){
-            notification.close();
-        },6000);
+        // let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
+        // setTimeout(function(){
+        //     notification.close();
+        // },6000);
+
+        navigator.serviceWorker.register('worker-basic.min.js');
+        Notification.requestPermission(function(result) {
+          if (result === 'granted') {
+            navigator.serviceWorker.ready.then(function(registration) {
+              registration.showNotification("Title",{body:'Form updated!',icon:'./assets/icons/icon-256x256', dir:'auto'});
+            });
+          }
+        });
+
     });
+
 
   }
 
