@@ -189,17 +189,16 @@ export class ProjectService {
         console.log(res);
         if(res){
 
-          // if(! ('Notification' in window) ){
-          //     console.log('Web Notification not supported');
-          // } else {
-          //   console.log('Web Notification is supported');
-          // }
-
           this.emitForm_sync.emit(res.form_sync);
 
           if(res.form_token != localStorage.getItem('form_token')) {
             // token dosen't match
 
+            if(! ('Notification' in window) ){
+                console.log('Web Notification not supported');
+            } else {
+              console.log('Web Notification is supported');
+            }
             Notification.requestPermission(function(permission){
                 let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
                 // setTimeout(function(){
