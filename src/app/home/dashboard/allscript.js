@@ -1,9 +1,7 @@
-// 9582616520
-// 9818990131
-// 9911918006
-// 9582616520
-// 8375019185
-// 8375019185
-// 8588066730
-// 9818990131
-// 7289029496
+// Notification.requestPermission().then(function(result) {
+//   console.log(result);
+// });
+//
+// Notification.requestPermission(function(res) {
+//   console.log(res);
+// });

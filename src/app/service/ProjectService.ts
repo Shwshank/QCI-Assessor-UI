@@ -59,7 +59,6 @@ export class ProjectService {
     this.apiService.Login(data).subscribe(res=>{
       console.log(res);
       if(res.success){
-
         localStorage.setItem('token',res.token);
         localStorage.setItem('form_token',res.form_token);
         this.emitUserLogin.emit({success: true, msg: res.message});
@@ -70,10 +69,18 @@ export class ProjectService {
   }
 
   checkLogin() {
-    console.log('4');
+
     if(localStorage.getItem('token')) {
-      console.log('5');
+
+      Notification.requestPermission(function(permission){
+          let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
+          setTimeout(function(){
+              notification.close();
+          },6000);
+      });
+
       this.router.navigate(['./']);
+
     }
   }
 
@@ -234,7 +241,7 @@ export class ProjectService {
             notification.close();
         },6000);
     });
-    
+
   }
 
   getOfflineFormAndTemplate() {
