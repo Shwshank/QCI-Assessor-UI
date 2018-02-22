@@ -79,14 +79,14 @@ export class ProjectService {
       //     },6000);
       // });
 
-      navigator.serviceWorker.register('worker-basic.min.js');
-      Notification.requestPermission(function(result) {
-        if (result === 'granted') {
-          navigator.serviceWorker.ready.then(function(registration) {
-            registration.showNotification("Title",{body:'Form updated!',icon:'./assets/icons/icon-256x256', dir:'auto'});
-          });
-        }
-      });
+      // navigator.serviceWorker.register('worker-basic.min.js');
+      // Notification.requestPermission(function(result) {
+      //   if (result === 'granted') {
+      //     navigator.serviceWorker.ready.then(function(registration) {
+      //       registration.showNotification("Form updated!",{body:'Looks like a form was recently updated. ',icon:'./assets/icons/icon-256x256', dir:'auto'});
+      //     });
+      //   }
+      // });
 
       this.router.navigate(['./']);
 
