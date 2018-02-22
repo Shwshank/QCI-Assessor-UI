@@ -258,9 +258,7 @@ export class ProjectService {
             });
           }
         });
-
     });
-
 
   }
 
