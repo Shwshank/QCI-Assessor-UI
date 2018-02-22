@@ -194,17 +194,6 @@ export class ProjectService {
           if(res.form_token != localStorage.getItem('form_token')) {
             // token dosen't match
 
-            if(! ('Notification' in window) ){
-                console.log('Web Notification not supported');
-            } else {
-              console.log('Web Notification is supported');
-            }
-            Notification.requestPermission(function(permission){
-                let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
-                // setTimeout(function(){
-                //     notification.close();
-                // },3000);
-            });
             navigator.vibrate(this.vibrateDuration1);
 
             localStorage.setItem('form_token',res.form_token);
@@ -230,8 +219,22 @@ export class ProjectService {
   }
 
   saveOfflineFormAndTemplate(formArray, tempArray){
+
     localStorage.setItem('formArray', JSON.stringify(formArray));
     localStorage.setItem('tempArray', JSON.stringify(tempArray));
+
+    if(! ('Notification' in window) ){
+        console.log('Web Notification not supported');
+    } else {
+      console.log('Web Notification is supported');
+    }
+    Notification.requestPermission(function(permission){
+        let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
+        setTimeout(function(){
+            notification.close();
+        },6000);
+    });
+    
   }
 
   getOfflineFormAndTemplate() {
