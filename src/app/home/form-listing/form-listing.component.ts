@@ -10,7 +10,7 @@ import { ProjectService } from '../../service/ProjectService';
 })
 export class FormListingComponent implements OnInit {
 
-  cardArray : any = [];
+  cardArray : any = [{Details:{project:'Project name', name:"Form Name..."}, }, {Details:{project:'Project name', name:"Form Name..."}, }, {Details:{project:'Project name', name:"Form Name..."}, }, {Details:{project:'Project name', name:"Form Name..."}, }, {Details:{project:'Project name', name:"Form Name..."}, }];
   sub1: any;
   sub2: any;
   numOffline: any;
