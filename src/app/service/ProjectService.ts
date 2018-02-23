@@ -356,7 +356,6 @@ export class ProjectService {
     let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
       console.log(res);
       if(res.success){
-        navigator.vibrate(this.vibrateDuration0);
         this.emitFormResponse.emit({success:true, msg:"submitted"});
         sub1.unsubscribe();
       } else {
@@ -435,6 +434,8 @@ export class ProjectService {
             });
           }, err =>{
             alert("Insufficient storage! Please try again after having free space." );
+            window.location.reload();
+            // this.emitFormResponse.emit({success:false, msg:"not-submitted"});
           });
         }, function(e) { console.log('Error', e); }
     );
