@@ -206,6 +206,7 @@ export class ProjectService {
         if(res){
 
           this.emitForm_sync.emit(res.form_sync);
+          localStorage.setItem('form_sync',JSON.stringify(res.form_sync));
 
           if(res.form_token != localStorage.getItem('form_token')) {
             // token dosen't match
@@ -265,6 +266,8 @@ export class ProjectService {
   getOfflineFormAndTemplate() {
     let formArray = JSON.parse(localStorage.getItem('formArray'));
     let tempArray = JSON.parse(localStorage.getItem('tempArray'));
+
+    this.emitForm_sync.emit(localStorage.getItem('form_sync'));
 
     if(formArray.length) {
       for(let i = 0; i< formArray.length; i++) {

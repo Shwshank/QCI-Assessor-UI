@@ -226,6 +226,7 @@ export class FormBuilderComponent implements OnInit {
 
   updateJsonArray(cid, tempArray) {
     // console.log(tempArray);
+
     let index: any;
     let temp1 : any=[];
     let temp2 : any=[];
@@ -250,6 +251,10 @@ export class FormBuilderComponent implements OnInit {
 
     let temp = this.jsonArray;
     this.jsonArray = Array.from(new Set(this.jsonArray));
+
+    if(this.flags>0) {
+      localStorage.setItem('rules','false');
+    }
 
     componentHandler.upgradeDom();
   }
@@ -356,7 +361,9 @@ export class FormBuilderComponent implements OnInit {
 
   saveFormReaponce() {
     for(let json of this.jsonArray) {
-      this.checkError(json);
+      if(this.flags<=0) {
+        this.checkError(json);
+      }
     }
 
     for(let json of this.jsonArray) {
