@@ -424,7 +424,6 @@ export class ProjectService {
 
               // add response in Indexed
               db.add('asrResponse', { response: response }).then(() => {
-                navigator.vibrate(this.vibrateDuration0);
                 alert('Form stored in offline storage');
                 window.location.reload();
                 }, (error) => {
