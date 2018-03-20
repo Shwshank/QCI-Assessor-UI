@@ -52,6 +52,7 @@
 
         <div *ngIf="name" style="float: right">
           <i class="material-icons" style="float: right; cursor: pointer;" (click)="deleteFile()">clear</i>
+
         </div>
         <br> <br>
         <img [src]="url" style="">
@@ -62,7 +63,16 @@
         </video> -->
 
         <div *ngIf="name" style="float: right; margin: auto;">
-          {{name}}
+          {{name}} <br>
+
+          <span>
+
+            {{json.location.lat}} <br>
+            {{json.location.lng}} <br>
+            {{json.location.acc}}
+
+          </span>
+
         </div>
         <br>
         <!-- <div *ngIf="name">
