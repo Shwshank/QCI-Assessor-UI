@@ -37,8 +37,8 @@ export class InputLocationComponent implements OnInit {
       console.log(err);
     }, {
       enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
+      timeout: 50000,
+      maximumAge: 500
     });
   }
 
