@@ -28,10 +28,10 @@
       <button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon" style="margin-top:-1.4rem !important; max-height:2.5rem !important; height:2.5rem !important; min-height:2.5rem !important;">
         <i class="material-icons">more_vert</i>
       </button>
-      <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+      <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu "
           for="demo-menu-lower-right">
-        <li class="mdl-menu__item">Logout <i class="material-icons">lock</i> </li>
-        <li class="mdl-menu__item">User profile <i class="material-icons">perm_identity</i> </li>
+        <li class="mdl-menu__item" (click)="logout()"> Logout <i class="material-icons">lock</i> </li>
+        <li class="mdl-menu__item" [routerLink]="['/profile']">User profile <i class="material-icons">perm_identity</i> </li>
       </ul>
     </div>
   </header>
@@ -39,7 +39,7 @@
   <div class="mdl-layout__drawer mdl-shadow--4dp">
     <span class="mdl-layout-title">QCI - Collect</span>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;" [routerLink]="['/']"> <b> <i class="material-icons">store</i> Home </b> </a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;" [routerLink]="['/formListing']"> <b> <i class="material-icons">store</i> Home </b> </a>
       <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;" [routerLink]="['/flaggedFormListing']"> <b> <i class="material-icons">assistant_photo</i> Flag <span *ngIf="flag > 0" class="numberButton"> &nbsp; {{flag}} &nbsp;  </span></b> </a>
       <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/']" (click)='sync()'  style="text-align: left !important; padding-left: 50px !important;"  >
 

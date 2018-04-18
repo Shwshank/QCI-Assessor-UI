@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import 'rxjs/add/operator/map';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {ToastOptions} from 'ng2-toastr';
 
 import { routes } from './app.routes';
 import { AuthGuard } from './service/ZAuthGuard';
@@ -38,6 +41,7 @@ import { InputLocationComponent } from './home/forms/form-builder/input-location
 import { Graph1Component } from './home/form-listing/graph1/graph1.component';
 import { Graph2Component } from './home/form-listing/graph2/graph2.component';
 import { HelpComponent } from './home/help/help.component';
+import { UserProfileComponent } from './home/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -69,13 +73,16 @@ import { HelpComponent } from './home/help/help.component';
     InputLocationComponent,
     Graph1Component,
     Graph2Component,
-    HelpComponent
+    HelpComponent,
+    UserProfileComponent
   ],
   imports: [
     HttpModule,
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     RouterModule.forRoot(routes, { useHash: true }),
+    ToastModule.forRoot()
   ],
   providers: [
     AuthGuard,

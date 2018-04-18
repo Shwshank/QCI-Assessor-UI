@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router ) {
+  constructor(private router: Router, public toastr: ToastsManager, vcr: ViewContainerRef ) {
+    this.toastr.setRootViewContainerRef(vcr);
     this.router.navigate(['/']);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.toastr.success('You are awesome!', 'Success!');
+  }
 
 }

@@ -65,6 +65,7 @@ export class ProjectService {
       } else {}
     }, err=>{
       console.log(err);
+      alert("Invalid credentials!");
     });
   }
 

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { ProjectService } from '../../service/ProjectService';
+declare var $: any;
+import './app.js';
 
 @Component({
   selector: 'app-form-listing',
@@ -24,6 +25,7 @@ export class FormListingComponent implements OnInit {
 
   ngOnInit() {
     this.projectService.getFormArray();
+    this.flaggedForm();
   }
 
   form(cid) {
@@ -36,7 +38,6 @@ export class FormListingComponent implements OnInit {
   }
 
   flaggedForm() {
-    alert("yo");
   }
 
   ngOnDestroy() {

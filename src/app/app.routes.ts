@@ -9,6 +9,7 @@ import { TemplatesComponent } from './home/templates/templates.component';
 import { DashboardComponent } from './home/dashboard/dashboard.component';
 import { FlaggedFormListingComponent } from './home/flagged-form-listing/flagged-form-listing.component';
 import { HelpComponent } from './home/help/help.component';
+import { UserProfileComponent } from './home/user-profile/user-profile.component';
 
 export const routes: Routes = [
 
@@ -19,6 +20,7 @@ export const routes: Routes = [
     { path: 'form', component: FormsComponent, canActivate: [AuthGuard]},
     { path: 'help', component: HelpComponent, canActivate: [AuthGuard]},
     { path: 'template', component: TemplatesComponent, canActivate: [AuthGuard]},
+    { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard]},
   ]},
   { path: 'login', component: LoginComponent},
   { path: '**', redirectTo:'/login' }
