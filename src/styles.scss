@@ -8,6 +8,7 @@ $accent-text: gray;
 
 body{
   color: #545454;
+  overscroll-behavior: contain;
 }
 
 .errorMsg{
