@@ -81,7 +81,8 @@
       </div>
 
       <div *ngIf="json.type == 'camera'" >
-        <app-input-camera [json]=json  id={{i}}  (responseData)="responseData($event)"></app-input-camera>
+        Camera Element will be back shortly!
+        <!-- <app-input-camera [json]=json  id={{i}}  (responseData)="responseData($event)"></app-input-camera> -->
       </div>
 
       <div *ngIf="json.type == 'video'" >
@@ -89,8 +90,9 @@
       </div>
 
       <div *ngIf="json.type == 'location'" >
-       <!-- &nbsp; &nbsp; {{(i+1)}}. Location :: {{getCurrentLocation()}} <br><br> -->
-         <app-input-location [json]=json  id={{i}}  (responseData)="responseData($event)"></app-input-location>
+        <!-- &nbsp; &nbsp; {{(i+1)}}. Location :: {{getCurrentLocation()}} <br><br> -->
+        Location Element will be back shortly!
+        <!-- <app-input-location [json]=json  id={{i}}  (responseData)="responseData($event)"></app-input-location> -->
       </div>
 
       <div *ngIf="json.type == 'break'">

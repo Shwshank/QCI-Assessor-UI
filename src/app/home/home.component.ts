@@ -15,7 +15,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.toastr.success('You are awesome!', 'Success!');
+    // toaster works!
+    // this.toastr.success('You are awesome!', 'Success!');
   }
 
 }

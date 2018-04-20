@@ -15,10 +15,16 @@ export class FormListingComponent implements OnInit {
   sub1: any;
   sub2: any;
   numOffline: any;
+  offlineFormIdArrray: any = [];
 
   constructor(private projectService: ProjectService, private router: Router) {
     this.sub1 = this.projectService.emitFormArray.subscribe(res=>{
+      // console.log(res);
         this.cardArray = res;
+    });
+
+    this.sub2 = this.projectService.emitofflineFormIdArrray.subscribe(res=>{
+      this.offlineFormIdArrray = res;
     });
 
   }
@@ -40,8 +46,22 @@ export class FormListingComponent implements OnInit {
   flaggedForm() {
   }
 
+  offlineFormCount(id) {
+    // console.log(this.offlineFormIdArrray);
+    let c = 0;
+    for(let i=0; i<this.offlineFormIdArrray.length; i++) {
+      if(id==this.offlineFormIdArrray[i]){
+
+        c++;
+      }
+    }
+
+    return c;
+  }
+
   ngOnDestroy() {
     this.sub1.unsubscribe();
+    this.sub2.unsubscribe();
   }
 
 }

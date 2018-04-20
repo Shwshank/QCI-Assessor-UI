@@ -40,10 +40,13 @@ export class ProjectService {
   emitIndexedDBInitializedRes = new EventEmitter<any>();
   emitFlaggedFormArray = new EventEmitter<any>();
   emitForm_sync = new EventEmitter<any>();
+  emitofflineFormIdArrray = new EventEmitter<any>();
 
   db = new AngularIndexedDB('responseDB', 1);
 
   formArray = [];
+
+  offlineFormIdArrray = [];
 
   flaggedFormArray = [];
 
@@ -375,7 +378,7 @@ export class ProjectService {
   }
 
   initializeIndexDB() {
-
+    this.offlineFormIdArrray = [];
     this.db.openDatabase(1, (evt) => {
         let objectStore = evt.currentTarget.result.createObjectStore(
             'asrResponse', { keyPath: "id", autoIncrement: true });
@@ -394,7 +397,18 @@ export class ProjectService {
 
       db.getAll('asrResponse').then((response) => {
           temp = response.length;
+
+          // offline responses corresponding to formID
+          if(response.length) {
+
+            for(let  i=0; i<response.length; i++ ) {
+              this.offlineFormIdArrray.push(response[i].response.ResDetails.cid);
+            }
+
+          }
           this.emitOfflineResponse.emit(temp);
+          this.emitofflineFormIdArrray.emit(this.offlineFormIdArrray);
+          // console.log(this.offlineFormIdArrray);
       }, (error) => {
           console.log(error);
       });
