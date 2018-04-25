@@ -30,8 +30,11 @@ export class FormBuilderComponent implements OnInit {
   displayRequired : any = 0;
   flags : any = 0;
   position: any;
+  chunk:any= {responseTimeStamp:'', formID:'', version:''};
 
   constructor(private projectService: ProjectService, private router: Router) {
+
+    this.createResponseTimeStamp();
 
     this.projectService.emitFormResponse.subscribe((res)=>{
 
@@ -84,13 +87,33 @@ export class FormBuilderComponent implements OnInit {
         this.submitButton = "Submit";
     }
 
+    this.projectService.emitChunkSuccess.subscribe(res=>{
+      for( let i =0; i<this.completeArray.Elements.length; i++) {
+        if(res==this.completeArray.Elements[i].cid) {
+          this.completeArray.Elements[i].chunkStatus = true;
+          // console.log("____");
+          break;
+
+        }
+      }
+      // console.log(this.completeArray);
+    });
   }
 
   ngOnInit() {}
 
+  createResponseTimeStamp() {
+    let d = new Date();
+    let cid = d.getTime() +""+ Math.floor(1000 + Math.random() * 8999);
+    localStorage.setItem('responseTimeStamp',cid);
+  }
+
   responseData(data: any) {
-    console.log(data);
+
     componentHandler.upgradeDom();
+    console.log(data);
+
+    this.sendChunk(data);
 
     this.flag = 0;
     this.pos = 0;
@@ -359,6 +382,25 @@ export class FormBuilderComponent implements OnInit {
     }
   }
 
+  setMetaChunk(){
+    this.chunk.responseTimeStamp = localStorage.getItem('responseTimeStamp');
+    this.chunk.formID = this.completeArray.Details.cid;
+    this.chunk.version = this.completeArray.Details.version;
+  }
+
+  sendChunk(data){
+    this.setMetaChunk();
+    this.projectService.syncChunk(data, this.chunk);
+  }
+
+  checkAllChunks() {
+    for(let i = 0;i<this.completeArray.Elements.length; i++) {
+      if(!this.completeArray.Elements[i].chunkStatus && this.completeArray.Elements[i].required) {
+        this.sendChunk(this.completeArray.Elements[i]);
+      }
+    }
+  }
+
   saveFormReaponce() {
     for(let json of this.jsonArray) {
       if(this.flags<=0) {
@@ -375,7 +417,10 @@ export class FormBuilderComponent implements OnInit {
     if(!this.formError){
       componentHandler.upgradeDom();
       this.completeArray.Elements = this.jsonArray;
-      this.projectService.submitFormArray(this.completeArray);
+
+      this.checkAllChunks();
+
+      // this.projectService.submitFormArray(this.completeArray);
 
       this.formResponse = false;
       this.jsonArray = [];

@@ -41,6 +41,7 @@ export class ProjectService {
   emitFlaggedFormArray = new EventEmitter<any>();
   emitForm_sync = new EventEmitter<any>();
   emitofflineFormIdArrray = new EventEmitter<any>();
+  emitChunkSuccess = new EventEmitter<any>();
 
   db = new AngularIndexedDB('responseDB', 1);
 
@@ -360,10 +361,23 @@ export class ProjectService {
     }
   }
 
+  syncChunk(data: any, chunk: any) {
+    console.log("----");
+    console.log(data);
+    console.log("____");
+    let sub1 = this.apiService.SyncChunk(data, chunk).subscribe(res=>{
+      console.log(res);
+      if(res.success) {
+        this.emitChunkSuccess.emit(data.cid);
+      }
+    })
+  }
+
   syncOnline(response) {
     let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
       console.log(res);
       if(res.success){
+        // sync form
         this.emitFormResponse.emit({success:true, msg:"submitted"});
         sub1.unsubscribe();
       } else {

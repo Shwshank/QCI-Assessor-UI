@@ -19,7 +19,7 @@ export class FormListingComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private router: Router) {
     this.sub1 = this.projectService.emitFormArray.subscribe(res=>{
-      // console.log(res);
+      console.log(res);
         this.cardArray = res;
     });
 
@@ -35,7 +35,7 @@ export class FormListingComponent implements OnInit {
   }
 
   form(cid) {
-    console.log("here1");
+    // console.log("here1");
       this.router.navigate(['/form'], { queryParams: {id: cid}})
   }
 
