@@ -370,7 +370,9 @@ export class ProjectService {
       if(res.success) {
         this.emitChunkSuccess.emit(data.cid);
       }
-    })
+    }, err=>{
+      console.log(err);
+    });
   }
 
   syncOnline(response) {
@@ -389,6 +391,23 @@ export class ProjectService {
       this.addResponseToIndexDB(response);
       sub1.unsubscribe();
     });
+  }
+
+  sendSubmitResponseID(response , id) {
+
+    this.apiService.SendSubmitResponseID(id).subscribe(res=>{
+      console.log(res);
+      if(res.success) {
+        this.emitFormResponse.emit({success: true});
+      } else {
+        this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+        this.addResponseToIndexDB(response);
+      }
+    }, err=>{
+      console.log(err);
+      this.addResponseToIndexDB(response);
+    });
+
   }
 
   initializeIndexDB() {
@@ -458,7 +477,7 @@ export class ProjectService {
               // add response in Indexed
               db.add('asrResponse', { response: response }).then(() => {
                 alert('Form stored in offline storage');
-                window.location.reload();
+                // window.location.reload();
                 }, (error) => {
                   alert('Some error occurs while storing the form. Please try again');
                   window.location.reload();

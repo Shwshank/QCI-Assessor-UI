@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-
 import { ProjectService } from '../../../service/ProjectService';
 import './allscript.js';
 
@@ -21,7 +20,8 @@ export class FormBuilderComponent implements OnInit {
   display = false;
   formError = false;
   rule = false;
-  submitButton = 'Submit';
+  submitButton = '...';
+  submitButton2 = 'Are you sure to Submit';
   templateCid: any;
   disableSubmitButton : any = true;
   send : any;
@@ -31,12 +31,21 @@ export class FormBuilderComponent implements OnInit {
   flags : any = 0;
   position: any;
   chunk:any= {responseTimeStamp:'', formID:'', version:''};
+  submitFlag = false;
+  button1: any = true;
+  button2: any = true;
+  controller: any = false;
+  s1: any;
+  s2: any;
+  s3: any;
+  s4: any;
+  s5: any;
 
   constructor(private projectService: ProjectService, private router: Router) {
 
     this.createResponseTimeStamp();
 
-    this.projectService.emitFormResponse.subscribe((res)=>{
+    this.s1 = this.projectService.emitFormResponse.subscribe((res)=>{
 
       if(res.success) {
         this.send = true;
@@ -55,7 +64,7 @@ export class FormBuilderComponent implements OnInit {
       }
     });
 
-    this.projectService.emitFormElement.subscribe((res)=>{
+    this.s2 = this.projectService.emitFormElement.subscribe((res)=>{
       this.formResponse = true;
       this.disableSubmitButton = false;
       this.rule = false;
@@ -84,23 +93,31 @@ export class FormBuilderComponent implements OnInit {
     });
 
     if(!this.rule) {
-        this.submitButton = "Submit";
+        this.submitButton = "Proceed";
     }
 
-    this.projectService.emitChunkSuccess.subscribe(res=>{
+    this.s3 = this.projectService.emitChunkSuccess.subscribe(res=>{
+
+      this.disableSubmitButton = false;
+      componentHandler.upgradeDom();
+
+      // Update chunk status
       for( let i =0; i<this.completeArray.Elements.length; i++) {
         if(res==this.completeArray.Elements[i].cid) {
           this.completeArray.Elements[i].chunkStatus = true;
-          // console.log("____");
           break;
-
         }
       }
-      // console.log(this.completeArray);
+
+      // Check if user has submit all elements
+      this.checkForSubmit();
+
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.button2 = false;
+  }
 
   createResponseTimeStamp() {
     let d = new Date();
@@ -109,6 +126,9 @@ export class FormBuilderComponent implements OnInit {
   }
 
   responseData(data: any) {
+
+    this.button1 = true;
+    this.button2 = false;
 
     componentHandler.upgradeDom();
     console.log(data);
@@ -388,46 +408,108 @@ export class FormBuilderComponent implements OnInit {
     this.chunk.version = this.completeArray.Details.version;
   }
 
+  proceedForSumbit() {
+    // check error start here
+      for(let json of this.jsonArray) {
+        if(this.flags<=0) {
+          this.checkError(json);
+        }
+      }
+
+      for(let json of this.jsonArray) {
+        if(json.errorMsg){
+          this.formError = true;
+        }
+      }
+
+      if(!this.formError){
+        this.button1 = false;
+        this.button2 = true;
+
+        // check error start here
+          for(let json of this.jsonArray) {
+            if(this.flags<=0) {
+              this.checkError(json);
+            }
+          }
+
+          for(let json of this.jsonArray) {
+            if(json.errorMsg){
+              this.formError = true;
+            }
+          }
+
+          this.submitFlag = true;
+          this.checkAllChunks();
+      } else {
+        this.button1 = true;
+        this.button2 = false;
+      }
+  }
+
   sendChunk(data){
     this.setMetaChunk();
     this.projectService.syncChunk(data, this.chunk);
+    this.disableSubmitButton = true;
+    componentHandler.upgradeDom();
   }
 
   checkAllChunks() {
+
     for(let i = 0;i<this.completeArray.Elements.length; i++) {
       if(!this.completeArray.Elements[i].chunkStatus && this.completeArray.Elements[i].required) {
         this.sendChunk(this.completeArray.Elements[i]);
+      } else {
+        this.checkForSubmit();
+      }
+    }
+  }
+
+  checkForSubmit() {
+
+    // console.log(" Here ");
+
+    this.controller = true;
+
+    // Check if user has click submit button
+    if(this.submitFlag) {
+      for(let i = 0;i<this.completeArray.Elements.length; i++) {
+        if(this.completeArray.Elements[i].chunkStatus ||  !this.completeArray.Elements[i].required) {
+          this.controller = true;
+          console.log(i+" Passed ");
+        } else {
+          this.controller = false;
+          console.log(i+" failed ");
+          break;
+        }
       }
     }
   }
 
   saveFormReaponce() {
-    for(let json of this.jsonArray) {
-      if(this.flags<=0) {
-        this.checkError(json);
-      }
-    }
 
-    for(let json of this.jsonArray) {
-      if(json.errorMsg){
-        this.formError = true;
-      }
-    }
+          let id;
+          if(this.controller) {
 
-    if(!this.formError){
-      componentHandler.upgradeDom();
-      this.completeArray.Elements = this.jsonArray;
+            // emit success
+            console.log('data send');
+            // Send final submit Response ID
+             id = localStorage.getItem('responseTimeStamp');
+             this.projectService.sendSubmitResponseID(this.completeArray, id);
+            //  this.projectService.emitFormResponse.emit({success: true});
+          } else {
 
-      this.checkAllChunks();
+            // this.responseError = true;
+            // data not sync
+            // save data offline
+            console.log('data not send');
+            this.projectService.submitFormArray(this.completeArray);
+          }
 
-      // this.projectService.submitFormArray(this.completeArray);
-
-      this.formResponse = false;
-      this.jsonArray = [];
-      this.disableSubmitButton = true;
-      this.submitButton = "Just a moment";
-      componentHandler.upgradeDom();
-    }
+          this.formResponse = false;
+          this.jsonArray = [];
+          this.submitButton = "Just a moment";
+          componentHandler.upgradeDom();
   }
 
   ngAfterViewInit() {
@@ -454,6 +536,12 @@ export class FormBuilderComponent implements OnInit {
     setTimeout(()=>{
       this.router.navigate(['/dash']);
     }, 300);
+  }
+
+  ngOnDestroy() {
+    this.s1.unsubscribe();
+    this.s2.unsubscribe();
+    this.s3.unsubscribe();
   }
 
 }

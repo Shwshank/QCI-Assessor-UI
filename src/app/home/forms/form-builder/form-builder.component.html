@@ -105,12 +105,15 @@
 
     <div *ngIf='jsonArray.length > 0' class="mdl-grid">
       <div class="mdl-cell mdl-cell--12-col" style="margin: auto;">
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" (click)='saveFormReaponce()' [ngClass]="{disabled : disableSubmitButton}">
+
+        <button *ngIf="button1" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" (click)='proceedForSumbit()' >
          <b>{{submitButton}}  <i class="material-icons">send</i></b>
         </button>
-        <div *ngIf="disableSubmitButton" style="float:right" >
-          <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
-        </div>
+
+        <button *ngIf="button2" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" (click)='saveFormReaponce()' >
+         <b>{{submitButton2}}  <i class="material-icons">send</i></b>
+        </button>
+
       </div>
     </div>
 

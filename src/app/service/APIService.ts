@@ -74,6 +74,15 @@ export class APIService {
     return this.http.post(this.projectURL+'/submitChunkResponse', chunkData,{headers: headers}).map(res=>res.json());
   }
 
+  SendSubmitResponseID(id) {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+
+    let responseID = new FormData();
+    responseID.append('id',id);
+    return this.http.post(this.projectURL+'/submitResponseID', responseID,{headers: headers}).map(res=>res.json());
+  }
+
   CheckImage(image: any){
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
