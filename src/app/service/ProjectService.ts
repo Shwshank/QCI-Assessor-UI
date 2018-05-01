@@ -9,6 +9,32 @@ export class ProjectService {
   size: any;
   constructor(private apiService: APIService, private router: Router) {}
 
+  vibrateDuration0: any = 100;
+  vibrateDuration1: any = 200;
+  emitFormElement = new EventEmitter<any>();
+  emitFormCard = new EventEmitter<any>();
+  emitFormArray = new EventEmitter<any>();
+  emitFormResponse = new EventEmitter<any>();
+  emitSyncResponse = new EventEmitter<any>();
+  emitUserLogin = new EventEmitter<any>();
+  emitOfflineResponse = new EventEmitter<any>();
+  emitIndexedDBInitializedRes = new EventEmitter<any>();
+  emitFlaggedFormArray = new EventEmitter<any>();
+  emitForm_sync = new EventEmitter<any>();
+  emitofflineFormIdArrray = new EventEmitter<any>();
+  emitChunkSuccess = new EventEmitter<any>();
+  emitOfflineChunkSuccess = new EventEmitter<any>();
+  formArray = [];
+  offlineFormIdArrray = [];
+  flaggedFormArray = [];
+  formCard= [];
+  templateArray = [];
+  storeFormArrayTemp :any = [];
+  submittedForm: any[];
+  chunk:any= {responseTimeStamp:'', formID:'', version:''};
+
+  db = new AngularIndexedDB('responseDB', 1);
+
   cid() {
     let d = new Date();
     let cid = d.getTime() +""+ Math.floor(1000 + Math.random() * 8999);
@@ -28,36 +54,6 @@ export class ProjectService {
     cdate += ":"+min2;
     return cdate;
   }
-  vibrateDuration0: any = 100;
-  vibrateDuration1: any = 200;
-  emitFormElement = new EventEmitter<any>();
-  emitFormCard = new EventEmitter<any>();
-  emitFormArray = new EventEmitter<any>();
-  emitFormResponse = new EventEmitter<any>();
-  emitSyncResponse = new EventEmitter<any>();
-  emitUserLogin = new EventEmitter<any>();
-  emitOfflineResponse = new EventEmitter<any>();
-  emitIndexedDBInitializedRes = new EventEmitter<any>();
-  emitFlaggedFormArray = new EventEmitter<any>();
-  emitForm_sync = new EventEmitter<any>();
-  emitofflineFormIdArrray = new EventEmitter<any>();
-  emitChunkSuccess = new EventEmitter<any>();
-
-  db = new AngularIndexedDB('responseDB', 1);
-
-  formArray = [];
-
-  offlineFormIdArrray = [];
-
-  flaggedFormArray = [];
-
-  formCard= [];
-
-  templateArray = [];
-
-  storeFormArrayTemp :any = [];
-
-  submittedForm: any[];
 
   login(data: any) {
     this.apiService.Login(data).subscribe(res=>{
@@ -169,34 +165,110 @@ export class ProjectService {
         // console.log(response);
         if(response.length) {
             for(let i=0; i<response.length; i++) {
-              // console.log(response[i]);
 
-              let sub1 = this.apiService.SubmitResponse(response[i].response).subscribe(res=>{
-                // console.log(res);
-                if(res.success){
-                  this.emitSyncResponse.emit({success:true, msg:"synced!"});
-                  this.db.delete('asrResponse', response[i].id).then(() => {
-                    navigator.vibrate(this.vibrateDuration0);
-                    // console.log('response deleted at position ', +i, response[i].id);
-                  }, (error) => {
-                      console.log(error);
-                      alert("Some error detected! Please try again");
-                      window.location.reload();
-                  });
-                  sub1.unsubscribe();
-                } else {
-                  this.emitSyncResponse.emit({success:false, msg:"not-synced!"});
-                }
-              },err=> {
-                console.log(err);
-                this.emitSyncResponse.emit({success:false, msg:"not-synced!"});
-                sub1.unsubscribe();
-              });
+              console.log(response[i]);
+
+              for(let j=0; j<response[i].response.ResElements.length; j++) {
+                response[i].response.ResElements[j].chunkStatus = false;
+                // console.log(response[i].response.ResElements[j]);
+              }
+
+              this.syncOffline(response[i]);
+
+
+              // let sub1 = this.apiService.SubmitResponse(response[i].response).subscribe(res=>{
+              //   // console.log(res);
+              //   if(res.success){
+              //     this.emitSyncResponse.emit({success:true, msg:"synced!"});
+              //     this.db.delete('asrResponse', response[i].id).then(() => {
+              //       navigator.vibrate(this.vibrateDuration0);
+              //       // console.log('response deleted at position ', +i, response[i].id);
+              //     }, (error) => {
+              //         console.log(error);
+              //         alert("Some error detected! Please try again");
+              //         window.location.reload();
+              //     });
+              //     sub1.unsubscribe();
+              //   } else {
+              //     this.emitSyncResponse.emit({success:false, msg:"not-synced!"});
+              //   }
+              // },err=> {
+              //   console.log(err);
+              //   this.emitSyncResponse.emit({success:false, msg:"not-synced!"});
+              //   sub1.unsubscribe();
+              // });
             }
         }
     }, (error) => {
         console.log(error);
     });
+  }
+
+  syncOffline(res: any) {
+
+    let sub1 = this.emitOfflineChunkSuccess.subscribe(cid=>{
+
+        for( let i =0; i<res.response.ResElements.length; i++) {
+          if(cid==res.response.ResElements[i].cid) {
+
+            res.response.ResElements[i].chunkStatus = true;
+            this.checkAllOfflineChunk(res);
+          }
+        }
+
+    }, err=>{
+      console.log(err);
+
+    });
+
+    this.setMetaChunk(res);
+    for(let i = 0; i<res.response.ResElements.length; i++) {
+      // console.log(res.response.ResElements[i].chunkStatus);
+
+      if(!res.response.ResElements[i].chunkStatus) {
+        // setTimeout( () => this.syncChunkOffline(res.response.ResElements[i], this.chunk), 5000);
+        this.syncChunkOffline(res.response.ResElements[i], this.chunk);
+      }
+    }
+  }
+
+  setMetaChunk(res: any){
+    this.chunk.responseTimeStamp = res.response.ResCid;
+    this.chunk.formID = res.response.ResDetails.cid;
+    this.chunk.version = res.response.ResDetails.version;
+  }
+
+  syncChunkOffline(data: any, chunk: any) {
+    // console.log(data);
+    let sum = 0;
+    let sub1 = this.apiService.SyncChunk(data, chunk).subscribe(res=>{
+
+      console.log(sum);
+      console.log(res);
+      if(res.success) {
+        this.emitOfflineChunkSuccess.emit(data.cid);
+      }
+    }, err=>{
+      console.log(err);
+    });
+  }
+
+  checkAllOfflineChunk(res) {
+
+    let syncFlag = false;
+    for(let i = 0; i< res.response.ResElements.length; i++) {
+      if(res.response.ResElements[i].chunkStatus) {
+
+        syncFlag = true;
+      } else {
+        syncFlag = false;
+        break;
+      }
+    }
+
+    if(syncFlag) {
+      this.sendSubmitOfflineResponseID(res);
+    }
   }
 
   getFormArray() {
@@ -354,11 +426,15 @@ export class ProjectService {
 
     console.log(response);
 
-    if(navigator.onLine) {
-      this.syncOnline(response);                      // Sysnc Online
-    } else {
-      this.addResponseToIndexDB(response);            // save data in IndexedDB
-    }
+    this.addResponseToIndexDB(response);
+
+    // update in chunk version
+
+    // if(navigator.onLine) {
+    //   this.syncOnline(response);                      // Sysnc Online
+    // } else {
+    //   this.addResponseToIndexDB(response);            // save data in IndexedDB
+    // }
   }
 
   syncChunk(data: any, chunk: any) {
@@ -399,15 +475,41 @@ export class ProjectService {
       console.log(res);
       if(res.success) {
         this.emitFormResponse.emit({success: true});
+        this.submitResponse(response);
       } else {
         this.emitFormResponse.emit({success:false, msg:"not-submitted"});
-        this.addResponseToIndexDB(response);
+        this.submitResponse(response);
       }
     }, err=>{
       console.log(err);
-      this.addResponseToIndexDB(response);
+      this.submitResponse(response);
     });
+  }
 
+  sendSubmitOfflineResponseID(res) {
+    console.log(res);
+
+    this.apiService.SendSubmitResponseID(res.response.ResCid).subscribe(res2=>{
+      console.log(res2);
+
+      if(res2.success) {
+        this.emitSyncResponse.emit({success:true, msg:"synced!"});
+          this.db.delete('asrResponse', res.id).then(() => {
+            navigator.vibrate(this.vibrateDuration0);
+
+          }, (error) => {
+              console.log(error);
+              alert("Some error detected! Please try again");
+              window.location.reload();
+
+          });
+      } else {
+        alert('Some error occurs!');
+      }
+    }, err=>{
+      console.log(err);
+      alert('Some error occurs!');
+    });
   }
 
   initializeIndexDB() {
@@ -432,6 +534,7 @@ export class ProjectService {
           temp = response.length;
 
           // offline responses corresponding to formID
+
           if(response.length) {
 
             for(let  i=0; i<response.length; i++ ) {
@@ -477,7 +580,7 @@ export class ProjectService {
               // add response in Indexed
               db.add('asrResponse', { response: response }).then(() => {
                 alert('Form stored in offline storage');
-                // window.location.reload();
+                window.location.reload();
                 }, (error) => {
                   alert('Some error occurs while storing the form. Please try again');
                   window.location.reload();

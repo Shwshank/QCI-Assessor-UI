@@ -70,8 +70,8 @@ export class APIService {
     chunk = JSON.stringify(chunk);
     chunkData.append('chunk',chunk);
 
-
     return this.http.post(this.projectURL+'/submitChunkResponse', chunkData,{headers: headers}).map(res=>res.json());
+    // setTimeout( () => {}, 5000)
   }
 
   SendSubmitResponseID(id) {
