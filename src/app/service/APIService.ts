@@ -74,6 +74,22 @@ export class APIService {
     // setTimeout( () => {}, 5000)
   }
 
+
+  SyncMeta(meta: any) {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+
+    meta = JSON.stringify(meta);
+    meta = JSON.parse(meta);
+    meta = JSON.stringify(meta);
+    let metaData = new FormData();
+    metaData.append('meta',meta);
+
+    return this.http.post(this.projectURL+'/startResponse', metaData,{headers: headers}).map(res=>res.json());
+
+  }
+
+
   SendSubmitResponseID(id) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);

@@ -32,6 +32,7 @@ export class ProjectService {
   storeFormArrayTemp :any = [];
   submittedForm: any[];
   chunk:any= {responseTimeStamp:'', formID:'', version:''};
+  sub1 : any;
 
   db = new AngularIndexedDB('responseDB', 1);
 
@@ -173,8 +174,7 @@ export class ProjectService {
                 // console.log(response[i].response.ResElements[j]);
               }
 
-              this.syncOffline(response[i]);
-
+              this.syncOffline1(response[i]);
 
               // let sub1 = this.apiService.SubmitResponse(response[i].response).subscribe(res=>{
               //   // console.log(res);
@@ -204,15 +204,15 @@ export class ProjectService {
     });
   }
 
-  syncOffline(res: any) {
+  syncOffline1(res: any) {
 
-    let sub1 = this.emitOfflineChunkSuccess.subscribe(cid=>{
+    this.sub1 = this.emitOfflineChunkSuccess.subscribe(cid=>{
 
         for( let i =0; i<res.response.ResElements.length; i++) {
           if(cid==res.response.ResElements[i].cid) {
 
             res.response.ResElements[i].chunkStatus = true;
-            this.checkAllOfflineChunk(res);
+            this.checkAllOfflineChunk4(res);
           }
         }
 
@@ -221,39 +221,56 @@ export class ProjectService {
 
     });
 
-    this.setMetaChunk(res);
-    for(let i = 0; i<res.response.ResElements.length; i++) {
-      // console.log(res.response.ResElements[i].chunkStatus);
-
-      if(!res.response.ResElements[i].chunkStatus) {
-        // setTimeout( () => this.syncChunkOffline(res.response.ResElements[i], this.chunk), 5000);
-        this.syncChunkOffline(res.response.ResElements[i], this.chunk);
-      }
-    }
+    this.setMetaChunk2(res);
   }
 
-  setMetaChunk(res: any){
+  setMetaChunk2(res: any){
     this.chunk.responseTimeStamp = res.response.ResCid;
     this.chunk.formID = res.response.ResDetails.cid;
     this.chunk.version = res.response.ResDetails.version;
+
+    this.apiService.SyncMeta(this.chunk).subscribe(res2=>{
+      console.log(this.chunk);
+      if(res2.success) {
+        for(let i = 0; i<res.response.ResElements.length; i++) {
+          // console.log(res.response.ResElements[i].chunkStatus);
+
+          if(!res.response.ResElements[i].chunkStatus) {
+            // setTimeout( () => this.syncChunkOffline(res.response.ResElements[i], this.chunk), 5000);
+            this.syncChunkOffline3(res, res.response.ResElements[i]);
+          }
+        }
+      }
+    }, err=>{
+      console.log(err);
+    })
+
   }
 
-  syncChunkOffline(data: any, chunk: any) {
-    // console.log(data);
-    let sum = 0;
+  syncChunkOffline3(res, data: any) {
+    let chunk = {responseTimeStamp:'', formID:'', version:''};
+    chunk.responseTimeStamp = res.response.ResCid;
+    chunk.formID = res.response.ResDetails.cid;
+    chunk.version = res.response.ResDetails.version;
+
+    console.log(data);
+    console.log(chunk);
+
+
     let sub1 = this.apiService.SyncChunk(data, chunk).subscribe(res=>{
 
-      console.log(sum);
-      console.log(res);
+      // console.log(sum);
+      // console.log(res);
       if(res.success) {
         this.emitOfflineChunkSuccess.emit(data.cid);
       }
+      sub1.unsubscribe();
     }, err=>{
       console.log(err);
     });
   }
 
-  checkAllOfflineChunk(res) {
+  checkAllOfflineChunk4(res) {
 
     let syncFlag = false;
     for(let i = 0; i< res.response.ResElements.length; i++) {
@@ -267,8 +284,34 @@ export class ProjectService {
     }
 
     if(syncFlag) {
-      this.sendSubmitOfflineResponseID(res);
+      this.sendSubmitOfflineResponseID5(res);
     }
+  }
+
+  sendSubmitOfflineResponseID5(res) {
+    console.log(res);
+
+    this.apiService.SendSubmitResponseID(res.response.ResCid).subscribe(res2=>{
+      // console.log(res2);
+
+      if(res2.success) {
+        this.emitSyncResponse.emit({success:true, msg:"synced!"});
+          this.db.delete('asrResponse', res.id).then(() => {
+            navigator.vibrate(this.vibrateDuration0);
+
+          }, (error) => {
+              console.log(error);
+              alert("Some error detected! Please try again");
+              window.location.reload();
+
+          });
+      } else {
+        alert('Some error occurs!');
+      }
+    }, err=>{
+      console.log(err);
+      alert('Some error occurs!');
+    });
   }
 
   getFormArray() {
@@ -472,7 +515,7 @@ export class ProjectService {
   sendSubmitResponseID(response , id) {
 
     this.apiService.SendSubmitResponseID(id).subscribe(res=>{
-      console.log(res);
+      // console.log(res);
       if(res.success) {
         this.emitFormResponse.emit({success: true});
         this.submitResponse(response);
@@ -483,32 +526,6 @@ export class ProjectService {
     }, err=>{
       console.log(err);
       this.submitResponse(response);
-    });
-  }
-
-  sendSubmitOfflineResponseID(res) {
-    console.log(res);
-
-    this.apiService.SendSubmitResponseID(res.response.ResCid).subscribe(res2=>{
-      console.log(res2);
-
-      if(res2.success) {
-        this.emitSyncResponse.emit({success:true, msg:"synced!"});
-          this.db.delete('asrResponse', res.id).then(() => {
-            navigator.vibrate(this.vibrateDuration0);
-
-          }, (error) => {
-              console.log(error);
-              alert("Some error detected! Please try again");
-              window.location.reload();
-
-          });
-      } else {
-        alert('Some error occurs!');
-      }
-    }, err=>{
-      console.log(err);
-      alert('Some error occurs!');
     });
   }
 
