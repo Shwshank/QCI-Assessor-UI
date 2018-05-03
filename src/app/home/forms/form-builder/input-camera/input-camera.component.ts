@@ -21,6 +21,7 @@ export class InputCameraComponent implements OnInit {
   geolocationPosition: any;
   disabled: any = false;
   position: any;
+  waitingFlag = false;
 
   constructor(private projectService: ProjectService) {}
 
@@ -49,8 +50,8 @@ export class InputCameraComponent implements OnInit {
     reader.onload = (event:any) => {
       this.url = event.target.result;
       this.json.value = reader.result;
+      this.json.location = {lat: 0, lng: 0, acc : 9999};
       this.json.location = this.getLocation();
-      this.responseData.emit(this.json);
     }
 
   }
@@ -65,12 +66,18 @@ export class InputCameraComponent implements OnInit {
   }
 
   getLocation(){
+
+    this.waitingFlag = true;
+
     let value;
     let lat;
     let lng;
     let accuracy;
 
+    this.json.location = {lat: 0, lng: 0, acc : 9999};
+
     navigator.geolocation.getCurrentPosition(res=>{
+      this.waitingFlag = false;
       console.log(res);
       value = res;
       lat = value.coords.latitude;
@@ -79,13 +86,15 @@ export class InputCameraComponent implements OnInit {
 
       this.json.location = {lat: lat, lng: lng, acc : accuracy};
       console.log(this.json.location);
-
+      this.responseData.emit(this.json);
     }, err=>{
       console.log(err);
+      this.json.location = {lat: 0, lng: 0, acc : 9999};
+      this.responseData.emit(this.json);
     }, {
       enableHighAccuracy: true,
-      timeout: 50000,
-      maximumAge: 500
+      timeout: 60000,
+      maximumAge: 10000
     });
   }
 

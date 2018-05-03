@@ -11,7 +11,7 @@ export class InputLocationComponent implements OnInit {
   @Input() id: any;
   @Output() responseData = new EventEmitter<any>();
   disabled : any = false;
-
+  waitingFlag = false;
   value: any ;
   lat : any;
   lng: any;
@@ -20,25 +20,39 @@ export class InputLocationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-      this.refreshLocation();
+      this.getLocation();
   }
 
-  refreshLocation() {
-    navigator.geolocation.getCurrentPosition(res=>{
-      console.log(res);
-      this.value = res;
-      this.lat = this.value.coords.latitude;
-      this.lng = this.value.coords.longitude;
-      this.accuracy = this.value.coords.accuracy;
-      this.json.value = {lat: this.lat, lng: this.lng, acc : this.accuracy};
-      this.responseData.emit(this.json);
+  getLocation(){
 
+    this.waitingFlag = true;
+
+    let value;
+    let lat;
+    let lng;
+    let accuracy;
+
+    this.json.location = {lat: 0, lng: 0, acc : 9999};
+
+    navigator.geolocation.getCurrentPosition(res=>{
+      this.waitingFlag = false;
+      console.log(res);
+      value = res;
+      lat = value.coords.latitude;
+      lng = value.coords.longitude;
+      accuracy = value.coords.accuracy;
+
+      this.json.location = {lat: lat, lng: lng, acc : accuracy};
+      console.log(this.json.location);
+      this.responseData.emit(this.json);
     }, err=>{
       console.log(err);
+      this.json.location = {lat: 0, lng: 0, acc : 9999};
+      this.responseData.emit(this.json);
     }, {
       enableHighAccuracy: true,
-      timeout: 50000,
-      maximumAge: 500
+      timeout: 60000,
+      maximumAge: 10000
     });
   }
 

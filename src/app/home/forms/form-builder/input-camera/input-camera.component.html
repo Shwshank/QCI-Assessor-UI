@@ -57,27 +57,25 @@
         <br> <br>
         <img [src]="url" style="">
 
-        <!-- <video *ngIf="url" width="320" height="240" controls>
-          <source [src]="url" >
-          Your browser does not support the video tag.
-        </video> -->
-
         <div *ngIf="name" style="float: right; margin: auto;">
           {{name}} <br>
 
-          <span>
+          <span *ngIf="json.location">
+            <span  *ngIf="!waitingFlag">
+              <b> Acc - {{json.location.acc}} meters</b>
+              <span class="mdl-chip mdl-chip--deletable" (click)="getLocation()" >
+                  <span class="mdl-chip__text">Refresh location</span>
+                  <button type="button" class="mdl-chip__action"><i class="material-icons">location_on</i></button>
+              </span>
+            </span>
+          </span>
 
-            {{json.location.lat}} <br>
-            {{json.location.lng}} <br>
-            Acc - {{json.location.acc}}
-
+          <span *ngIf="waitingFlag" >
+            Waiting for location...
           </span>
 
         </div>
         <br>
-        <!-- <div *ngIf="name">
-          {{name}}  <i class="material-icons">clear</i>
-        </div> -->
       </div>
     </div>
   </div>

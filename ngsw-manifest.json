@@ -18,6 +18,9 @@
       "/#/formListing": {
         "prefix": true
       },
+      "/#/flaggedFormListing": {
+        "prefix": true
+      },
       "/#/form": {
         "prefix": true
       },
