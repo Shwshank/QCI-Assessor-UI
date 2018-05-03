@@ -43,11 +43,13 @@ export class InputLocationComponent implements OnInit {
       accuracy = value.coords.accuracy;
 
       this.json.location = {lat: lat, lng: lng, acc : accuracy};
+      this.json.value= 'some location';
       console.log(this.json.location);
       this.responseData.emit(this.json);
     }, err=>{
       console.log(err);
       this.json.location = {lat: 0, lng: 0, acc : 9999};
+      this.json.value= 'some location';
       this.responseData.emit(this.json);
     }, {
       enableHighAccuracy: true,
