@@ -418,11 +418,23 @@ export class ProjectService {
             this.flaggedFormArray.push(res.formArray[i].form_json);
           }
         }
+
+        // save data in offline storage
+        localStorage.setItem('flaggedForms', JSON.stringify(this.flaggedFormArray));
         this.emitFlaggedFormArray.emit(this.flaggedFormArray);
-      } else {}
+      } else {
+        let temp;
+        temp = localStorage.getItem('flaggedForms');
+        this.flaggedFormArray = JSON.parse(temp);
+        this.emitFlaggedFormArray.emit(this.flaggedFormArray);
+      }
     },err=> {
       console.log(err);
-      // this.emitFormArray.emit(this.formArray);
+      let temp;
+      temp = localStorage.getItem('flaggedForms');
+      this.flaggedFormArray = JSON.parse(temp);
+      this.emitFlaggedFormArray.emit(this.flaggedFormArray);
+
     });
   }
 
@@ -436,20 +448,43 @@ export class ProjectService {
           this.storeFormArrayTemp.Elements = this.storeFormArrayTemp.Elements.concat(tempArray.Elements);
           this.submittedForm = this.storeFormArrayTemp;
           console.log(this.submittedForm);
-          this.submitResponse(this.submittedForm);
+          this.saveResponseOffline(this.submittedForm);
           this.storeFormArrayTemp = [];
         }
       }
     } else {
       this.submittedForm = tempArray;
-      this.submitResponse(this.submittedForm);
+      this.saveResponseOffline(this.submittedForm);
       console.log(this.submittedForm)
     }
 
   }
 
-  submitResponse(formArray: any) {
+  saveResponseOffline(formArray: any) {
     console.log(formArray);
+
+    // check if response is flagged or not. If flagged, pop the saved flagged response
+    if(formArray.Details.rid) {
+      console.log('yer')
+      let temp1;
+      let temp2;
+      let temp3;
+      temp1 = localStorage.getItem('flaggedForms');
+      temp2 = JSON.parse(temp1);
+
+      for(let i = 0; i<temp2.length; i++) {
+        if(formArray.Details.rid == temp2[i].Details.rid) {
+          temp3  = i;
+          break;
+        }
+      }
+
+      temp2.splice(temp3,1);
+      this.flaggedFormArray = temp2;
+      localStorage.setItem('flaggedForms', JSON.stringify(this.flaggedFormArray));
+      this.emitFlaggedFormArray.emit(this.flaggedFormArray);
+
+    }
 
     let asrName: any;
     let asrID: any;
@@ -462,7 +497,12 @@ export class ProjectService {
 
     let response : any = {};
 
-    response.ResCid = this.cid();
+    if(formArray.Details.rid) {
+      response.ResCid = formArray.Details.rid // flagged response
+    } else {
+      response.ResCid = this.cid(); // new response
+    }
+
     response.ResDetails = formArray.Details;
     response.ResElements = formArray.Elements;
     response.ResExtra = {asrName: asrName, asrID: asrID, resDate: this.cdate()};
@@ -517,15 +557,15 @@ export class ProjectService {
     this.apiService.SendSubmitResponseID(id).subscribe(res=>{
       // console.log(res);
       if(res.success) {
-        this.emitFormResponse.emit({success: true});
-        this.submitResponse(response);
+        this.emitFormResponse.emit({success: true}); // Submit form final form
+        // this.saveResponseOffline(response);
       } else {
         this.emitFormResponse.emit({success:false, msg:"not-submitted"});
-        this.submitResponse(response);
+        this.saveResponseOffline(response);
       }
     }, err=>{
       console.log(err);
-      this.submitResponse(response);
+      this.saveResponseOffline(response);
     });
   }
 

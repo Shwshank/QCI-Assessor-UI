@@ -403,7 +403,13 @@ export class FormBuilderComponent implements OnInit {
   }
 
   setMetaChunk(){
-    this.chunk.responseTimeStamp = localStorage.getItem('responseTimeStamp');
+
+    if(this.completeArray.Details.rid) {
+      this.chunk.responseTimeStamp = this.completeArray.Details.rid  // flagged response
+    } else {
+      this.chunk.responseTimeStamp = localStorage.getItem('responseTimeStamp'); // new response
+    }
+
     this.chunk.formID = this.completeArray.Details.cid;
     this.chunk.version = this.completeArray.Details.version;
   }
@@ -488,28 +494,34 @@ export class FormBuilderComponent implements OnInit {
 
   saveFormReaponce() {
 
-          let id;
-          if(this.controller) {
+      let id;
+      if(this.controller) {
 
-            // emit success
-            console.log('data send');
-            // Send final submit Response ID
-             id = localStorage.getItem('responseTimeStamp');
-             this.projectService.sendSubmitResponseID(this.completeArray, id);
-            //  this.projectService.emitFormResponse.emit({success: true});
+        // emit success
+        console.log('data send');
+        // Send final submit Response ID
+
+          if(this.completeArray.Details.rid) {
+            id = this.completeArray.Details.rid // flagged response
           } else {
-
-            // this.responseError = true;
-            // data not sync
-            // save data offline
-            console.log('data not send');
-            this.projectService.submitFormArray(this.completeArray);
+            id = localStorage.getItem('responseTimeStamp'); // new response
           }
 
-          this.formResponse = false;
-          this.jsonArray = [];
-          this.submitButton = "Just a moment";
-          componentHandler.upgradeDom();
+         this.projectService.sendSubmitResponseID(this.completeArray, id);
+        //  this.projectService.emitFormResponse.emit({success: true});
+      } else {
+
+        // this.responseError = true;
+        // data not sync
+        // save data offline
+        console.log('data not send');
+        this.projectService.submitFormArray(this.completeArray);
+      }
+
+      this.formResponse = false;
+      this.jsonArray = [];
+      this.submitButton = "Just a moment";
+      componentHandler.upgradeDom();
   }
 
   ngAfterViewInit() {

@@ -32,7 +32,7 @@ export class InputLocationComponent implements OnInit {
     let lng;
     let accuracy;
 
-    this.json.location = {lat: 0, lng: 0, acc : 9999};
+    this.json.location = {lat: 28.622635, lng: 77.247129, acc : 9999};
 
     navigator.geolocation.getCurrentPosition(res=>{
       this.waitingFlag = false;
@@ -48,7 +48,7 @@ export class InputLocationComponent implements OnInit {
       this.responseData.emit(this.json);
     }, err=>{
       console.log(err);
-      this.json.location = {lat: 0, lng: 0, acc : 9999};
+      this.json.location = {lat: 28.622635, lng: 77.247129, acc : 9999};
       this.json.value= 'some location';
       this.responseData.emit(this.json);
     }, {
