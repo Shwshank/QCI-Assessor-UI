@@ -11,11 +11,13 @@ import './app.js';
 })
 export class FormListingComponent implements OnInit {
 
-  cardArray : any = [{Details:{project:'Project name', name:"Form Name..."}, }, {Details:{project:'Project name', name:"Form Name..."}, }, {Details:{project:'Project name', name:"Form Name..."}, }, {Details:{project:'Project name', name:"Form Name..."}, }, {Details:{project:'Project name', name:"Form Name..."}, }];
+  cardArray : any = [{Details:{project:'Project name', name:"Form Name..."}, }];
   sub1: any;
   sub2: any;
+  sub3: any;
   numOffline: any;
   offlineFormIdArrray: any = [];
+  onlineCount: any = [{online:'', last_updated:''}];
 
   constructor(private projectService: ProjectService, private router: Router) {
     this.sub1 = this.projectService.emitFormArray.subscribe(res=>{
@@ -27,6 +29,10 @@ export class FormListingComponent implements OnInit {
       this.offlineFormIdArrray = res;
     });
 
+    this.sub3 = this.projectService.emitOnlineFormCount.subscribe(res=>{
+      this.onlineCount = res;
+      console.log(res);
+    })
   }
 
   ngOnInit() {
@@ -62,6 +68,7 @@ export class FormListingComponent implements OnInit {
   ngOnDestroy() {
     this.sub1.unsubscribe();
     this.sub2.unsubscribe();
+    this.sub3.unsubscribe();
   }
 
 }

@@ -24,6 +24,7 @@ export class ProjectService {
   emitofflineFormIdArrray = new EventEmitter<any>();
   emitChunkSuccess = new EventEmitter<any>();
   emitOfflineChunkSuccess = new EventEmitter<any>();
+  emitOnlineFormCount  = new EventEmitter<any>();
   formArray = [];
   offlineFormIdArrray = [];
   flaggedFormArray = [];
@@ -326,6 +327,7 @@ export class ProjectService {
 
           this.emitForm_sync.emit(res.form_sync);
           localStorage.setItem('form_sync',JSON.stringify(res.form_sync));
+          localStorage.setItem('form_online_count',JSON.stringify(res.onlineResponses));
 
           if(res.form_token != localStorage.getItem('form_token')) {
             // token dosen't match
@@ -390,6 +392,7 @@ export class ProjectService {
   getOfflineFormAndTemplate() {
     let formArray = JSON.parse(localStorage.getItem('formArray'));
     let tempArray = JSON.parse(localStorage.getItem('tempArray'));
+    let onlineCount = JSON.parse(localStorage.getItem('form_online_count'));
 
     this.emitForm_sync.emit(localStorage.getItem('form_sync'));
 
@@ -405,6 +408,7 @@ export class ProjectService {
       }
     }
     this.emitFormArray.emit(this.formArray);
+    this.emitOnlineFormCount.emit(onlineCount);
   }
 
   getFlaggedResponses() {
