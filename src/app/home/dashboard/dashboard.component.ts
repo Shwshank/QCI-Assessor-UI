@@ -46,6 +46,10 @@ export class DashboardComponent implements OnInit {
     // this.projectService.getFlaggedResponses();
   }
 
+  refresh() {
+     window.location.reload();
+  }
+
   sync() {
     if(this.num>0) {
       if(navigator.onLine) {

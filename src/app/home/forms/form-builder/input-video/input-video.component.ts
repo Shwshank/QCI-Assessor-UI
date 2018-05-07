@@ -44,7 +44,6 @@ export class InputVideoComponent implements OnInit {
     this.formData = new FormData();
     let reader = new FileReader();
     reader.readAsDataURL(file);
-    console.log('2');
     reader.onload = (event:any) => {
       this.url = event.target.result;
       this.json.value = reader.result;

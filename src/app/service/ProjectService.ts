@@ -98,8 +98,19 @@ export class ProjectService {
 
   logout() {
     localStorage.removeItem('token');
-    // navigator.vibrate(this.vibrateDuration1);
+    localStorage.removeItem('flaggedForms');
+    localStorage.removeItem('formArray');
+    localStorage.removeItem('form_online_count');
+    localStorage.removeItem('form_sync');
+    localStorage.removeItem('form_token');
+    localStorage.removeItem('phone');
+    localStorage.removeItem('responseTimeStamp');
+    localStorage.removeItem('tempArray');
+    localStorage.removeItem('tempArray2');
+    let request = indexedDB.deleteDatabase('responseDB');
+    window.location.reload(true);
     this.router.navigate(['./login']);
+
   }
 
   checkImage(image: any) {

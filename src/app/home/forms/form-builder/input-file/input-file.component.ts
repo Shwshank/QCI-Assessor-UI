@@ -41,9 +41,9 @@ export class InputFileComponent implements OnInit {
     this.name = file.name;
     this.formData = new FormData();
     let reader = new FileReader();
+    reader.readAsDataURL(file);
     reader.onload = (event:any) => {
       this.json.value = reader.result;
-      reader.readAsDataURL(file);
       this.json.fileName = this.name;
       this.responseData.emit(this.json);
     }
