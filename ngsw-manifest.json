@@ -2,7 +2,7 @@
   "external":{
     "urls":[
 
-      {"url":"https://fonts.googleapis.com/icon?family=Material+Icons"} 
+      {"url":"https://fonts.googleapis.com/icon?family=Material+Icons"}
 
     ]
   },
@@ -28,7 +28,7 @@
         "prefix": true
       },
       "/#/help": {
-        "prefix": true
+        "prefix": false
       }
     }
   }

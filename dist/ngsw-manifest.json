@@ -28,14 +28,14 @@
         "prefix": true
       },
       "/#/help": {
-        "prefix": true
+        "prefix": false
       }
     }
   },
   "static": {
     "urls": {
       "/polyfills.fa7e417c608857ae9611.bundle.js": "7c1ac20d35d6b131cebe5dc29c11094e318a2339",
-      "/main.0b818ffdfb4edc5e8725.bundle.js": "8788ff4923d7e455538f4165c3d3ff261a6fffc6",
+      "/main.4e758ce025c705607fa4.bundle.js": "41cde3a2fbb8c27eedafa94419a2a98c520daf0f",
       "/sw-register.86312f9a560e5a515671.bundle.js": "fafb5febf9049fb876e06c2736bd92214dde01c4",
       "/vendor.d67de3c30b63e4adbd49.bundle.js": "a5ed835904f29c8b4997ccb8b6612d194e26de8a",
       "/inline.9b4a1c29807fdc3e7662.bundle.js": "f0108826af96f3c89bfbcce201187896256a897f",
@@ -56,7 +56,7 @@
       "/assets/pink3.jpg": "6f5c1bfce161cb4b4c9df8c40681336f3689ab3f",
       "/assets/material.css": "045ca9e06ad7dfd66096deb9f66290f6c5997041",
       "/assets/material.js": "1ab50540032210391656928cd1564530353096cd",
-      "/index.html": "4f06090d76e4001a51862c203fc307ea6df2f2ea"
+      "/index.html": "054eb018e7ba9bc9ffc1143537606a80dbc9dae4"
     },
     "_generatedFromWebpack": true
   }
