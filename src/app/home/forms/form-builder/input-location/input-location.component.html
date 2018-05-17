@@ -1,8 +1,9 @@
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--12-col">
     <span *ngIf="json.location">
+      {{funID(id)}} .
       <span  *ngIf="!waitingFlag">
-        {{funID(id)}} . Location:    <b> Acc - {{json.location.acc}} meters</b>
+         Location:    <b> Acc - {{json.location.acc}} meters</b>
         <span class="mdl-chip mdl-chip--deletable" (click)="getLocation()" >
             <span class="mdl-chip__text">Refresh location</span>
             <button type="button" class="mdl-chip__action"><i class="material-icons">location_on</i></button>

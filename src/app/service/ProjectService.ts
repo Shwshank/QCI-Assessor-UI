@@ -309,7 +309,7 @@ export class ProjectService {
       if(res2.success) {
         this.emitSyncResponse.emit({success:true, msg:"synced!"});
           this.db.delete('asrResponse', res.id).then(() => {
-            navigator.vibrate(this.vibrateDuration0);
+            // navigator.vibrate(this.vibrateDuration0);
 
           }, (error) => {
               console.log(error);
@@ -653,6 +653,7 @@ export class ProjectService {
               db.add('asrResponse', { response: response }).then(() => {
                 alert('Form stored in offline storage');
                 window.location.reload();
+                this.router.navigate(['/']);
                 }, (error) => {
                   alert('Some error occurs while storing the form. Please try again');
                   window.location.reload();

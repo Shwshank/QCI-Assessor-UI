@@ -64,7 +64,11 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(){
-    this.projectService.logout();
+    if(window.confirm('All offline data & forms will be deteled. Are sure to logout ?')) {
+      this.projectService.logout();
+    } else {
+      
+    }
   }
 
   ngAfterViewInit() {
