@@ -1,3 +1,4 @@
+@import "~styles.scss";
 .infoBox{
   // height:200px;
   background-color: lightgray;
@@ -34,4 +35,8 @@
 }
 .custom-header{
   color: #272727;
+}
+.updatingText{
+  color:  $primary-color;
+  text-align: center;
 }

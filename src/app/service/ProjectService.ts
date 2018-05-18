@@ -522,7 +522,15 @@ export class ProjectService {
     response.ResElements = formArray.Elements;
     response.ResExtra = {asrName: asrName, asrID: asrID, resDate: this.cdate()};
 
-    console.log(response);
+    // console.log(response);
+
+    for(let i = 0; i< response.ResElements.length; i++) {
+      if(response.ResElements[i].chunkStatus) {
+        delete response.ResElements[i].chunkStatus;
+      }
+    }
+
+    console.log(' --> '+response);
 
     this.addResponseToIndexDB(response);
 

@@ -5,7 +5,12 @@
     <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet mdl-cell--12-col-phone infoGraph"> <app-graph2></app-graph2> </div>
   </div>
 
+
   <div class="mdl-grid">
+
+    <div *ngIf='cardArray.length==0'>
+      <h3 class="updatingText" > Updating... </h3>
+    </div>
 
     <div *ngFor='let card of cardArray; let i = index' class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-phone infoBox ">
       <div class="demo-card-square backgroundImage" >

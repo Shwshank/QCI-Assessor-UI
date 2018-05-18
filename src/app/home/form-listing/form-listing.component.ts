@@ -11,7 +11,7 @@ import './app.js';
 })
 export class FormListingComponent implements OnInit {
 
-  cardArray : any = [{Details:{project:'Project name', name:"Form Name..."}, }];
+  cardArray : any = [];
   sub1: any;
   sub2: any;
   sub3: any;
