@@ -412,6 +412,7 @@ export class FormBuilderComponent implements OnInit {
 
     this.chunk.formID = this.completeArray.Details.cid;
     this.chunk.version = this.completeArray.Details.version;
+    console.log(this.chunk.version);
   }
 
   proceedForSumbit() {
