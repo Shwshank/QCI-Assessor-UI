@@ -1,0 +1,63 @@
+{
+  "external": {
+    "urls": [
+      {
+        "url": "https://fonts.googleapis.com/icon?family=Material+Icons"
+      }
+    ]
+  },
+  "routing": {
+    "index": "/index.html",
+    "routes": {
+      "/": {
+        "prefix": false
+      },
+      "/#/": {
+        "prefix": true
+      },
+      "/#/formListing": {
+        "prefix": true
+      },
+      "/#/flaggedFormListing": {
+        "prefix": true
+      },
+      "/#/form": {
+        "prefix": true
+      },
+      "/#/login": {
+        "prefix": true
+      },
+      "/#/help": {
+        "prefix": false
+      }
+    }
+  },
+  "static": {
+    "urls": {
+      "/polyfills.fa7e417c608857ae9611.bundle.js": "7c1ac20d35d6b131cebe5dc29c11094e318a2339",
+      "/main.d7b5646ff36489c544e1.bundle.js": "56c4fb18e292801f570337098e09385120d8bb8a",
+      "/sw-register.86312f9a560e5a515671.bundle.js": "fafb5febf9049fb876e06c2736bd92214dde01c4",
+      "/vendor.d67de3c30b63e4adbd49.bundle.js": "a5ed835904f29c8b4997ccb8b6612d194e26de8a",
+      "/inline.9b4a1c29807fdc3e7662.bundle.js": "f0108826af96f3c89bfbcce201187896256a897f",
+      "/styles.f71e771d78294b4fec9f.bundle.css": "c46f8ace5e8993f8f4040f634561f03a4266e2fa",
+      "/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
+      "/manifest.json": "95b8abb20dc74bebecb6096fda85532f1abfbdf2",
+      "/assets/bg6.jpg": "9d43696d1aeceead7c1e4916f9dba30ba1e5109f",
+      "/assets/c1.png": "ba313479933d65f47167572822e90a17475e67ee",
+      "/assets/graph22.jpg": "7351bd7f10b4b4a4f55b8699a6cfa217bc771114",
+      "/assets/help.jpg": "97b00f919b7088c346237436d6691aea1efb12d6",
+      "/assets/icons/icon-128x128.png": "0a9ad2ae81c91ad9a1d1275f973920f72f9bc18d",
+      "/assets/icons/icon-144x144.png": "3947a2306254d61b242f9d21062f589ce8ebb08e",
+      "/assets/icons/icon-152x152.png": "9f6c6aae8bb9a1381f4164f1137494e71b7ba271",
+      "/assets/icons/icon-192x192.png": "781c9303ac502239936b4dc89a30123cd3d220b4",
+      "/assets/icons/icon-256x256.png": "71d993eeb3c6952f20cf61ab3ba169d1c9e0d87a",
+      "/assets/icons/icon-32x32.png": "e0da1847aa079de55d6bb575b477dd5f19d8523e",
+      "/assets/material.css": "c1cd88724e8cd6a15fcadf4dfdf1feb00884a48a",
+      "/assets/material.js": "1ab50540032210391656928cd1564530353096cd",
+      "/assets/pink2.jpg": "653ddd0d1ce6007b7962338506bd7b1407fbafbc",
+      "/assets/pink3.jpg": "6f5c1bfce161cb4b4c9df8c40681336f3689ab3f",
+      "/index.html": "4dc433ada146c5550cae741a7036921d914b4262"
+    },
+    "_generatedFromWebpack": true
+  }
+}

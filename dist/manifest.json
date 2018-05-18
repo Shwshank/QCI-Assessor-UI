@@ -1,0 +1,42 @@
+{
+  "short_name": "Collect",
+  "name": "QCI Collect Assesor",
+
+  "start_url": "/",
+  "scope": ".",
+
+  "background_color": "#e91e62",
+  "theme_color": "#e91e62",
+
+  "display": "standalone",
+  "orientation": "portrait",
+
+  "icons": [
+    {
+      "src": "/assets/icons/icon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }, {
+      "src": "/assets/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }, {
+      "src": "/assets/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    }, {
+      "src": "/assets/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }, {
+      "src": "/assets/icons/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}
