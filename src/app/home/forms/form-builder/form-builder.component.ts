@@ -226,6 +226,7 @@ export class FormBuilderComponent implements OnInit {
                 this.updateJsonArray(data.cid, tempArray);
                 break;
               } else {
+                console.log(data);
                 this.deleteRuleFromJsonArray2(data);
               }
               //
@@ -254,7 +255,7 @@ export class FormBuilderComponent implements OnInit {
                 // console.log(data);
               } else {
                 console.log(data.name+' not matched!');
-                // console.log(data);
+                console.log(data);
                 this.deleteRuleFromJsonArray2(data);
               }
               //
@@ -311,7 +312,9 @@ export class FormBuilderComponent implements OnInit {
 
       if(data.cid == this.completeArray.Rules[r].elementCid) {
         tempArray = this.projectService.getTemplateElement(this.completeArray.Rules[r].tempCid);
-        // console.log(tempArray);
+
+        console.log(tempArray);
+        console.log(this.jsonArray);
 
         for(let r1 = 0; r1< this.jsonArray.length; r1 ++) {
           for(let r2 =0; r2< tempArray.length; r2++) {
@@ -416,6 +419,9 @@ export class FormBuilderComponent implements OnInit {
   }
 
   proceedForSumbit() {
+
+    this.completeArray.Elements = this.jsonArray;
+
     // check error start here
       for(let json of this.jsonArray) {
         if(this.flags<=0) {

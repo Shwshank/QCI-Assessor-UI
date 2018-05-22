@@ -577,6 +577,8 @@ export class ProjectService {
 
   sendSubmitResponseID(response , id) {
 
+    console.log(response);
+
     this.apiService.SendSubmitResponseID(id).subscribe(res=>{
       // console.log(res);
       if(res.success) {
