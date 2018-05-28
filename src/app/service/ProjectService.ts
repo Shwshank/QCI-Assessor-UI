@@ -113,6 +113,21 @@ export class ProjectService {
 
   }
 
+  updatePassword(oldpwd, newpwd) {
+    this.apiService.UpdatePassword(oldpwd, newpwd).subscribe(res=>{
+        if(res.success) {
+          console.log(res);
+          alert('Password changed!');
+          this.logout();
+        } else {
+          console.log(res);
+          alert(res.message);
+        }
+      }, err=>{
+        console.log(err);
+      })
+  }
+
   checkImage(image: any) {
     this.apiService.CheckImage(image).subscribe(res=>{
       console.log(res);

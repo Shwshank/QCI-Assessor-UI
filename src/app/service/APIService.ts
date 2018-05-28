@@ -26,6 +26,16 @@ export class APIService {
     return this.http.get(this.projectURL+'/gettestforms').map(res=>res.json());
   }
 
+  UpdatePassword(oldpwd, newpwd) {
+    let formData = new FormData();
+    formData.append('oldpwd', oldpwd);
+    formData.append('newpwd', newpwd);
+
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+    return this.http.post(this.projectURL+'/changeAsrPassword', formData,{headers: headers}).map(res=>res.json());
+  }
+
   GetFormArray(form_token) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);

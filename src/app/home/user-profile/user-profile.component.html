@@ -12,23 +12,27 @@
     <div style="text-align: center" >
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" id="sample3">
+        <input class="mdl-textfield__input" type="password" id="sample3" [(ngModel)]='oldPwd'>
         <label class="mdl-textfield__label" for="sample3">Old password</label>
       </div>
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" id="sample1">
+        <input class="mdl-textfield__input" type="password" id="sample1" [(ngModel)]='newPwd1'>
         <label class="mdl-textfield__label" for="sample1">New password</label>
       </div>
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" id="sample2">
+        <input class="mdl-textfield__input" type="password" id="sample2" [(ngModel)]='newPwd2'  (change)="checkNewPassword()">
         <label class="mdl-textfield__label" for="sample2">New password</label>
       </div>
 
+      <span *ngIf="errorFlag">
+        <p style="color: red" >* New password doesn't match</p>
+      </span>
+
     </div>
 
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" >
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" (click)="updatePassword()">
      <b>Update  <i class="material-icons">send</i></b>
     </button>
 
