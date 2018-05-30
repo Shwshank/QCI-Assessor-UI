@@ -383,6 +383,32 @@ export class FormBuilderComponent implements OnInit {
           break;
         }
       }
+    } else if(data.type !="video" && data.type != "camera" && data.type != "file" && data.type != "location" && data.value.length > 1024){
+
+      for(let i = 0 ; i<= this.jsonArray.length; i++) {
+
+        if(this.jsonArray[i].cid === data.cid ) {
+          this.jsonArray[i].errorMsg = "Input size should be less than 1024 characters!";
+          this.formError = true;
+          console.log(data.name);
+
+          break;
+        }
+      }
+
+    } else if((data.type =="video" || data.type == "camera" || data.type == "file" ) && data.value.length > 58208800) {
+      console.log(data.value.length);
+      for(let i = 0 ; i<= this.jsonArray.length; i++) {
+
+        if(this.jsonArray[i].cid === data.cid ) {
+          this.jsonArray[i].errorMsg = "File size should be less than 50 MB!";
+          this.formError = true;
+          console.log(data.name);
+
+          break;
+        }
+      }
+
     } else {
 
       for(let i = 0; i<= this.jsonArray.length; i++) {
