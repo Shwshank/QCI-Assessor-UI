@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit {
           alert('All forms are synced successfully ');
           this.syncStatus = "Sync";
           this.sending = false;
+          window.location.reload();
         }
       }
     });
@@ -67,7 +68,7 @@ export class DashboardComponent implements OnInit {
     if(window.confirm('All offline data & forms will be deteled. Are sure to logout ?')) {
       this.projectService.logout();
     } else {
-      
+
     }
   }
 

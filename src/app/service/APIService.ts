@@ -100,12 +100,13 @@ export class APIService {
   }
 
 
-  SendSubmitResponseID(id) {
+  SendSubmitResponseID(id, flag) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
 
     let responseID = new FormData();
     responseID.append('id',id);
+    responseID.append('flag',flag);
     return this.http.post(this.projectURL+'/submitResponseID', responseID,{headers: headers}).map(res=>res.json());
   }
 

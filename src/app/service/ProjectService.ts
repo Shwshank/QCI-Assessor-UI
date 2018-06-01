@@ -318,7 +318,7 @@ export class ProjectService {
   sendSubmitOfflineResponseID5(res) {
     console.log(res);
 
-    this.apiService.SendSubmitResponseID(res.response.ResCid).subscribe(res2=>{
+    this.apiService.SendSubmitResponseID(res.response.ResCid, 'Offline').subscribe(res2=>{
       // console.log(res2);
 
       if(res2.success) {
@@ -594,7 +594,7 @@ export class ProjectService {
 
     console.log(response);
 
-    this.apiService.SendSubmitResponseID(id).subscribe(res=>{
+    this.apiService.SendSubmitResponseID(id, 'Online').subscribe(res=>{
       // console.log(res);
       if(res.success) {
         this.emitFormResponse.emit({success: true}); // Submit form final form
