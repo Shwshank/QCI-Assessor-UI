@@ -4,6 +4,98 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { APIService } from './APIService';
 import { AngularIndexedDB } from 'angular2-indexeddb';
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////d1
+//
+//    ProjectService acts as intermidiate between UI-components and backend APIS.
+//
+//
+//   //////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   //
+//   //
+//   //    # Functions
+//   //
+//   //    1. cid() : Returns 8 digit unique token followed by the timestamp and 4 -
+//   //              digits number. Used for generating uniques IDs.
+//   //
+//   //    2. cdate() : Returns current date in dd/mm/yyyy HH:MM format
+//   //
+//   //    3. login() : Passes credentials to login API 'assesorLogin'.
+//   //
+//   //    4. checkLogin() : Checkes token, else navigate to login page.
+//   //
+//   //    5. logout() : logs  user out, delete tokens and browser wide storage n forms.
+//   //
+//   //    6. updatePassword() : Updates password. API 'changeAsrPassword'.
+//   //
+//   //    7. getFormCards() : @$@$@$@
+//   //
+//   //    8. getFormByCid() : Emit complete form Array to FormsComponent.ts
+//   //
+//   //    9. getFlaggedResponseid() : Emit flagged Form Array to FormsComponent.ts
+//   //
+//   //    10. popFromFlaggedArray() : @$@$@$@
+//   //
+//   //    11. getTemplateElement() : @$@$@$@
+//   //
+//   //    12. storeFormArray() : store form temp. in variable storeFormArrayTemp.
+//   //
+//   //    13. syncAll() : Pulls form Array from IndexedDB and passes array to syncOffline1().
+//   //
+//   //    14. syncOffline1() : Extract responce array, add meta data by setMetaChunk2() and
+//   //                        passes individual responce to sync. Checks if all response
+//   //                        chunks are synced or not by checkAllOfflineChunk4().
+//   //
+//   //    15. setMetaChunk2() : set metaData and passed to syncChunkOffline3().
+//   //
+//   //    16. syncChunkOffline3() : sync chunk to API 'submitChunkResponse'.
+//   //                              If chunk submitted, emit sync msg to syncOffline1().
+//   //                              checkAllOfflineChunk4() will be called to check all sync
+//   //                              status of all response.
+//   //
+//   //    17. checkAllOfflineChunk4(): If complete form synced, passes all synced msg to
+//   //                                 sendSubmitOfflineResponseID5() to notify backend.
+//   //
+//   //    18. sendSubmitOfflineResponseID5() : send footer flag of response. Server acknoledges
+//   //                                         that all chunks are synced. Form deleted from offline
+//   //                                         storage, count updated.
+//   //    19. getFormArray() : called by FormListingComponent to get the form array.
+//   //                         If internet available, API will be called 'getAssesorForms'
+//   //                         else offline stored forms will be emited by getOfflineFormAndTemplate().
+//   //
+//   //    20. saveOfflineFormAndTemplate() ; Maintains a copy of forms in the local storage.
+//   //                                       Shows notification when new form get synced.
+//   //
+//   //    21. getOfflineFormAndTemplate() : emit offline saved forms.
+//   //
+//   //    22. getFlaggedResponses() : Repuest for fresh copy of Flagged Forms on API
+//   //                                'getFlaggedResponses', if fails emits the offline stored.
+//   //
+//   //    23. submitFormArray() : If Online form responces didn't synced, data will
+//   //                            be stored offline by saveResponseOffline().
+//   //
+//   //    24. saveResponseOffline() : format the from array and passes form json to
+//   //                                addResponseToIndexDB() to store in indexed DB.
+//   //
+//   //    25. syncChunk() : called by FormBuilderComponent to syncChunk to API 'submitChunkResponse'.
+//   //
+//   //    26. syncOnline() : @$@$@$@
+//   //
+//   //    27. sendSubmitResponseID() : Send final responce to server to send acknoledge
+//   //                                 to server. If fails, data goes to saveResponseOffline().
+//   //
+//   //    28. initializeIndexDB() : initialize indexd DB 'asrResponse'
+//   //
+//   //    29. addResponseToIndexDB(): ask for storage permission, if space not available.
+//   //
+//   //    30. saveIntoIndexed(): save data to db
+//   //
+//   //
+//   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 @Injectable()
 export class ProjectService {
   size: any;
@@ -74,25 +166,7 @@ export class ProjectService {
   checkLogin() {
 
     if(localStorage.getItem('token')) {
-      // normal notification example
-      // Notification.requestPermission(function(permission){
-      //     let notification = new Notification("Title",{body:'Form updated!',icon:'./assets/icons/icon-256x256', dir:'auto'});
-      //     setTimeout(function(){
-      //         notification.close();
-      //     },6000);
-      // });
-
-      // navigator.serviceWorker.register('worker-basic.min.js');
-      // Notification.requestPermission(function(result) {
-      //   if (result === 'granted') {
-      //     navigator.serviceWorker.ready.then(function(registration) {
-      //       registration.showNotification("Form updated!",{body:'Looks like a form was recently updated. ',icon:'./assets/icons/icon-256x256', dir:'auto'});
-      //     });
-      //   }
-      // });
-
       this.router.navigate(['./']);
-
     }
   }
 
@@ -126,12 +200,6 @@ export class ProjectService {
       }, err=>{
         console.log(err);
       })
-  }
-
-  checkImage(image: any) {
-    this.apiService.CheckImage(image).subscribe(res=>{
-      console.log(res);
-    });
   }
 
   getFormCards() {
@@ -198,32 +266,9 @@ export class ProjectService {
 
               for(let j=0; j<response[i].response.ResElements.length; j++) {
                 response[i].response.ResElements[j].chunkStatus = false;
-                // console.log(response[i].response.ResElements[j]);
               }
 
               this.syncOffline1(response[i]);
-
-              // let sub1 = this.apiService.SubmitResponse(response[i].response).subscribe(res=>{
-              //   // console.log(res);
-              //   if(res.success){
-              //     this.emitSyncResponse.emit({success:true, msg:"synced!"});
-              //     this.db.delete('asrResponse', response[i].id).then(() => {
-              //       navigator.vibrate(this.vibrateDuration0);
-              //       // console.log('response deleted at position ', +i, response[i].id);
-              //     }, (error) => {
-              //         console.log(error);
-              //         alert("Some error detected! Please try again");
-              //         window.location.reload();
-              //     });
-              //     sub1.unsubscribe();
-              //   } else {
-              //     this.emitSyncResponse.emit({success:false, msg:"not-synced!"});
-              //   }
-              // },err=> {
-              //   console.log(err);
-              //   this.emitSyncResponse.emit({success:false, msg:"not-synced!"});
-              //   sub1.unsubscribe();
-              // });
             }
         }
     }, (error) => {
@@ -366,8 +411,6 @@ export class ProjectService {
             this.getOfflineFormAndTemplate();
 
           } else {
-            // token matches
-
             this.getOfflineFormAndTemplate()
 
           }
@@ -395,21 +438,21 @@ export class ProjectService {
 
       console.log('Web Notification is supported');
 
-      Notification.requestPermission(function(permission){
-          // let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
-          // setTimeout(function(){
-          //     notification.close();
-          // },6000);
-
-          navigator.serviceWorker.register('worker-basic.min.js');
-          Notification.requestPermission(function(result) {
-            if (result === 'granted') {
-              navigator.serviceWorker.ready.then(function(registration) {
-                registration.showNotification("Form updated!",{body:'Looks like a form was recently updated. ',icon:'./assets/icons/icon-256x256.png', dir:'auto'});
-              });
-            }
-          });
-      });
+      // Notification.requestPermission(function(permission){
+      //     // let notification = new Notification("Title",{body:'Form updated!',icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
+      //     // setTimeout(function(){
+      //     //     notification.close();
+      //     // },6000);
+      //
+      //     navigator.serviceWorker.register('worker-basic.min.js');
+      //     Notification.requestPermission(function(result) {
+      //       if (result === 'granted') {
+      //         navigator.serviceWorker.ready.then(function(registration) {
+      //           registration.showNotification("Form updated!",{body:'Looks like a form was recently updated. ',icon:'./assets/icons/icon-256x256.png', dir:'auto'});
+      //         });
+      //       }
+      //     });
+      // });
 
     }
 
@@ -549,13 +592,6 @@ export class ProjectService {
 
     this.addResponseToIndexDB(response);
 
-    // update in chunk version
-
-    // if(navigator.onLine) {
-    //   this.syncOnline(response);                      // Sysnc Online
-    // } else {
-    //   this.addResponseToIndexDB(response);            // save data in IndexedDB
-    // }
   }
 
   syncChunk(data: any, chunk: any) {
@@ -573,21 +609,24 @@ export class ProjectService {
   }
 
   syncOnline(response) {
-    let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
-      console.log(res);
-      if(res.success){
-        // sync form
-        this.emitFormResponse.emit({success:true, msg:"submitted"});
-        sub1.unsubscribe();
-      } else {
-        this.emitFormResponse.emit({success:false, msg:"not-submitted"});
-      }
-    },err=> {
-      console.log(err);
-      this.emitFormResponse.emit({success:false, msg:"not-submitted"});
-      this.addResponseToIndexDB(response);
-      sub1.unsubscribe();
-    });
+
+    // obsolute code
+
+    // let sub1 = this.apiService.SubmitResponse(response).subscribe(res=>{
+    //   console.log(res);
+    //   if(res.success){
+    //     // sync form
+    //     this.emitFormResponse.emit({success:true, msg:"submitted"});
+    //     sub1.unsubscribe();
+    //   } else {
+    //     this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+    //   }
+    // },err=> {
+    //   console.log(err);
+    //   this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+    //   this.addResponseToIndexDB(response);
+    //   sub1.unsubscribe();
+    // });
   }
 
   sendSubmitResponseID(response , id) {

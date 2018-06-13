@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {ToastOptions} from 'ng2-toastr';
+import { Ng2ImgMaxModule } from 'ng2-img-max';
 
 import { routes } from './app.routes';
 import { AuthGuard } from './service/ZAuthGuard';
@@ -82,7 +83,8 @@ import { UserProfileComponent } from './home/user-profile/user-profile.component
     BrowserAnimationsModule,
     FormsModule,
     RouterModule.forRoot(routes, { useHash: true }),
-    ToastModule.forRoot()
+    ToastModule.forRoot(),
+    Ng2ImgMaxModule
   ],
   providers: [
     AuthGuard,

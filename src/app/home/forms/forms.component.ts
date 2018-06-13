@@ -8,6 +8,18 @@ import { ProjectService } from '../../service/ProjectService';
   templateUrl: './forms.component.html',
   styleUrls: ['./forms.component.css']
 })
+
+
+///////////////////////////////////////////////////////////////////////////////////////d1
+//
+//    FormsComponent takes form id as input and get the form
+//    array by subscribing 'emitFormElement'.
+//
+//    <app-form-builder> build the form from json array.
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+
 export class FormsComponent implements OnInit {
 
   fcid : any;
@@ -16,7 +28,7 @@ export class FormsComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private route: Router, private activatedRoute: ActivatedRoute) {
     this.projectService.emitFormElement.subscribe((res)=>{
-      // console.log(res);
+
     });
 
   }

@@ -2,11 +2,52 @@ import { Http, Response, Headers, RequestOptions,BaseRequestOptions, RequestMeth
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////d1
+//
+//
+//     Only file in the project that access API URLs.
+//
+//     All APIs are called by functions in ProjectService.ts file.
+//
+//    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    //
+//    //      #Functions
+//    //
+//    //   1. createAuthorizationHeader() : Initialize header
+//    //
+//    //   2. Login() :
+//    //
+//    //   3. UpdatePassword() :
+//    //
+//    //   4. GetFormArray() :
+//    //
+//    //   5. GetFlaggedResponses() :
+//    //
+//    //   6. SyncMeta() :                  Sends handshek request
+//    //
+//    //   7. SyncChunk() :                 Send form responce with handshek ID
+//    //
+//    //   8. SendSubmitResponseID() :      Response synced msg. Handshek window closed
+//    //
+//    //
+//    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 @Injectable()
 export class APIService {
 
   // projectURL: string = 'http://192.168.15.187:8000';
+  // Local server
+
   projectURL: string = 'https://qcitech.org:8083';
+  // Staging server
+
+  // projectURL: string = 'https://api-collect.qcitech.org';
+  // Production server
 
   userID: any;
 
@@ -14,16 +55,11 @@ export class APIService {
 
   createAuthorizationHeader(headers: Headers) {
     this.userID = localStorage.getItem('token');
-    // console.log(this.userID);
     headers.append('Authorization', this.userID);
   }
 
   Login(data) {
     return this.http.post(this.projectURL+'/assesorLogin', data).map(res=>res.json());
-  }
-
-  SyncAll() {
-    return this.http.get(this.projectURL+'/gettestforms').map(res=>res.json());
   }
 
   UpdatePassword(oldpwd, newpwd) {
@@ -53,16 +89,18 @@ export class APIService {
     return this.http.get(this.projectURL+'/getFlaggedResponses',{headers: headers}).map(res=>res.json());
   }
 
-  SubmitResponse(formArray: any) {
+  SyncMeta(meta: any) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
 
-    formArray = JSON.stringify(formArray);
-    formArray = JSON.parse(formArray);
-    formArray = JSON.stringify(formArray);
-    let formData = new FormData();
-    formData.append('resArray',formArray);
-    return this.http.post(this.projectURL+'/submitAssesorResponse', formData,{headers: headers}).map(res=>res.json());
+    meta = JSON.stringify(meta);
+    meta = JSON.parse(meta);
+    meta = JSON.stringify(meta);
+    let metaData = new FormData();
+    metaData.append('meta',meta);
+
+    return this.http.post(this.projectURL+'/startResponse', metaData,{headers: headers}).map(res=>res.json());
+
   }
 
   SyncChunk(data: any, chunk: any) {
@@ -84,22 +122,6 @@ export class APIService {
     // setTimeout( () => {}, 5000)
   }
 
-
-  SyncMeta(meta: any) {
-    let headers = new Headers();
-    this.createAuthorizationHeader(headers);
-
-    meta = JSON.stringify(meta);
-    meta = JSON.parse(meta);
-    meta = JSON.stringify(meta);
-    let metaData = new FormData();
-    metaData.append('meta',meta);
-
-    return this.http.post(this.projectURL+'/startResponse', metaData,{headers: headers}).map(res=>res.json());
-
-  }
-
-
   SendSubmitResponseID(id, flag) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
@@ -108,13 +130,6 @@ export class APIService {
     responseID.append('id',id);
     responseID.append('flag',flag);
     return this.http.post(this.projectURL+'/submitResponseID', responseID,{headers: headers}).map(res=>res.json());
-  }
-
-  CheckImage(image: any){
-    let headers = new Headers();
-    this.createAuthorizationHeader(headers);
-
-    return this.http.post(this.projectURL+'/check',image).map(res=>res.json());
   }
 
 }

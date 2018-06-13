@@ -7,6 +7,19 @@ import { ProjectService } from '../service/ProjectService';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
+
+//////////////////////////////////////////////////////////////////////////////d1
+//
+//    LoginComponent is used for loggin the assessor.
+//
+//    ## Functions
+//    1. login() : pass the username and password to backed API 'assesorLogin'
+//
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
 export class LoginComponent implements OnInit {
 
   phone : any;

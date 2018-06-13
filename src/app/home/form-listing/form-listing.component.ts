@@ -9,6 +9,24 @@ import './app.js';
   templateUrl: './form-listing.component.html',
   styleUrls: ['./form-listing.component.scss']
 })
+
+
+///////////////////////////////////////////////////////////////////////////////////d1
+//
+//     FormListingComponent lists graphical display and form listing
+//     <app-graph1> Display last server synced timestamp.
+//     <app-graph2> Display offline and flagged counts
+//
+//     //////////////////////////////////////////////////////////////////////////////
+//     //
+//     //   #Functions
+//     //   1. form() : takes input the form id and routes over '/form' with 'id'
+//     //
+//     //////////////////////////////////////////////////////////////////////////////
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////
+
 export class FormListingComponent implements OnInit {
 
   cardArray : any = [];
@@ -21,7 +39,6 @@ export class FormListingComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private router: Router) {
     this.sub1 = this.projectService.emitFormArray.subscribe(res=>{
-      // console.log(res);
         this.cardArray = res;
     });
 
@@ -41,7 +58,6 @@ export class FormListingComponent implements OnInit {
   }
 
   form(cid) {
-    // console.log("here1");
       this.router.navigate(['/form'], { queryParams: {id: cid}})
   }
 
@@ -53,11 +69,9 @@ export class FormListingComponent implements OnInit {
   }
 
   offlineFormCount(id) {
-    // console.log(this.offlineFormIdArrray);
     let c = 0;
     for(let i=0; i<this.offlineFormIdArrray.length; i++) {
       if(id==this.offlineFormIdArrray[i]){
-
         c++;
       }
     }

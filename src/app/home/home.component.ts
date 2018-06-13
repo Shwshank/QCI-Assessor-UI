@@ -7,6 +7,15 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
+
+//////////////////////////////////////////////////////////////////////////////d1
+//
+//   If Logged in, routed to DashboardComponent
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
 export class HomeComponent implements OnInit {
 
   constructor(private router: Router, public toastr: ToastsManager, vcr: ViewContainerRef ) {
@@ -15,7 +24,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    // toaster works!
     // this.toastr.success('You are awesome!', 'Success!');
   }
 

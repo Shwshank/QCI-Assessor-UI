@@ -8,6 +8,17 @@ import { ProjectService } from '../../service/ProjectService';
   templateUrl: './flagged-form-listing.component.html',
   styleUrls: ['./flagged-form-listing.component.css']
 })
+
+
+///////////////////////////////////////////////////////////////////////////////////////d1
+//
+//
+//    FlaggedFormListingComponent lists flagged forms, click action on form naviagets to
+//    '/form' url with form rid as query parameter.
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+
 export class FlaggedFormListingComponent implements OnInit {
 
   flag : any =0;

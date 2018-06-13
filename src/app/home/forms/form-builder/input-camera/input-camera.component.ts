@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { ProjectService } from '../../../../service/ProjectService';
-// import './allscript.js';
+import { Ng2ImgMaxService } from 'ng2-img-max';
 
 @Component({
   selector: 'app-input-camera',
@@ -22,8 +22,9 @@ export class InputCameraComponent implements OnInit {
   disabled: any = false;
   position: any;
   waitingFlag = false;
+  uploadedImage : Blob;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService, private ng2ImgMax: Ng2ImgMaxService) {}
 
   ngOnInit() {
     if(localStorage.getItem('rules') && !this.json.flagged){
@@ -49,10 +50,46 @@ export class InputCameraComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = (event:any) => {
       this.url = event.target.result;
-      this.json.value = reader.result;
-      this.json.location = {lat: 28.622635, lng: 77.247129, acc : 9999};
-      this.json.location = this.getLocation();
+
+
+      // this.json.value = reader.result;
+      // this.json.location = {lat: 28.622635, lng: 77.247129, acc : 9999};
+      // this.json.location = this.getLocation();
+
+
     }
+
+    this.compressImage($event);
+
+  }
+
+  compressImage($event) {
+    // https://alligator.io/angular/resizing-images-in-browser-ng2-img-max/
+
+    let files = $event.target.files || $event.srcElement.files;
+
+    let image = files[0];
+    // console.log(image);
+
+    this.ng2ImgMax.resizeImage(image, 1392, 1024).subscribe(
+      result => {
+        this.uploadedImage = new File([result], result.name);
+        // console.log(result);
+
+        let reader = new FileReader();
+        reader.readAsDataURL(this.uploadedImage);
+        reader.onload = (event:any) => {
+
+          this.json.value = reader.result;
+          this.json.location = {lat: 28.622635, lng: 77.247129, acc : 9999};
+          this.json.location = this.getLocation();
+
+        }
+      },
+      error => {
+        console.log('😢 Oh no!', error);
+      }
+    );
 
   }
 

@@ -9,6 +9,58 @@ import './allscript.js';
   styleUrls: ['./dashboard.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
+
+///////////////////////////////////////////////////////////////////////////////////////////////d1
+//
+//     DashboardComponent is the landing page of the application
+//
+//     //////////////////////////////////////////////////////////////////////////////////////////
+//     //
+//     //    #Routing
+//     //
+//     //    1. formListing : FormListingComponent ( * * * Deafult * * * )
+//     //       Display LastUpdate, offline and flagged tags
+//     //       Display form cards
+//     //
+//     //    2. flaggedFormListing : FlaggedFormListingComponent
+//     //       Display Flagged count
+//     //       Display Flagged form cards
+//     //
+//     //    3. form : FormsComponent
+//     //       Display form elements
+//     //
+//     //    4. help : HelpComponent
+//     //       Help panel
+//     //
+//     //    5. template : TemplatesComponent
+//     //
+//     //    6. profile : UserProfileComponent
+//     //
+//     //////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//     //////////////////////////////////////////////////////////////////////////////////////////
+//     //
+//     //   #Functions
+//     //
+//     //   1. emitOfflineResponse observable : count number of offline responses stored
+//     //
+//     //   2. emitFlaggedFormArray observable : Count no. of flagged responses.
+//     //
+//     //   3. emitSyncResponse observable : update offline response count after each sync.
+//     //
+//     //   4. refresh(): refresh page to get updated content.
+//     //
+//     //   5. sync() : Initialize online syncing of forms.
+//     //
+//     //   6. logout() : delelte all browser-wide storage
+//     //
+//     //////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 export class DashboardComponent implements OnInit {
 
   sending : any = false;
