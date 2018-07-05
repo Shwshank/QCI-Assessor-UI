@@ -41,7 +41,7 @@ export class FlaggedFormListingComponent implements OnInit {
   flaggedForm(rid) {
     setTimeout(()=>{
       this.router.navigate(['/form'], { queryParams: {flagResId: rid}})
-    }, 100);
+    }, 1);
   }
 
   ngOnInit() {

@@ -33,8 +33,10 @@ export class FormListingComponent implements OnInit {
   sub1: any;
   sub2: any;
   sub3: any;
+  sub4: any;
   numOffline: any;
   offlineFormIdArrray: any = [];
+  draftArrray: any = [];
   onlineCount: any = [{online:'', last_updated:''}];
 
   constructor(private projectService: ProjectService, private router: Router) {
@@ -48,7 +50,10 @@ export class FormListingComponent implements OnInit {
 
     this.sub3 = this.projectService.emitOnlineFormCount.subscribe(res=>{
       this.onlineCount = res;
-      console.log(res);
+    });
+
+    this.sub4 = this.projectService.emitDraftArray.subscribe(res=>{
+      this.draftArrray = res;
     })
   }
 
@@ -58,6 +63,7 @@ export class FormListingComponent implements OnInit {
   }
 
   form(cid) {
+      localStorage.setItem('formId', cid);
       this.router.navigate(['/form'], { queryParams: {id: cid}})
   }
 
@@ -75,7 +81,16 @@ export class FormListingComponent implements OnInit {
         c++;
       }
     }
+    return c;
+  }
 
+  draftFormCount(id) {
+    let c = 0;
+    for(let i=0; i<this.draftArrray.length; i++) {
+      if(id==this.draftArrray[i].Details.cid){
+        c++;
+      }
+    }
     return c;
   }
 
@@ -83,6 +98,7 @@ export class FormListingComponent implements OnInit {
     this.sub1.unsubscribe();
     this.sub2.unsubscribe();
     this.sub3.unsubscribe();
+    this.sub4.unsubscribe();
   }
 
 }

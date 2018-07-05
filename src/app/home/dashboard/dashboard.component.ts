@@ -66,15 +66,25 @@ export class DashboardComponent implements OnInit {
   sending : any = false;
   syncStatus: any = "Sync";
   num : any = 0;
+  draft : any = 0;
   flag: any = 0;
   sub1: any;
   sub2: any;
   sub3: any;
+  sub4: any;
+  sub5: any;
+  imageProcessing : any = false;
+  dataLength : any;
+  appVersion: any;
 
   constructor(private route: Router, private projectService: ProjectService) {
 
     this.sub1 = this.projectService.emitOfflineResponse.subscribe(res=>{
       this.num = res;
+    });
+
+    this.sub1 = this.projectService.emitDraftCount.subscribe(res=>{
+      this.draft = res;
     });
 
     this.sub2 = this.projectService.emitFlaggedFormArray.subscribe(res=>{
@@ -92,11 +102,21 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
+
+   this.sub4 =  this.projectService.emitImageCompressionStart.subscribe(res=>{
+      this.imageProcessing = res.overlay;
+      this.dataLength = res.dataLength;
+    });
+
+    this.sub5 = this.projectService.emitImageCompressionDone.subscribe(res=>{
+      this.imageProcessing = res.overlay;
+    });
   }
 
   ngOnInit() {
-    // this.projectService.initializeIndexDB();
+    // this.projectService.initializeDraftIndexDB();
     // this.projectService.getFlaggedResponses();
+    this.appVersion = this.projectService.appVersion();
   }
 
   refresh() {
@@ -132,6 +152,8 @@ export class DashboardComponent implements OnInit {
     this.sub1.unsubscribe();
     this.sub2.unsubscribe();
     this.sub3.unsubscribe();
+    this.sub4.unsubscribe();
+    this.sub5.unsubscribe();
   }
 
 }

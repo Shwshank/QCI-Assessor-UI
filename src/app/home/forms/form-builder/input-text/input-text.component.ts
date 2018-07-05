@@ -32,4 +32,7 @@ export class InputTextComponent implements OnInit {
     this.responseData.emit(this.json);
   }
 
+  resendJson() {
+    this.responseData.emit(this.json);
+  }
 }

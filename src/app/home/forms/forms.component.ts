@@ -25,9 +25,11 @@ export class FormsComponent implements OnInit {
   fcid : any;
   templateCid: any;
   flaggedResponseid: any;
+  draftcid: any;
+  sub1 : any;
 
   constructor(private projectService: ProjectService, private route: Router, private activatedRoute: ActivatedRoute) {
-    this.projectService.emitFormElement.subscribe((res)=>{
+    this.sub1 = this.projectService.emitFormElement.subscribe((res)=>{
 
     });
 
@@ -39,6 +41,7 @@ export class FormsComponent implements OnInit {
         this.fcid = params.id;
         this.templateCid = params.templateCid;
         this.flaggedResponseid = params.flagResId;
+        this.draftcid = params.draftID;
 
         if(this.fcid != undefined) {
           this.projectService.getFormByCid(this.fcid);
@@ -49,6 +52,9 @@ export class FormsComponent implements OnInit {
         if(this.flaggedResponseid != undefined) {
           this.projectService.getFlaggedResponseid(this.flaggedResponseid);
         }
+        if(this.draftcid != undefined) {
+          this.projectService.getDraftByCid(this.draftcid);
+        }
     });
   }
 
@@ -56,4 +62,19 @@ export class FormsComponent implements OnInit {
     componentHandler.upgradeDom();
   }
 
+  ngOnDestroy() {
+    this.sub1.unsubscribe();
+  }
+
+  canDeactivate() {
+
+    let submitFlag = localStorage.getItem('submitFlag');
+    let draftID = localStorage.getItem('draftID');
+
+    if(submitFlag==='false' && draftID === 'false') {
+      return window.confirm('Form data will be lost!');
+    }
+
+    return true;
+  }
 }

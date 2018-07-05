@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
 
   phone : any;
   password: any;
+  appVersion: any;
 
   constructor(private projectService: ProjectService, private router: Router) {
 
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.appVersion = this.projectService.appVersion();
   }
 
   login() {

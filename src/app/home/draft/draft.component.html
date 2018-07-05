@@ -1,0 +1,40 @@
+<!-- Three Line List with secondary info and action -->
+<style>
+.demo-list-three {
+  width: 90%
+}
+</style>
+
+<div class="mdl-grid">
+  <div class="" style="width:90vw">
+    <div class="graph2div">
+
+      <div style="width:100%; float:left" >
+        <p class="graph1text" > <i class="material-icons graph2icon">file_copy</i> {{draftArray.length}}</p>
+        <p class="graph1text2" >Draft</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<ul class="demo-list-three mdl-list " style="margin: auto">
+
+  <span  *ngFor="let form  of draftArray" >
+    <hr>
+    <li class="mdl-list__item mdl-list__item--three-line" (click)="openDraft(form.Details.draftID)" >
+      <span class="mdl-list__item-primary-content">
+        <i class="material-icons mdl-list__item-avatar">description</i>
+        <span>{{form.Details.project}}</span>
+        <span class="mdl-list__item-text-body">
+          {{form.Details.name}} &nbsp;<br> Draft: {{form.Details.draftID}}
+        </span>
+      </span>
+      <span class="mdl-list__item-secondary-content">
+        <span class="mdl-list__item-secondary-action"><i class="material-icons">create</i></span>
+      </span>
+    </li>
+  </span>
+  <hr>
+
+</ul>

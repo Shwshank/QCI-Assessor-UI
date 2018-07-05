@@ -27,30 +27,28 @@
 </style>
 
 <div class="mdl-grid">
+
   <div class="mdl-cell mdl-cell--3-col">{{funID(id)}} . {{json.name}}
     <span  *ngIf="json.required" class=" requiredMsg"><b> * </b> </span>
     <span  *ngIf="json.helptext" class="mdl-badge" data-badge="i" id="Tsample{{funID(id)}}"  ></span>
   </div>
+
   <div class="mdl-cell mdl-cell--7-col">
-    <!-- <input type="file"  [accept]=json.fileTypes /> -->
+
+    <span  style="float: right" *ngIf="json.synced" class="blueCloud"> <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+    <span  style="float: right" *ngIf="json.notSynced" class="amberCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+    <span  style="float: right" *ngIf="json.syncWaiting" class="grayCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+
     <div class="file_input_div">
-  <div class="file_input">
-    <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
-      <i class="material-icons">attach_file</i>
-      <input id="file_input_file" class="none" type="file" (change)="getVal($event);" [accept]=json.fileTypes  [disabled]='disabled' />
+      <div class="file_input">
+        <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">attach_file</i>
+          <input id="file_input_file" class="none" type="file" (change)="getVal($event);" [accept]=json.fileTypes  [disabled]='disabled' />
 
-    </label>
-    {{name}}
-  </div>
-  <!-- <div id="file_input_text_div" class="mdl-textfield mdl-js-textfield textfield-demo">
-
-    <input class="file_input_text mdl-textfield__input" type="text" disabled readonly id="file_input_text" style="color:gray"
-     [(ngModel)]='name'   />
-
-    <label class="mdl-textfield__label" for="file_input_text"></label>
-
-  </div> -->
-</div>
+        </label>
+        {{json.fileName}}
+      </div>
+    </div>
   </div>
 
   <span *ngIf='json.errorMsg' class="mdl-chip  margin-top-prop">

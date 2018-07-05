@@ -9,6 +9,9 @@
             <button type="button" class="mdl-chip__action"><i class="material-icons">location_on</i></button>
         </span>
       </span>
+      <span  style="float: right" *ngIf="json.synced" class="blueCloud"> <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+      <span  style="float: right" *ngIf="json.notSynced" class="amberCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+      <span  style="float: right" *ngIf="json.syncWaiting" class="grayCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
     </span>
 
     <span *ngIf="waitingFlag" >

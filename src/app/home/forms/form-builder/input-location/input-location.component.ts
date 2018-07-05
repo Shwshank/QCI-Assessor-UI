@@ -61,5 +61,8 @@ export class InputLocationComponent implements OnInit {
   funID(id) {
     return (parseInt(id)+1);
   }
-
+  resendJson() {
+    this.getLocation();
+    this.responseData.emit(this.json);
+  }
 }

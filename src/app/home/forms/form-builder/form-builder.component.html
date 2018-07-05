@@ -7,20 +7,36 @@
   <!-- <div   class="mdl-card__title ">
     <h2 class="mdl-card__title-text">{{formDetails.project}}</h2>
   </div> -->
+
+
   <div class="mdl-card__supporting-text background-secondary">
     <b>{{formDetails.project}} <br> {{formDetails.name}}</b> &nbsp;  &nbsp;  &nbsp;
 
-    <span *ngIf='formError' class="mdl-chip" style="float : right; margin-top: -15px" >
+
+    <!-- <span *ngIf='formError' class="mdl-chip" style="float : right; margin-top: -15px" >
         <span class="mdl-chip__text errorMsg"><b> # </b> </span>
     </span>
 
     <span *ngIf="displayRequired>0" style="float : right; margin-top: -15px"  class="mdl-chip margin-top-prop">
         <span class="mdl-chip__text requiredMsg"> <b>*  <span style="font-size:0.8rem"> Required </span> </b> </span>
+    </span> -->
+
+    <span *ngIf='completeArray.Details.draftID' class="mdl-chip" style="float : right; margin-top: -15px" >
+      <span class="mdl-chip__text "><b> Draft </b> </span>
     </span>
 
     <span *ngIf="flags>0" style="float : right; margin-top: -15px"  class="mdl-chip margin-top-prop">
         <span class="mdl-chip__text flagged "><b>  {{flags}}  <i class="material-icons flag-icon">assistant_photo</i></b> </span>
     </span>
+
+    <button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon" style="float : right; margin-top:-1.4rem !important; max-height:2.5rem !important; height:2.5rem !important; min-height:2.5rem !important;">
+      <i class="material-icons">more_vert</i>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu "
+        for="demo-menu-lower-right">
+        <li class="mdl-menu__item" *ngIf='!completeArray.Details.draftID' (click)="saveDraft()">Save Draft <i class="material-icons">file_copy</i> </li>
+        <li class="mdl-menu__item" *ngIf='completeArray.Details.draftID' (click)="deleteDraft()">Delete Draft <i class="material-icons">delete</i> </li>        
+    </ul>
 
   </div>
 
@@ -102,7 +118,7 @@
     </div>
 
     <div *ngIf='jsonArray.length > 0' class="mdl-grid">
-      <div class="mdl-cell mdl-cell--12-col" style="margin: auto;">
+      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-phone" style="margin: auto;">
 
         <button *ngIf="button1" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" (click)='proceedForSumbit()' >
          <b>{{submitButton}}  <i class="material-icons">send</i></b>
@@ -113,6 +129,22 @@
         </button>
 
       </div>
+
+
+      <div class="mdl-cell mdl-cell--12-col " style="margin: auto;">
+        <br>
+        <div *ngIf="showErrorMsgOnSubmit.length" >
+          <span *ngFor="let error of showErrorMsgOnSubmit" class="mdl-chip  margin-top-prop">
+            <span class="mdl-chip__text errorMsg"><b># {{error.ques}}, {{error.msg}} </b> </span>
+          </span>
+        </div>
+
+      </div>
+
+      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-phone" >
+        <h5 class="blueCloud"> {{totalSynced(syncedArray,syncCount)}} of {{unSyncCount}} Synced </h5>
+      </div>
+
     </div>
 
     <div *ngIf="!formResponse" >

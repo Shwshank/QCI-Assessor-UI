@@ -4,13 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/timeout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {ToastOptions} from 'ng2-toastr';
 import { Ng2ImgMaxModule } from 'ng2-img-max';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { NGXLogger } from 'ngx-logger';
+import { ImageCompressService,ResizeOptions,ImageUtilityService } from 'ng2-image-compress';
+
 
 import { routes } from './app.routes';
 import { AuthGuard } from './service/ZAuthGuard';
+import { CanDeactivateGuard } from './service/ZCanDeactivate';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './home/dashboard/dashboard.component';
@@ -43,6 +50,9 @@ import { Graph1Component } from './home/form-listing/graph1/graph1.component';
 import { Graph2Component } from './home/form-listing/graph2/graph2.component';
 import { HelpComponent } from './home/help/help.component';
 import { UserProfileComponent } from './home/user-profile/user-profile.component';
+import { SyncComponent } from './home/sync/sync.component';
+import { DraftComponent } from './home/draft/draft.component';
+
 
 @NgModule({
   declarations: [
@@ -75,7 +85,9 @@ import { UserProfileComponent } from './home/user-profile/user-profile.component
     Graph1Component,
     Graph2Component,
     HelpComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    SyncComponent,
+    DraftComponent
   ],
   imports: [
     HttpModule,
@@ -84,12 +96,18 @@ import { UserProfileComponent } from './home/user-profile/user-profile.component
     FormsModule,
     RouterModule.forRoot(routes, { useHash: true }),
     ToastModule.forRoot(),
-    Ng2ImgMaxModule
+    Ng2ImgMaxModule,
+    LoggerModule.forRoot({serverLoggingUrl: 'http://192.168.15.187:8000/assessorActivityLog',
+    level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.INFO}),
   ],
   providers: [
+    NGXLogger,
     AuthGuard,
-    ProjectService,
     APIService,
+    ProjectService,
+    CanDeactivateGuard,
+    ImageCompressService,
+    ResizeOptions
   ],
   bootstrap: [AppComponent]
 })

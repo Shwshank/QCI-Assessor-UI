@@ -61,4 +61,7 @@ export class InputVideoComponent implements OnInit {
     this.responseData.emit(this.json);
   }
 
+  resendJson() {
+    this.responseData.emit(this.json);
+  }
 }

@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { APIService } from './APIService';
 import { AngularIndexedDB } from 'angular2-indexeddb';
+import { Ng2ImgMaxService } from 'ng2-img-max';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////d1
 //
@@ -99,7 +100,8 @@ import { AngularIndexedDB } from 'angular2-indexeddb';
 @Injectable()
 export class ProjectService {
   size: any;
-  constructor(private apiService: APIService, private router: Router) {}
+
+  constructor(private apiService: APIService, private router: Router, private ng2ImgMax: Ng2ImgMaxService) {}
 
   vibrateDuration0: any = 100;
   vibrateDuration1: any = 200;
@@ -108,8 +110,12 @@ export class ProjectService {
   emitFormArray = new EventEmitter<any>();
   emitFormResponse = new EventEmitter<any>();
   emitSyncResponse = new EventEmitter<any>();
+  emitSyncResponseId = new EventEmitter<any>();
   emitUserLogin = new EventEmitter<any>();
   emitOfflineResponse = new EventEmitter<any>();
+  emitOfflineResponseArray = new EventEmitter<any>();
+  emitDraftCount =  new EventEmitter<any>();
+  emitDraftArray =  new EventEmitter<any>();
   emitIndexedDBInitializedRes = new EventEmitter<any>();
   emitFlaggedFormArray = new EventEmitter<any>();
   emitForm_sync = new EventEmitter<any>();
@@ -117,17 +123,29 @@ export class ProjectService {
   emitChunkSuccess = new EventEmitter<any>();
   emitOfflineChunkSuccess = new EventEmitter<any>();
   emitOnlineFormCount  = new EventEmitter<any>();
+  emitImageCompressionStart  = new EventEmitter<any>();
+  emitImageCompressionDone  = new EventEmitter<any>();
+  emitCompressedImage = new EventEmitter<any>();
+  emitChunkError  = new EventEmitter<any>();
   formArray = [];
   offlineFormIdArrray = [];
   flaggedFormArray = [];
   formCard= [];
   templateArray = [];
   storeFormArrayTemp :any = [];
-  submittedForm: any[];
+  submittedForm: any = [];
+  draftFormIdArrray : any = [];
+  draftArray: any = [];
+  alldraftArray : any = [];
   chunk:any= {responseTimeStamp:'', formID:'', version:''};
   sub1 : any;
 
   db = new AngularIndexedDB('responseDB', 1);
+  dbDraft = new AngularIndexedDB('draftDB', 1);
+
+  appVersion() {
+    return this.apiService.appVersion;
+  }
 
   cid() {
     let d = new Date();
@@ -224,6 +242,15 @@ export class ProjectService {
     }
   }
 
+  getDraftByCid(draftID) {
+
+    for(let i of this.draftArray) {
+      if(i.Details.draftID == draftID) {
+        this.emitFormElement.emit(i);
+      }
+    }
+  }
+
   popFromFlaggedArray(rid) {
     for(let i= 0; i< this.flaggedFormArray.length; i++) {
       if(this.flaggedFormArray[i].Details.rid == rid) {
@@ -256,6 +283,18 @@ export class ProjectService {
     this.storeFormArrayTemp = formArray;
   }
 
+  imageCompressionStarts(length) {
+    this.emitImageCompressionStart.emit(
+      {overlay:true, dataLength: length}
+    )
+  }
+
+  imageCompressionDone() {
+    this.emitImageCompressionDone.emit(
+      {overlay:false}
+    )
+  }
+
   syncAll() {
     this.db.getAll('asrResponse').then((response) => {
         // console.log(response);
@@ -264,11 +303,26 @@ export class ProjectService {
 
               console.log(response[i]);
 
-              for(let j=0; j<response[i].response.ResElements.length; j++) {
-                response[i].response.ResElements[j].chunkStatus = false;
+              // for(let j=0; j<response[i].response.ResElements.length; j++) {
+              //   response[i].response.ResElements[j].chunkStatus = false;
+              // }
+              let syncFlag = false;
+              for(let j = 0; j< response[i].response.ResElements.length; j++) {
+                if(response[i].response.ResElements[j].synced) {
+
+                  syncFlag = true;
+                } else {
+                  syncFlag = false;
+                  break;
+                }
               }
 
-              this.syncOffline1(response[i]);
+              if(syncFlag) {
+                this.sendSubmitOfflineResponseID5(response[i]);
+              } else {
+                this.syncOffline1(response[i]);
+              }
+
             }
         }
     }, (error) => {
@@ -276,17 +330,46 @@ export class ProjectService {
     });
   }
 
+  syncThisFirst(data) {
+
+    let syncFlag = false;
+
+    if(data.response.ResElements.length) {
+      // If All Elements already synced and no element present in response array
+
+      for(let j = 0; j< data.response.ResElements.length; j++) {
+        if(data.response.ResElements[j].synced) {
+
+          syncFlag = true;
+        } else {
+          syncFlag = false;
+          break;
+        }
+      }
+
+    } else {
+      syncFlag = true;
+    }
+
+    if(syncFlag) {
+      this.sendSubmitOfflineResponseID5(data);
+    } else {
+      this.syncOffline1(data);
+    }
+
+  }
+
   syncOffline1(res: any) {
 
     this.sub1 = this.emitOfflineChunkSuccess.subscribe(cid=>{
 
-        for( let i =0; i<res.response.ResElements.length; i++) {
-          if(cid==res.response.ResElements[i].cid) {
+      for( let i =0; i<res.response.ResElements.length; i++) {
+        if(cid==res.response.ResElements[i].cid) {
 
-            res.response.ResElements[i].chunkStatus = true;
-            this.checkAllOfflineChunk4(res);
-          }
+          res.response.ResElements[i].synced = true;
+          this.checkAllOfflineChunk4(res);
         }
+      }
 
     }, err=>{
       console.log(err);
@@ -305,16 +388,22 @@ export class ProjectService {
       console.log(this.chunk);
       if(res2.success) {
         for(let i = 0; i<res.response.ResElements.length; i++) {
-          // console.log(res.response.ResElements[i].chunkStatus);
+          console.log(res.response.ResElements[i].synced);
 
-          if(!res.response.ResElements[i].chunkStatus) {
+          if(!res.response.ResElements[i].synced) {
             // setTimeout( () => this.syncChunkOffline(res.response.ResElements[i], this.chunk), 5000);
             this.syncChunkOffline3(res, res.response.ResElements[i]);
           }
         }
+      } else {
+        console.log(res);
+        alert('Some Error occurs');
+        window.location.reload();
       }
     }, err=>{
       console.log(err);
+      alert('Some Error occurs');
+      window.location.reload();
     })
 
   }
@@ -332,21 +421,26 @@ export class ProjectService {
     let sub1 = this.apiService.SyncChunk(data, chunk).subscribe(res=>{
 
       // console.log(sum);
-      // console.log(res);
+      console.log(res);
       if(res.success) {
         this.emitOfflineChunkSuccess.emit(data.cid);
+      } else {
+        console.log(res);
       }
       sub1.unsubscribe();
-    }, err=>{
+    } , err=>{
+      sub1.unsubscribe();
       console.log(err);
+      // window.location.reload();
+      // alert(err);
     });
   }
 
   checkAllOfflineChunk4(res) {
-
+    console.log(res);
     let syncFlag = false;
     for(let i = 0; i< res.response.ResElements.length; i++) {
-      if(res.response.ResElements[i].chunkStatus) {
+      if(res.response.ResElements[i].synced) {
 
         syncFlag = true;
       } else {
@@ -367,7 +461,9 @@ export class ProjectService {
       // console.log(res2);
 
       if(res2.success) {
-        this.emitSyncResponse.emit({success:true, msg:"synced!"});
+        // this.emitSyncResponse.emit({success:true, msg:"synced!"});
+
+          this.emitSyncResponseId.emit({success:true, id:res.response.ResCid})
           this.db.delete('asrResponse', res.id).then(() => {
             // navigator.vibrate(this.vibrateDuration0);
 
@@ -378,6 +474,7 @@ export class ProjectService {
 
           });
       } else {
+        console.log(res2);
         alert('Some error occurs!');
       }
     }, err=>{
@@ -491,7 +588,7 @@ export class ProjectService {
             this.flaggedFormArray.push(res.formArray[i].form_json);
           }
         }
-
+        console.log(this.flaggedFormArray);
         // save data in offline storage
         localStorage.setItem('flaggedForms', JSON.stringify(this.flaggedFormArray));
         this.emitFlaggedFormArray.emit(this.flaggedFormArray);
@@ -511,7 +608,7 @@ export class ProjectService {
     });
   }
 
-  submitFormArray(tempArray: any) {
+  submitFormArray(tempArray: any, id) {
     if(this.storeFormArrayTemp.Elements) {
 
       for(let temp of this.storeFormArrayTemp.Rules) {
@@ -521,19 +618,19 @@ export class ProjectService {
           this.storeFormArrayTemp.Elements = this.storeFormArrayTemp.Elements.concat(tempArray.Elements);
           this.submittedForm = this.storeFormArrayTemp;
           console.log(this.submittedForm);
-          this.saveResponseOffline(this.submittedForm);
+          this.saveResponseOffline(this.submittedForm, id);
           this.storeFormArrayTemp = [];
         }
       }
     } else {
       this.submittedForm = tempArray;
-      this.saveResponseOffline(this.submittedForm);
+      this.saveResponseOffline(this.submittedForm, id);
       console.log(this.submittedForm)
     }
 
   }
 
-  saveResponseOffline(formArray: any) {
+  saveResponseOffline(formArray: any, id) {
     console.log(formArray);
 
     // check if response is flagged or not. If flagged, pop the saved flagged response
@@ -559,36 +656,73 @@ export class ProjectService {
 
     }
 
-    let asrName: any;
-    let asrID: any;
+    let asrPhone: any;
 
-    asrName = localStorage.getItem('asrName');
-    asrID = localStorage.getItem('asrID');
-
-    asrName = "5vy5y5";
-    asrID = "15150728168562338";
+    asrPhone = localStorage.getItem('phone');
 
     let response : any = {};
 
     if(formArray.Details.rid) {
       response.ResCid = formArray.Details.rid // flagged response
     } else {
-      response.ResCid = this.cid(); // new response
+      response.ResCid = id; // new response
     }
 
     response.ResDetails = formArray.Details;
     response.ResElements = formArray.Elements;
-    response.ResExtra = {asrName: asrName, asrID: asrID, resDate: this.cdate()};
+    response.ResExtra = {asrPhone: asrPhone, resDate: this.cdate()};
 
     // console.log(response);
-
+    // Don't know what this block is doing
     for(let i = 0; i< response.ResElements.length; i++) {
       if(response.ResElements[i].chunkStatus) {
         delete response.ResElements[i].chunkStatus;
       }
     }
 
-    console.log(' --> '+response);
+    // Remove synced Elements from response
+    // store Elements pos in a temp array
+    let elementsToBeDeletedArray = [];
+
+    for(let i = 0; i< response.ResElements.length; i++) {
+      if(response.ResElements[i].synced) {
+        elementsToBeDeletedArray.push(i);
+      }
+    }
+
+    // Delete Elements of temp array
+    if(elementsToBeDeletedArray.length) {
+      for(let i=0; i<elementsToBeDeletedArray.length;i++) {
+        response.ResElements.splice(i,1);
+      }
+    }
+    // Remove synced Elements from response  * * * * * ends here
+
+    // Remove Elements if value = "" and element not required  and type != location
+    let elementsToBeDeletedArray2 = [];
+
+    for(let i = 0; i< response.ResElements.length; i++) {
+      if(response.ResElements[i].type!="location" && (response.ResElements[i].value=="" && !response.ResElements[i].required)) {
+        elementsToBeDeletedArray2.push(response.ResElements[i].cid);
+      }
+    }
+
+    // console.log(elementsToBeDeletedArray2);
+
+    if(elementsToBeDeletedArray2.length) {
+      for(let i=0; i<elementsToBeDeletedArray2.length;i++) {
+        for(let j = 0; j< response.ResElements.length; j++) {
+          if(elementsToBeDeletedArray2[i] == response.ResElements[j].cid) {
+            response.ResElements.splice(j,1);
+            break;
+          }
+        }
+      }
+    }
+    // Remove Elements if value = "" and element not required  and type != location * * * * *  ends here
+
+    // console.log(' --> '+response);
+    // console.log(' --> '+response.ResElements);
 
     this.addResponseToIndexDB(response);
 
@@ -602,9 +736,12 @@ export class ProjectService {
       console.log(res);
       if(res.success) {
         this.emitChunkSuccess.emit(data.cid);
+      } else {
+        console.log(res);
       }
     }, err=>{
       console.log(err);
+      this.emitChunkError.emit(data.cid);
     });
   }
 
@@ -631,7 +768,8 @@ export class ProjectService {
 
   sendSubmitResponseID(response , id) {
 
-    console.log(response);
+    // this.saveResponseOffline(response, id);
+
 
     this.apiService.SendSubmitResponseID(id, 'Online').subscribe(res=>{
       // console.log(res);
@@ -639,12 +777,12 @@ export class ProjectService {
         this.emitFormResponse.emit({success: true}); // Submit form final form
         // this.saveResponseOffline(response);
       } else {
+        this.saveResponseOffline(response, id);
         this.emitFormResponse.emit({success:false, msg:"not-submitted"});
-        this.saveResponseOffline(response);
       }
     }, err=>{
       console.log(err);
-      this.saveResponseOffline(response);
+      this.saveResponseOffline(response, id);
     });
   }
 
@@ -678,9 +816,51 @@ export class ProjectService {
             }
 
           }
+          this.emitOfflineResponseArray.emit(response);
           this.emitOfflineResponse.emit(temp);
           this.emitofflineFormIdArrray.emit(this.offlineFormIdArrray);
           // console.log(this.offlineFormIdArrray);
+      }, (error) => {
+          console.log(error);
+      });
+    });
+  }
+
+  initializeDraftIndexDB() {
+    this.draftFormIdArrray = [];
+    this.dbDraft.openDatabase(1, (evt) => {
+        let objectStore = evt.currentTarget.result.createObjectStore(
+            'asrDraft', { keyPath: "id", autoIncrement: true });
+        objectStore.createIndex("draft", "draft", { unique: false });
+    });
+
+    let temp = 0;
+    // initialize IndexDB
+    let db = new AngularIndexedDB('draftDB', 1);
+    // open IndexDB
+    db.openDatabase(1, (evt) => {
+        let objectStore = evt.currentTarget.result.createObjectStore(
+            'asrDraft', { keyPath: "id", autoIncrement: true });
+        objectStore.createIndex("draft", "draft", { unique: false });
+    }).then(()=>{
+
+      db.getAll('asrDraft').then((response) => {
+          temp = response.length;
+
+          // offline responses corresponding to formID
+
+          if(response.length) {
+            this.draftArray = [];
+            // console.log(response.length);
+            for(let i = 0; i<response.length; i++) {
+              this.draftArray.push(response[i].draft);
+            }
+          }
+          console.log(response.length);
+          this.alldraftArray = response;
+          this.emitDraftCount.emit(response.length);
+          this.emitDraftArray.emit(this.draftArray);
+
       }, (error) => {
           console.log(error);
       });
@@ -741,6 +921,130 @@ export class ProjectService {
     }, (error) => {
       console.log(error);
     });
+  }
+
+  saveDraft(response) {
+
+    // console.log(response);
+
+    // get size of response
+    let tempStorage = JSON.stringify(response).length;
+    tempStorage += (1024 * 1024 * 200);
+    console.log(tempStorage);
+
+    console.log(response);
+    // request for space as per size of response
+    (<any>navigator).webkitPersistentStorage.requestQuota (
+        tempStorage, function(grantedBytes) {
+          console.log(response);
+          console.log(grantedBytes);
+          (<any>window).webkitRequestFileSystem((<any>window).PERSISTENT, grantedBytes, res=>{
+
+            // initialize IndexDB
+            let db = new AngularIndexedDB('draftDB', 1);
+
+            // open IndexDB
+            db.openDatabase(1, (evt) => {
+                let objectStore = evt.currentTarget.result.createObjectStore(
+                    'asrDraft', { keyPath: "id", autoIncrement: true });
+                objectStore.createIndex("draft", "draft", { unique: false });
+
+            }).then(()=>{
+
+              // add response in Indexed
+              db.add('asrDraft', { draft: response }).then(() => {
+                alert('Draft saved in offline storage');
+                window.location.reload();
+                this.router.navigate(['/']);
+                }, (error) => {
+                  alert('Some error occurs while storing the form. Please try again');
+                  window.location.reload();
+              });
+            });
+          }, err =>{
+            alert("Insufficient storage! Please try again after having free space." );
+            window.location.reload();
+            // this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+          });
+        }, function(e) { console.log('Error', e); }
+    );
+
+  }
+
+  deleteDraft(draftID) {
+    console.log(draftID);
+
+    for(let i=0; i<this.alldraftArray.length; i++) {
+
+      if(this.alldraftArray[i].draft.Details.draftID === draftID ) {
+
+          this.dbDraft.delete('asrDraft', this.alldraftArray[i].id).then(() => {
+
+            console.log('deleted');
+            this.router.navigate(['/']);
+          }, (error) => {
+              console.log(error);
+              alert("Some error detected! Please try again");
+              window.location.reload();
+          });
+
+        break;
+      }
+    }
+  }
+
+  deleteDraftFormSubmit(draftID) {
+    console.log(draftID);
+
+    for(let i=0; i<this.alldraftArray.length; i++) {
+
+      if(this.alldraftArray[i].draft.Details.draftID === draftID ) {
+
+          this.dbDraft.delete('asrDraft', this.alldraftArray[i].id).then(() => {
+
+            console.log('deleted');
+          }, (error) => {
+              console.log(error);
+              alert("Some error detected! Please try again");
+              window.location.reload();
+          });
+
+        break;
+      }
+    }
+  }
+
+  updateDraft(draftID, responseArray) {
+
+    console.log(draftID);
+    console.log(responseArray);
+    console.log(this.draftArray);
+    let temp;
+    for(let i=0; i<this.alldraftArray.length; i++) {
+
+      if(this.alldraftArray[i].draft.Details.draftID === draftID ) {
+        this.alldraftArray[i].draft.Elements = responseArray.Elements
+
+          this.dbDraft.delete('asrDraft', this.alldraftArray[i].id).then(() => {
+            // this.saveDraft(this.draftArray[i]);
+            this.dbDraft.add('asrDraft', { draft : this.draftArray[i] } ).then(()=>{
+                console.log('draft Updated!');
+
+            }, (error) =>{
+              console.log(error);
+            });
+          }, (error) => {
+              console.log(error);
+              alert("Some error detected! Please try again");
+              window.location.reload();
+          });
+
+        break;
+
+      }
+
+    }
+
   }
 
 }

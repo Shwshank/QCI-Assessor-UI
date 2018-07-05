@@ -36,7 +36,12 @@
   <div class="mdl-cell mdl-cell--3-col">{{funID(id)}} . {{json.name}}
     <span  *ngIf="json.required" class=" requiredMsg"><b> * </b> </span>
   </div>
+
   <div class="mdl-cell mdl-cell--7-col">
+
+    <span  style="float: right" *ngIf="json.synced" class="blueCloud"> <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+    <span  style="float: right" *ngIf="json.notSynced" class="amberCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+    <span  style="float: right" *ngIf="json.syncWaiting" class="grayCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
 
     <span  *ngIf="json.helptext" style="float: right" class="mdl-badge" data-badge="i" id="Tsample{{funID(id)}}"  ></span>
 
@@ -53,13 +58,13 @@
         </div>
         <br> <br>
 
-        <video *ngIf="url" width="230vbh" height="140vbh" controls style="margin-left:-0px !important">
-          <source [src]="url" >
+        <video *ngIf="json.value" width="230vbh" height="140vbh" controls style="margin-left:-0px !important">
+          <source [src]="json.value" >
           Browser does not support the video tag.
         </video>
 
-        <div *ngIf="name" style="float: right; margin: auto;">
-          {{name}}
+        <div *ngIf="json.fileName" style="float: right; margin: auto;">
+          {{json.fileName}}
         </div>
         <br>
       </div>

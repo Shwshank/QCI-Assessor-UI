@@ -1,25 +1,28 @@
 <div class="mdl-layout mdl-js-layout mdl-color--grey-100" style="justify-content: center !important;">
 	<main class="mdl-layout__content">
 		<div class="mdl-card mdl-shadow--6dp">
-			<div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-				<h2 class="mdl-card__title-text">QCI Survey </h2>
+			<div class="mdl-card__title mdl-color--primary mdl-color-text--white" style="background-color: #E2175B">
+				<h2 class="mdl-card__title-text">QCI Survey. </h2>
 			</div>
 	  	<div class="mdl-card__supporting-text">
         <h5>Assessor module</h5>
 				<div>
 					<div class="mdl-textfield mdl-js-textfield">
-						<input class="mdl-textfield__input" type="text" id="username" [(ngModel)]='phone'/>
+						<input class="mdl-textfield__input" type="text" id="username" [(ngModel)]='phone' />
 						<label class="mdl-textfield__label" for="username"  >Phone No.</label>
 					</div>
 					<div class="mdl-textfield mdl-js-textfield">
-						<input class="mdl-textfield__input" type="password" id="userpass" [(ngModel)]='password'/>
+						<input class="mdl-textfield__input" type="password" id="userpass" [(ngModel)]='password' />
 						<label class="mdl-textfield__label" for="userpass"  >Password</label>
 					</div>
 				</div>
 			</div>
 			<div class="mdl-card__actions mdl-card--border">
-				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect  mdl-button--colored " (click)='login()'>Log in </button>
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" style="background-color :#E2175B; color: white" (click)="login()" >  Log in  </button>
+				<!-- B30033 -->
 			</div>
 		</div>
 	</main>
+	<br>
+	<span style="font-size:0.8rem;letter-spacing: .1rem; text-align: center; color: #5B5859" > <b> {{appVersion}} </b> </span>
 </div>

@@ -1,10 +1,13 @@
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--12-col">
-{{funID(id)}} . {{json.name}}   <span  *ngIf="json.required" class=" requiredMsg"><b> * </b> </span>
+  {{funID(id)}} . {{json.name}}   <span  *ngIf="json.required" class=" requiredMsg"><b> * </b> </span>
+  <span  style="float: right" *ngIf="json.synced" class="blueCloud"> <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+  <span  style="float: right" *ngIf="json.notSynced" class="amberCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+  <span  style="float: right" *ngIf="json.syncWaiting" class="grayCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
 
     <br>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="number" id="sample3" (change)="getVal()" [(ngModel)]='value' min={{json.rangeFrom}} max={{json.rangeTo}}  [disabled]='disabled' >
+      <input class="mdl-textfield__input" type="number" id="sample3" (change)="getVal()" [(ngModel)]='value' min={{json.rangeFrom}} max={{json.rangeTo}}  [disabled]='disabled' autocomplete="off">
       <label class="mdl-textfield__label" ></label>
     </div>
 

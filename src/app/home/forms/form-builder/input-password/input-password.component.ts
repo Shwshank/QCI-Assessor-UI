@@ -31,4 +31,8 @@ export class InputPasswordComponent implements OnInit {
     this.json.value = this.value;
     this.responseData.emit(this.json);
   }
+
+  resendJson() {
+    this.responseData.emit(this.json);
+  }
 }

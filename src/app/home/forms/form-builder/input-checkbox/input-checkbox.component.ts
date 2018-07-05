@@ -34,7 +34,7 @@ export class InputCheckboxComponent implements OnInit {
   ngOnInit() {
     this.json.value = this.json.values;
     this.resultArray= this.json.values;
-    
+
     if(localStorage.getItem('rules') && !this.json.flagged){
       this.disabled = true;
     }
@@ -79,5 +79,9 @@ export class InputCheckboxComponent implements OnInit {
     this.json.value = this.resultArray;
     this.responseData.emit(this.json);
 
+  }
+
+  resendJson() {
+    this.responseData.emit(this.json);
   }
 }

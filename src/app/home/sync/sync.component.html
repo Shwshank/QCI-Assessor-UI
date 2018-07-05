@@ -1,0 +1,57 @@
+<!-- Three Line List with secondary info and action -->
+<style>
+.demo-list-three {
+  width: 90%
+}
+</style>
+
+<div class="mdl-grid">
+  <div class="" style="width:90vw">
+    <div class="graph2div">
+
+      <div style="width:100%; float:left" >
+        <p class="graph1text" > <i class="material-icons graph2icon">cloud_off</i> {{numOffline}}</p>
+        <p class="graph1text2" >Offline</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<ul *ngIf="cardArray.length" class="demo-list-three mdl-list " style="margin: auto" >
+
+  <span  *ngFor="let card  of cardArray; let i = index" >
+    <hr>
+    <li class="mdl-list__item mdl-list__item--three-line">
+      <span class="mdl-list__item-primary-content">
+        {{i+1}}. <span>{{card.response.ResDetails.name}} - {{card.response.ResDetails.project}}</span>
+
+        <span *ngIf="card.response.offline" class="grayCloud">  <i class="material-icons"> cloud_upload </i> </span>
+        <span *ngIf="card.response.syncingStatus" class="amberCloud">  <i class="material-icons"> cloud_upload </i> </span>
+        <span *ngIf="card.response.synced" class="blueCloud">  <i class="material-icons"> cloud_upload </i> </span>
+
+        <span class="mdl-list__item-text-body">
+           <!-- &nbsp;<br> Unsynced: {{unsyncedResponseCount(card.response)}} -->
+        </span>
+      </span>
+      <span class="mdl-list__item-secondary-content">
+
+        <span *ngIf="card.response.offline" class="mdl-list__item-secondary-action" style="color:#e93f75" (click)="sync(card)" ><i class="material-icons">sync</i></span>
+        <span *ngIf="card.response.synced" class="mdl-list__item-secondary-action" class="blueCloud" ><i class="material-icons">done_all</i></span>
+        <span *ngIf="card.response.syncingStatus" class="mdl-list__item-secondary-action" style="color:#e93f75">
+          <div class="loading">
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+            <!-- <div class="loading-bar"></div> -->
+            <!-- <div class="loading-bar"></div> -->
+          </div>
+        </span>
+
+      </span>
+
+
+    </li>
+  </span>
+  <hr>
+
+</ul>

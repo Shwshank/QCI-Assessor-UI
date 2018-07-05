@@ -18,7 +18,7 @@ export class InputDropdownComponent implements OnInit {
 
   ngOnInit() {
     this.selectedValue = this.json.value;
-    
+
     if(localStorage.getItem('rules') && !this.json.flagged){
       this.disabled = true;
     }
@@ -33,4 +33,7 @@ export class InputDropdownComponent implements OnInit {
     this.responseData.emit(this.json);
   }
 
+  resendJson() {
+    this.responseData.emit(this.json);
+  }
 }

@@ -1,6 +1,6 @@
 <div class="page-content">
 
-  <div class="mdl-grid">
+  <div class="mdl-grid" id="body2">
     <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet mdl-cell--12-col-phone infoGraph"> <app-graph1></app-graph1> </div>
     <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet mdl-cell--12-col-phone infoGraph"> <app-graph2></app-graph2> </div>
   </div>
@@ -30,6 +30,11 @@
           <span class="mdl-chip mdl-chip--contact">
               <span class="mdl-chip__contact mdl-color--accent mdl-color-text--lightgray">{{offlineFormCount(card.Details.cid)}}</span>
               <span class="mdl-chip__text">Offline</span>
+          </span>
+
+          <span class="mdl-chip mdl-chip--contact">
+              <span class="mdl-chip__contact mdl-color--primary mdl-color-text--white">{{draftFormCount(card.Details.cid)}}</span>
+              <span class="mdl-chip__text">Draft</span>
           </span>
 
           <!-- <span class="mdl-chip mdl-chip--contact" (click)="flaggedForm()" >

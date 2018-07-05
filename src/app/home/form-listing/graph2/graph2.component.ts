@@ -34,7 +34,9 @@ export class Graph2Component implements OnInit {
 
   ngOnInit() {
     this.projectService.initializeIndexDB();
+    this.projectService.initializeDraftIndexDB();
     this.projectService.getFlaggedResponses();
+
   }
 
   ngOnDestroy() {

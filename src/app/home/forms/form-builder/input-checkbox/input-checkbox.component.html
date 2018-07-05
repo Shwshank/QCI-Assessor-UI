@@ -5,9 +5,14 @@
 
   </div>
 
-  <div class="mdl-cell mdl-cell--8-col marginAuto">
-    <div *ngFor='let opt of json.option; let i=i' >
 
+
+  <div class="mdl-cell mdl-cell--8-col marginAuto">
+    <span  style="float: right" *ngIf="json.synced" class="blueCloud"> <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+    <span  style="float: right" *ngIf="json.notSynced" class="amberCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+    <span  style="float: right" *ngIf="json.syncWaiting" class="grayCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+
+    <div *ngFor='let opt of json.option; let i=i' >
 
       <label class = "mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
          <input #flag type = "checkbox"  class = "mdl-checkbox__input" name="checkbox" value={{opt}} (change)='getVal(flag.checked,opt)' [checked]='checkVal(opt)' [disabled]='disabled' >

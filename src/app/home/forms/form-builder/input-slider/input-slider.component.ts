@@ -36,4 +36,8 @@ export class InputSliderComponent implements OnInit {
 
   }
 
+  resendJson() {
+    this.responseData.emit(this.json);
+  }
+
 }

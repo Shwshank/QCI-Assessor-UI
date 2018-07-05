@@ -1,6 +1,6 @@
 {
-  "short_name": "Collect",
-  "name": "QCI Collect Assesor",
+  "short_name": "QCI Survey",
+  "name": "QCI Survey",
 
   "start_url": "/",
   "scope": ".",
@@ -36,6 +36,10 @@
     }, {
       "src": "/assets/icons/icon-256x256.png",
       "sizes": "256x256",
+      "type": "image/png"
+    }, {
+      "src": "/assets/icons/icon-256x256.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]

@@ -36,9 +36,12 @@
   <div class="mdl-cell mdl-cell--3-col">{{funID(id)}} . {{json.name}}
     <span  *ngIf="json.required" class=" requiredMsg"><b> * </b> </span>
   </div>
-  <div class="mdl-cell mdl-cell--7-col">
+  <div class="mdl-cell mdl-cell--3-col">
 
     <span  *ngIf="json.helptext" style="float: right" class="mdl-badge" data-badge="i" id="Tsample{{funID(id)}}"  ></span>
+    <span  style="float: right" *ngIf="json.synced" class="blueCloud"> <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> &nbsp;&nbsp;</span>
+    <span  style="float: right" *ngIf="json.notSynced" class="amberCloud">  <i class="material-icons"  style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> &nbsp;&nbsp;</span>
+    <span  style="float: right" *ngIf="json.syncWaiting" class="grayCloud">  <i class="material-icons"  style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> &nbsp;&nbsp;</span>
 
     <div class="file_input_div">
       <div class="file_input">
@@ -55,7 +58,8 @@
 
         </div>
         <br> <br>
-        <img [src]="url" style="">
+        <!-- <img *ngIf="processedImages.length" [src]="processedImages[0].compressedImage.imageDataUrl" style=""> -->
+        <img *ngIf="this.json.value" [src]="this.json.value" style="">
 
         <div *ngIf="name" style="float: right; margin: auto;">
           {{name}} <br>

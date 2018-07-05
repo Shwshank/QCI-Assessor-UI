@@ -1,6 +1,7 @@
 import { Http, Response, Headers, RequestOptions,BaseRequestOptions, RequestMethod} from '@angular/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/timeout';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////d1
 //
@@ -40,22 +41,29 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Injectable()
 export class APIService {
 
-  // projectURL: string = 'http://192.168.15.187:8000';
+  projectURL: string = 'http://192.168.15.187:8000';
   // Local server
 
-  projectURL: string = 'https://qcitech.org:8083';
+  // projectURL: string = 'https://qcitech.org:8083';
   // Staging server
 
   // projectURL: string = 'https://api-collect.qcitech.org';
   // Production server
+
+  public appVersion: string = "App Version - 0.7.04 Beta";
+  // App Version
+
+  timeout : any = 60000;
 
   userID: any;
 
   constructor( private http: Http, ) {}
 
   createAuthorizationHeader(headers: Headers) {
+    let d = new Date();
     this.userID = localStorage.getItem('token');
     headers.append('Authorization', this.userID);
+    headers.append('Time',''+d.getTime() );
   }
 
   Login(data) {
@@ -99,8 +107,7 @@ export class APIService {
     let metaData = new FormData();
     metaData.append('meta',meta);
 
-    return this.http.post(this.projectURL+'/startResponse', metaData,{headers: headers}).map(res=>res.json());
-
+    return this.http.post(this.projectURL+'/startResponse', metaData,{headers: headers}).timeout(this.timeout).map(res=>res.json());
   }
 
   SyncChunk(data: any, chunk: any) {
@@ -118,8 +125,7 @@ export class APIService {
     chunk = JSON.stringify(chunk);
     chunkData.append('chunk',chunk);
 
-    return this.http.post(this.projectURL+'/submitChunkResponse', chunkData,{headers: headers}).map(res=>res.json());
-    // setTimeout( () => {}, 5000)
+    return this.http.post(this.projectURL+'/submitChunkResponse', chunkData,{headers: headers}).timeout(this.timeout).map(res=>res.json());
   }
 
   SendSubmitResponseID(id, flag) {
@@ -129,7 +135,7 @@ export class APIService {
     let responseID = new FormData();
     responseID.append('id',id);
     responseID.append('flag',flag);
-    return this.http.post(this.projectURL+'/submitResponseID', responseID,{headers: headers}).map(res=>res.json());
+    return this.http.post(this.projectURL+'/submitResponseID', responseID,{headers: headers}).timeout(this.timeout).map(res=>res.json());
   }
 
 }

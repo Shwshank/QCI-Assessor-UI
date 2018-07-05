@@ -8,13 +8,16 @@
   <div class="mdl-cell mdl-cell--12-col"> {{funID(id)}} . {{json.name}} <span  *ngIf="json.required" class=" requiredMsg"><b> * </b> </span>
     <span  *ngIf="json.helptext" class="mdl-badge" data-badge="i" id="Tsample{{funID(id)}}"  ></span>
     <label class="mdl-tooltip mdl-tooltip--large" for="Tsample{{funID(id)}}">{{json.helptext}}</label>
+    <span  style="float: right" *ngIf="json.synced" class="blueCloud"> <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+    <span  style="float: right" *ngIf="json.notSynced" class="amberCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
+    <span  style="float: right" *ngIf="json.syncWaiting" class="grayCloud">  <i class="material-icons" style="cursor: pointer;" (click)="resendJson()" > cloud_upload </i> </span>
 
   </div>
   <div class="mdl-cell mdl-cell--12-col" >
     <div *ngFor='let opt of json.option; let i=i' (change)='getVal(opt)'>
 
       <label class = "mdl-radio mdl-js-radio mdl-js-ripple-effect" style="display: content !important;">
-        <input type = "radio" class = "mdl-radio__button" value={{opt.trim()}}   name="radiogroup{{funID(id)}}"  [checked]='opt.trim() == json.value.trim()' [disabled]='disabled' >
+        <input type = "radio" class = "mdl-radio__button" value={{opt.trim()}}   name="radiogroup{{funID(id)}}"  [checked]='opt.trim() == json.value.trim()' [disabled]='disabled' autocomplete="off">
         <span class = "mdl-radio__label">{{opt}}</span>
       </label>
 

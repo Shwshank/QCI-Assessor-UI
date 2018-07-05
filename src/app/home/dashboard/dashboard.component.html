@@ -19,40 +19,71 @@
     */
   }
 
+
+  #overlay {
+      position: fixed;
+      display: block;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 2;
+      cursor: pointer;
+  }
+
+  #text{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 3rem;
+      color: white;
+      transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+  }
+
 </style>
+
+<div id="overlay" *ngIf="imageProcessing">
+  <div id="text">Compressing </div>
+</div>
+
+
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
             mdl-layout--fixed-header" >
   <header class="mdl-layout__header" style="max-height:2.5rem !important;height:2.5rem !important; min-height:2.5rem !important;">
     <div class="mdl-layout__header-row">
       <div class="mdl-layout-spacer"></div>
-      <button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon" style="margin-top:-1.4rem !important; max-height:2.5rem !important; height:2.5rem !important; min-height:2.5rem !important;">
+      <!-- <button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon" style="margin-top:-1.4rem !important; max-height:2.5rem !important; height:2.5rem !important; min-height:2.5rem !important;">
         <i class="material-icons">more_vert</i>
       </button>
       <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu "
           for="demo-menu-lower-right">
-        <li class="mdl-menu__item" (click)="refresh()"> Refresh <i class="material-icons">update</i> </li>
-        <li class="mdl-menu__item" [routerLink]="['/profile']">User profile <i class="material-icons">perm_identity</i> </li>
-      </ul>
+          <li class="mdl-menu__item" [routerLink]="['/profile']">User profile <i class="material-icons">perm_identity</i> </li>
+          <li class="mdl-menu__item" (click)="refresh()"> Refresh <i class="material-icons">update</i> </li>
+      </ul> -->
+
     </div>
   </header>
 
   <div class="mdl-layout__drawer mdl-shadow--4dp">
-    <span class="mdl-layout-title">QCI - Survey</span>
+    <span class="mdl-layout-title">QCI - Survey </span>
+
     <nav class="mdl-navigation">
       <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;" [routerLink]="['/formListing']"> <b> <i class="material-icons">store</i> Home </b> </a>
       <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;" [routerLink]="['/flaggedFormListing']"> <b> <i class="material-icons">assistant_photo</i> Flag <span *ngIf="flag > 0" class="numberButton"> &nbsp; {{flag}} &nbsp;  </span></b> </a>
-      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/']" (click)='sync()'  style="text-align: left !important; padding-left: 50px !important;"  >
-
-        <b> <i class="material-icons">sync</i> {{syncStatus}} &nbsp; <span *ngIf="num > 0" class="numberButton" > &nbsp; {{num}} &nbsp;  </span> </b>
-        <div *ngIf="sending"  class="load-bar">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
-      </a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" [routerLink]="['/sync']" style="text-align: left !important; padding-left: 50px !important;"  > <b> <i class="material-icons">sync</i> {{syncStatus}} &nbsp; <span *ngIf="num > 0" class="numberButton" > &nbsp; {{num}} &nbsp;  </span> </b></a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;" style="text-align: left !important; padding-left: 50px !important;" [routerLink]="['/draft']">  <i class="material-icons">file_copy</i> <b> Draft <span *ngIf="draft > 0" class="numberButton" > &nbsp; {{draft}} &nbsp;  </span></b> </a>
       <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;" style="text-align: left !important; padding-left: 50px !important;" [routerLink]="['/help']"  > <i class="material-icons">security</i> <b> SOS </b> </a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;"  style="text-align: left !important; padding-left: 50px !important;"  [routerLink]="['/profile']"> <i class="material-icons">account_circle</i> <b>Profile </b> </a>
+      <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;"  style="text-align: left !important; padding-left: 50px !important;"  (click)="refresh()"> <i class="material-icons">restore_page</i> <b> Refresh </b> </a>
       <a class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" style="text-align: left !important; padding-left: 50px !important;"  style="text-align: left !important; padding-left: 50px !important;"  (click)="logout()"> <i class="material-icons">lock</i> <b> Logout </b> </a>
     </nav>
+    <br>
+    <span style="font-size:0.8rem;letter-spacing: .1rem; text-align: center; color: gray" > <b> {{appVersion}} </b> </span>
+
   </div>
 
   <main class="mdl-layout__content commonProp " >

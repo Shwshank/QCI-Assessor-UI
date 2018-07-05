@@ -34,4 +34,8 @@ export class InputRadioComponent implements OnInit {
     this.json.value = opt;
     this.responseData.emit(this.json);
   }
+
+  resendJson() {
+    this.responseData.emit(this.json);
+  }
 }
