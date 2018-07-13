@@ -41,19 +41,19 @@ import 'rxjs/add/operator/timeout';
 @Injectable()
 export class APIService {
 
-  projectURL: string = 'http://192.168.15.187:8000';
+  // projectURL: string = 'http://192.168.15.187:8000';
   // Local server
 
   // projectURL: string = 'https://qcitech.org:8083';
   // Staging server
 
-  // projectURL: string = 'https://api-collect.qcitech.org';
+  projectURL: string = 'https://api-collect.qcitech.org';
   // Production server
 
-  public appVersion: string = "App Version - 0.7.04 Beta";
+  public appVersion: string = "App Version - 0.7.13.1 Beta";
   // App Version
 
-  timeout : any = 60000;
+  timeout : any = 40000;
 
   userID: any;
 
@@ -136,6 +136,27 @@ export class APIService {
     responseID.append('id',id);
     responseID.append('flag',flag);
     return this.http.post(this.projectURL+'/submitResponseID', responseID,{headers: headers}).timeout(this.timeout).map(res=>res.json());
+  }
+
+  PrepareForLogout(draftArray) {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+
+    let dftArray     = draftArray;
+
+    dftArray = JSON.stringify(dftArray);
+    dftArray = JSON.parse(dftArray);
+    dftArray = JSON.stringify(dftArray);
+
+    return this.http.post(this.projectURL+'/offlineData', dftArray ,{headers: headers}).timeout(this.timeout).map(res=>res.json());
+  }
+
+  GetOfflineDataFromServer() {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+
+    return this.http.get(this.projectURL+'/getOfflineData',{headers: headers}).timeout(this.timeout).map(res=>res.json());
+
   }
 
 }

@@ -127,6 +127,7 @@ export class ProjectService {
   emitImageCompressionDone  = new EventEmitter<any>();
   emitCompressedImage = new EventEmitter<any>();
   emitChunkError  = new EventEmitter<any>();
+  emitOfflineSyncChunkError = new EventEmitter<any>();
   formArray = [];
   offlineFormIdArrray = [];
   flaggedFormArray = [];
@@ -137,6 +138,7 @@ export class ProjectService {
   draftFormIdArrray : any = [];
   draftArray: any = [];
   alldraftArray : any = [];
+  offlineResponseArray: any = [];
   chunk:any= {responseTimeStamp:'', formID:'', version:''};
   sub1 : any;
 
@@ -174,6 +176,7 @@ export class ProjectService {
         localStorage.setItem('token',res.token);
         localStorage.setItem('form_token',res.form_token);
         this.emitUserLogin.emit({success: true, msg: res.message});
+        this.getOfflineDataFromServer();
       } else {}
     }, err=>{
       console.log(err);
@@ -199,9 +202,63 @@ export class ProjectService {
     localStorage.removeItem('responseTimeStamp');
     localStorage.removeItem('tempArray');
     localStorage.removeItem('tempArray2');
-    let request = indexedDB.deleteDatabase('responseDB');
+    let request1 = indexedDB.deleteDatabase('responseDB');
+    let request2 = indexedDB.deleteDatabase('draftDB');
     window.location.reload(true);
     this.router.navigate(['./login']);
+
+  }
+
+  prepareForLogout() {
+    let flag = 0;
+
+    if(this.offlineResponseArray.length) {
+
+      alert('Please sync offline forms before logout!');
+    } else {
+      flag = 1;
+      if(this.draftArray.length) {
+
+        this.apiService.PrepareForLogout(this.draftArray).subscribe(res=>{
+          console.log(res);
+          if(res.success) {
+            flag = 1;
+          } else {
+            flag = 0;
+            alert('unable to process');
+          }
+        }, err=>{
+          flag = 0;
+          console.log(err);
+          alert('unable to process');
+        });
+      }
+
+      if(flag == 1) {
+        this.logout();
+      }
+    }
+  }
+
+  getOfflineDataFromServer() {
+
+    this.apiService.GetOfflineDataFromServer().subscribe(res=>{
+      if(res.success) {
+
+        console.log(res);
+        for(let i of res.data) {
+          console.log(i);
+          this.saveDraftDataReceivedFromServer(i);
+        }
+        this.initializeDraftIndexDB();
+      }else {
+
+        console.log(res);
+      }
+    }, err=>{
+
+      console.log(err);
+    });
 
   }
 
@@ -334,7 +391,9 @@ export class ProjectService {
 
     let syncFlag = false;
 
+
     if(data.response.ResElements.length) {
+
       // If All Elements already synced and no element present in response array
 
       for(let j = 0; j< data.response.ResElements.length; j++) {
@@ -365,6 +424,9 @@ export class ProjectService {
 
       for( let i =0; i<res.response.ResElements.length; i++) {
         if(cid==res.response.ResElements[i].cid) {
+
+          console.log(res.response.ResCid+' <--> '+cid);
+          this.updateOfflineResponseSyncStatus(res, cid, i);
 
           res.response.ResElements[i].synced = true;
           this.checkAllOfflineChunk4(res);
@@ -426,11 +488,13 @@ export class ProjectService {
         this.emitOfflineChunkSuccess.emit(data.cid);
       } else {
         console.log(res);
+        this.emitOfflineSyncChunkError.emit(res);
       }
       sub1.unsubscribe();
     } , err=>{
       sub1.unsubscribe();
       console.log(err);
+      this.emitOfflineSyncChunkError.emit(res);
       // window.location.reload();
       // alert(err);
     });
@@ -579,33 +643,95 @@ export class ProjectService {
 
   getFlaggedResponses() {
     this.flaggedFormArray = [];
-    this.apiService.GetFlaggedResponses().subscribe((res)=>{
-      console.log(res);
-      if(res){
 
-        if(res.formArray.length) {
-          for(let i = 0; i< res.formArray.length; i++) {
-            this.flaggedFormArray.push(res.formArray[i].form_json);
+    if(navigator.onLine) {
+      let flagged_form_token = localStorage.getItem('flagged_form_token');
+
+      this.apiService.GetFlaggedResponses().subscribe((res)=>{
+        console.log(res);
+        if(res){
+
+          if(res.formArray.length) {
+            for(let i = 0; i< res.formArray.length; i++) {
+              this.flaggedFormArray.push(res.formArray[i].form_json);
+            }
           }
+          console.log(this.flaggedFormArray);
+          // save data in offline storage
+          localStorage.setItem('flaggedForms', JSON.stringify(this.flaggedFormArray));
+          // this.emitFlaggedFormArray.emit(this.flaggedFormArray);
+          this.emitFlaggedForms(this.flaggedFormArray);
+        } else {
+          let temp;
+          temp = localStorage.getItem('flaggedForms');
+          this.flaggedFormArray = JSON.parse(temp);
+          // this.emitFlaggedFormArray.emit(this.flaggedFormArray);
+          this.emitFlaggedForms(this.flaggedFormArray);
         }
-        console.log(this.flaggedFormArray);
-        // save data in offline storage
-        localStorage.setItem('flaggedForms', JSON.stringify(this.flaggedFormArray));
-        this.emitFlaggedFormArray.emit(this.flaggedFormArray);
-      } else {
-        let temp;
-        temp = localStorage.getItem('flaggedForms');
-        this.flaggedFormArray = JSON.parse(temp);
-        this.emitFlaggedFormArray.emit(this.flaggedFormArray);
-      }
-    },err=> {
-      console.log(err);
+      },err=> {
+        console.log(err);
+      });
+    } else {
+
       let temp;
       temp = localStorage.getItem('flaggedForms');
       this.flaggedFormArray = JSON.parse(temp);
-      this.emitFlaggedFormArray.emit(this.flaggedFormArray);
+      // this.emitFlaggedFormArray.emit(this.flaggedFormArray);
+      this.emitFlaggedForms(this.flaggedFormArray);
+    }
+  }
 
-    });
+  emitFlaggedForms(flaggedFormArray) {
+    // console.log(this.flaggedFormArray);
+    // console.log(this.offlineResponseArray);
+    // console.log(this.draftArray);
+
+    let temp1 = [];
+    let temp2 = [];
+
+    for(let i=0; i< this.flaggedFormArray.length; i++) {
+
+      for(let j=0; j< this.offlineResponseArray.length; j++) {
+
+        if(this.offlineResponseArray[j].ResDetails.flagged_on) {
+
+          if(this.flaggedFormArray[i].Details.flagged_on == this.offlineResponseArray[j].ResDetails.flagged_on
+            && this.flaggedFormArray[i].Details.cid == this.offlineResponseArray[j].ResDetails.cid) {
+
+              temp1.push(i);
+          }
+        }
+      }
+    }
+
+    if(temp1.length) {
+      for(let i=0; i<temp1.length; i++) {
+        this.flaggedFormArray.splice(temp1[i],1);
+      }
+    }
+
+    for(let i=0; i< this.flaggedFormArray.length; i++) {
+
+      for(let j=0; j< this.draftArray.length; j++) {
+
+        if(this.draftArray[j].Details.flagged_on) {
+
+          if(this.flaggedFormArray[i].Details.flagged_on == this.draftArray[j].Details.flagged_on
+            && this.flaggedFormArray[i].Details.cid == this.draftArray[j].Details.cid) {
+
+              temp2.push(i);
+          }
+        }
+      }
+    }
+
+    if(temp2.length) {
+      for(let i=0; i<temp2.length; i++) {
+        this.flaggedFormArray.splice(temp2[i],1);
+      }
+    }
+
+    this.emitFlaggedFormArray.emit(flaggedFormArray);
   }
 
   submitFormArray(tempArray: any, id) {
@@ -808,11 +934,12 @@ export class ProjectService {
           temp = response.length;
 
           // offline responses corresponding to formID
-
+          this.offlineResponseArray = [];
           if(response.length) {
 
             for(let  i=0; i<response.length; i++ ) {
               this.offlineFormIdArrray.push(response[i].response.ResDetails.cid);
+              this.offlineResponseArray.push(response[i].response);
             }
 
           }
@@ -849,8 +976,8 @@ export class ProjectService {
 
           // offline responses corresponding to formID
 
+          this.draftArray = [];
           if(response.length) {
-            this.draftArray = [];
             // console.log(response.length);
             for(let i = 0; i<response.length; i++) {
               this.draftArray.push(response[i].draft);
@@ -932,6 +1059,28 @@ export class ProjectService {
     tempStorage += (1024 * 1024 * 200);
     console.log(tempStorage);
 
+    if(response.Details.rid) {
+      console.log('yer')
+      let temp1;
+      let temp2;
+      let temp3;
+      temp1 = localStorage.getItem('flaggedForms');
+      temp2 = JSON.parse(temp1);
+
+      for(let i = 0; i<temp2.length; i++) {
+        if(response.Details.rid == temp2[i].Details.rid) {
+          temp3  = i;
+          break;
+        }
+      }
+
+      temp2.splice(temp3,1);
+      this.flaggedFormArray = temp2;
+      localStorage.setItem('flaggedForms', JSON.stringify(this.flaggedFormArray));
+      this.emitFlaggedFormArray.emit(this.flaggedFormArray);
+
+    }
+
     console.log(response);
     // request for space as per size of response
     (<any>navigator).webkitPersistentStorage.requestQuota (
@@ -971,6 +1120,52 @@ export class ProjectService {
 
   }
 
+  saveDraftDataReceivedFromServer(response) {
+
+    // console.log(response);
+
+    // get size of response
+    let tempStorage = JSON.stringify(response).length;
+    tempStorage += (1024 * 1024 * 200);
+    console.log(tempStorage);
+
+    console.log(response);
+    // request for space as per size of response
+    (<any>navigator).webkitPersistentStorage.requestQuota (
+        tempStorage, function(grantedBytes) {
+          console.log(response);
+          console.log(grantedBytes);
+          (<any>window).webkitRequestFileSystem((<any>window).PERSISTENT, grantedBytes, res=>{
+
+            // initialize IndexDB
+            let db = new AngularIndexedDB('draftDB', 1);
+
+            // open IndexDB
+            db.openDatabase(1, (evt) => {
+                let objectStore = evt.currentTarget.result.createObjectStore(
+                    'asrDraft', { keyPath: "id", autoIncrement: true });
+                objectStore.createIndex("draft", "draft", { unique: false });
+
+            }).then(()=>{
+
+              // add response in Indexed
+              db.add('asrDraft', { draft: response }).then(() => {
+                console.log('draft added');
+                }, (error) => {
+                  alert('Some error occurs while storing the form. Please try again');
+                  window.location.reload();
+              });
+            });
+          }, err =>{
+            alert("Insufficient storage! Please try again after having free space." );
+            window.location.reload();
+            // this.emitFormResponse.emit({success:false, msg:"not-submitted"});
+          });
+        }, function(e) { console.log('Error', e); }
+    );
+
+  }
+
   deleteDraft(draftID) {
     console.log(draftID);
 
@@ -981,7 +1176,8 @@ export class ProjectService {
           this.dbDraft.delete('asrDraft', this.alldraftArray[i].id).then(() => {
 
             console.log('deleted');
-            this.router.navigate(['/']);
+            this.initializeDraftIndexDB();
+            // window.location.reload();
           }, (error) => {
               console.log(error);
               alert("Some error detected! Please try again");
@@ -1003,6 +1199,7 @@ export class ProjectService {
           this.dbDraft.delete('asrDraft', this.alldraftArray[i].id).then(() => {
 
             console.log('deleted');
+            this.initializeDraftIndexDB();
           }, (error) => {
               console.log(error);
               alert("Some error detected! Please try again");
@@ -1045,6 +1242,20 @@ export class ProjectService {
 
     }
 
+  }
+
+  updateOfflineResponseSyncStatus(res, cid, i) {
+
+    console.log(res);
+    console.log(cid);
+
+    res.response.ResElements[i].synced = true;
+
+    this.db.update('asrResponse', {id: res.id, response: res.response}).then(()=>{
+      console.log('Offline response updated');
+    }, (error)=>{
+      console.log(error);
+    });
   }
 
 }

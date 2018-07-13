@@ -87,7 +87,6 @@ export class InputCameraComponent implements OnInit {
        });
      });
 
-
    }
 
   compressImage2($event) {

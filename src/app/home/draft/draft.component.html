@@ -22,7 +22,7 @@
 
   <span  *ngFor="let form  of draftArray" >
     <hr>
-    <li class="mdl-list__item mdl-list__item--three-line" (click)="openDraft(form.Details.draftID)" >
+    <li class="mdl-list__item mdl-list__item--three-line"  >
       <span class="mdl-list__item-primary-content">
         <i class="material-icons mdl-list__item-avatar">description</i>
         <span>{{form.Details.project}}</span>
@@ -31,7 +31,8 @@
         </span>
       </span>
       <span class="mdl-list__item-secondary-content">
-        <span class="mdl-list__item-secondary-action"><i class="material-icons">create</i></span>
+        <span class="mdl-list__item-secondary-action" style="text-align: teft" (click)="deleteDraft(form.Details.draftID)" ><i class="material-icons">delete</i></span>
+        <span class="mdl-list__item-secondary-action" style="text-align: teft" (click)="openDraft(form.Details.draftID)" ><i class="material-icons">create</i></span>
       </span>
     </li>
   </span>

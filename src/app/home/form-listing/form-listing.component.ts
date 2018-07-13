@@ -53,6 +53,7 @@ export class FormListingComponent implements OnInit {
     });
 
     this.sub4 = this.projectService.emitDraftArray.subscribe(res=>{
+      console.log(res);
       this.draftArrray = res;
     })
   }

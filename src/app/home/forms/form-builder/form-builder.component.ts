@@ -92,6 +92,27 @@ export class FormBuilderComponent implements OnInit {
       this.disableSubmitButton = false;
       this.rule = false;
       console.log(res);
+
+      // Mark elemts synced if form is flagged
+      if(res.Details.no_flagged > 0) {
+        for(let i=0; i<res.Elements.length; i++) {
+
+          // remove synced cloud if element is flagged
+          if(res.Elements[i].flagged) {
+            res.Elements[i].synced = false;
+            res.Elements[i].notSynced = false;
+            res.Elements[i].syncWaiting = false;
+          } else {
+
+            // Sync is true id not flagged
+            res.Elements[i].chunkStatus = true;
+            res.Elements[i].synced = true;
+            res.Elements[i].notSynced = false;
+            res.Elements[i].syncWaiting = false;
+          }
+        }
+      }
+
       this.completeArray = res;
       this.jsonArray = res.Elements;
 
@@ -794,7 +815,7 @@ export class FormBuilderComponent implements OnInit {
 
   ngOnDestroy() {
 
-    if((this.completeArray.Details.draftID && !this.submitFlag) && !this.deleteDraftFlag ) {
+    if(this.completeArray.Details.draftID && !this.submitFlag  ) {
       this.projectService.updateDraft(this.completeArray.Details.draftID, this.completeArray);
     }
 

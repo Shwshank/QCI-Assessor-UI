@@ -30,8 +30,14 @@ export class DraftComponent implements OnInit {
     this.router.navigate(['/form'], { queryParams: {draftID: draftID}});
   }
 
+  deleteDraft(draftID) {
+
+    if(window.confirm('Are you sure to delete this draft?')) {
+        this.projectService.deleteDraft(draftID);
+    }
+  }
+
   ngOnDestroy() {
     this.sub1.unsubscribe();
   }
-
 }

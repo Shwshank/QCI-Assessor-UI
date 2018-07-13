@@ -30,8 +30,8 @@
         <span *ngIf="card.response.syncingStatus" class="amberCloud">  <i class="material-icons"> cloud_upload </i> </span>
         <span *ngIf="card.response.synced" class="blueCloud">  <i class="material-icons"> cloud_upload </i> </span>
 
-        <span class="mdl-list__item-text-body">
-           <!-- &nbsp;<br> Unsynced: {{unsyncedResponseCount(card.response)}} -->
+        <span class="mdl-list__item-text-body" >
+           <!-- {{getUnsyncedCount(card.response.ResCid)}} -->
         </span>
       </span>
       <span class="mdl-list__item-secondary-content">

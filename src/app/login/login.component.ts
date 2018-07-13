@@ -25,6 +25,8 @@ export class LoginComponent implements OnInit {
   phone : any;
   password: any;
   appVersion: any;
+  loginButton: any = 'Log in';
+  clicked : any = false;
 
   constructor(private projectService: ProjectService, private router: Router) {
 
@@ -39,6 +41,8 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.clicked = true;
+    this.loginButton = "Please wait";
     console.log(this.phone);
     console.log(this.password);
     let formData = new FormData();
